@@ -177,7 +177,6 @@ feature/hide-blocked-messages.patch
 feature/show-deleted-replies.patch
 bugfix/reply-name-end-padding.patch
 bugfix/image-loader-leak.patch
-bugfix/video-ads-leak.patch
 bugfix/chat-avatar-leak.patch
 bugfix/launch-activity-leaks.patch
 bugfix/chat-attach-alert-adapter-leak.patch

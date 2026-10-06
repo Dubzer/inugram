@@ -243,7 +243,7 @@ internal sealed class PluginAnimationDecoder(shared: Executor) {
             if (isLottie(file)) {
                 val side = if (width > 0) width else LOTTIE_SIDE
                 val lottieHeight = if (height > 0) height else LOTTIE_SIDE
-                val lottie = RLottieNative.createFromFile(path, null, side, lottieHeight, false, null, false, 0)
+                val lottie = RLottieNative.createFromFile(path)
                 if (lottie != null) return Lottie(shared, lottie, side, lottieHeight, rate)
             } else {
                 val meta = IntArray(META_FIELDS)

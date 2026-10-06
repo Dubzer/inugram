@@ -238,7 +238,6 @@ object PluginIcons {
             if (id == 0) return false
             val lottie = RLottieDrawable(
                 id,
-                animation.value,
                 AndroidUtilities.dp(sizeDp),
                 AndroidUtilities.dp(sizeDp),
                 true,
