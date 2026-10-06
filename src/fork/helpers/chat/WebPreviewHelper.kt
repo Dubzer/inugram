@@ -53,7 +53,9 @@ object WebPreviewHelper {
     }
 
     @JvmStatic
-    fun shouldShowAllLines(webPage: TLRPC.WebPage): Boolean {
+    fun shouldShowAllLines(webPage: TLRPC.WebPage?): Boolean {
+        if (webPage?.site_name == null) return false
+
         // crutch to make the admin log "original message" (which is a fake web preview lol) to show all lines
         if (webPage.site_name == LocaleController.getString(R.string.EventLogOriginalMessages)) return true;
 
