@@ -674,6 +674,9 @@ object InuConfig {
     val SIMPLE_ATTACH_POPUP_ANIMATION = BoolItem("simple_attach_popup_animation", false)
 
     @JvmField
+    val OPTIMIZED_ATTACHMENT_MENU = BoolItem("optimized_attachment_menu", true)
+
+    @JvmField
     val CHAT_VOICE_IN_ATTACH = BoolItem("chat_voice_in_attach", false)
 
     @JvmField
