@@ -5,6 +5,8 @@ import org.telegram.messenger.BuildVars
 import org.telegram.messenger.FileLog
 import org.telegram.messenger.MessageObject
 import org.telegram.tgnet.TLRPC
+import org.telegram.ui.Cells.BaseCell
+import org.telegram.ui.Cells.ChatActionCell
 import org.telegram.ui.Cells.ChatMessageCell
 
 object ReactionDebugHelper {
@@ -31,15 +33,17 @@ object ReactionDebugHelper {
     @JvmStatic
     fun describe(messageObject: MessageObject?): String {
         val message = messageObject?.messageOwner ?: return "null"
-        return "mid=${message.id} ${describeReactions(messageObject)}"
+        return "did=${messageObject.dialogId} mid=${message.id} group=${message.grouped_id} ${describe(message.reactions)}"
     }
 
-    private fun describeReactions(messageObject: MessageObject?): String {
-        val message = messageObject?.messageOwner ?: return "reactions=none"
-        val reactions = message.reactions ?: return "reactions=null"
+    @JvmStatic
+    fun describe(reactions: TLRPC.MessageReactions?): String {
+        if (reactions == null) return "reactions=null"
         val results = reactions.results.joinToString(",") { "${describe(it.reaction)}x${it.count}${if (it.chosen) "*" else ""}" }
-        val recent = reactions.recent_reactions.joinToString(",") { "${describe(it.reaction)}${if (it.unread) "!" else ""}" }
-        return "results=[$results] recent=[$recent] unread=${MessageObject.hasUnreadReactions(message)}"
+        val recent = reactions.recent_reactions.joinToString(",") {
+            "${describe(it.reaction)}@${MessageObject.getPeerId(it.peer_id)}/${it.date}${if (it.unread) "!" else ""}"
+        }
+        return "min=${reactions.min} results=[$results] recent=[$recent]"
     }
 
     private fun describe(reaction: TLRPC.Reaction?): String = when (reaction) {
@@ -59,12 +63,36 @@ object ReactionDebugHelper {
     }
 
     @JvmStatic
+    fun describeCell(cell: BaseCell?): String {
+        val (layout, messageObject) = when (cell) {
+            is ChatMessageCell -> cell.reactionsLayoutInBubble to cell.messageObject
+            is ChatActionCell -> cell.reactionsLayoutInBubble to cell.messageObject
+            else -> return "cell=${cell?.javaClass?.simpleName}"
+        }
+        val primary = (cell as? ChatMessageCell)?.currentMessagesGroup?.findPrimaryMessageObject()
+        return "cell=${cell.javaClass.simpleName} cellMid=${messageObject?.id} primaryMid=${primary?.id} layoutMid=${layout.messageObject?.id} layoutUnread=${layout.hasUnreadReactions} data=${describe(messageObject)}"
+    }
+
+    @JvmStatic
+    fun onVisibleRead(classGuid: Int, cell: BaseCell, count: Int) {
+        if (!isEnabled()) return
+        FileLog.d("InuRx[$classGuid] visible read count=$count ${describeCell(cell)}")
+    }
+
+    @JvmStatic
     fun onReactionsLayoutKept(cell: ChatMessageCell, messageObject: MessageObject) {
         if (!isEnabled()) return
         val shown = cell.reactionsLayoutInBubble.messageObject
-        if (shown === messageObject) return
-        if (describeReactions(shown) == describeReactions(messageObject)) return
-        FileLog.d("InuRx cell kept stale reactions shown=${describe(shown)} actual=${describe(messageObject)}")
+        val position = cell.currentPosition
+        val expected = when {
+            !messageObject.shouldDrawReactions() || messageObject.isExpiredStory -> null
+            position == null -> messageObject
+            position.flags and MessageObject.POSITION_FLAG_BOTTOM != 0 -> cell.currentMessagesGroup?.findPrimaryMessageObject()
+            else -> null
+        }
+        if (shown === expected) return
+        if (shown != null && expected != null && describe(shown.messageOwner?.reactions) == describe(expected.messageOwner?.reactions)) return
+        FileLog.d("InuRx cell kept stale reactions cellMid=${messageObject.id} shown=${describe(shown)} expected=${describe(expected)}")
     }
 
     @JvmStatic

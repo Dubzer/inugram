@@ -105,6 +105,12 @@ Stock paths inside exported patches omit `worktree/`.
 
 Always run `stg` commands from the `worktree/` directory.
 
+The worktree is full of untracked, git-excluded fork symlinks and generated files.
+Stage only explicit paths of tracked files (`git add -f <file>` after resolving a
+conflict); never `git add -A`/`git add .` or a directory. Never `stg undo --hard`,
+`stg reset --hard` or `git checkout -- <dir>`: they delete those untracked files.
+If a refresh goes wrong, stop and ask the user instead of undoing it.
+
 ## Config, database, and settings
 
 ```kotlin
