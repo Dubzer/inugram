@@ -329,3 +329,4 @@ bugfix/keyboard-transition-delay.patch
 bugfix/rich_preview_entities.patch
 bugfix/reactions-cull-during-change.patch
 bugfix/persistent-bot-keyboard-back.patch
+feature/bot-description-media-viewer.patch
