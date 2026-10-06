@@ -63,7 +63,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - custom title text: Inugram / @username / first name / "Chats"
 - 🐶 dialogs fab customization: main + secondary actions, hide-on-scroll, left-side
 - 🐶 "create as supergroup" toggle in group creation
-- 🐶 deeplink / username quick-open from global search
+- 🐶 deeplink / username / cached peer ID quick-open from global search
 - mutual contact icon in contacts list
 - customizable dialogs list pull-down action: reveal archive (stock), open archive directly (🐶 done right, without revealing the cell), open saved messages, open search, or disabled entirely. when the pull-down no longer leads to the archive, the archive row is hidden from the list and an "Archived Chats" entry appears in the drawer/overflow menu instead
 - interactive chat preview (long-tap avatar): tappable bubbles, no tap-to-expand
