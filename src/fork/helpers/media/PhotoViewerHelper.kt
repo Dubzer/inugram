@@ -83,9 +83,9 @@ object PhotoViewerHelper {
             return
         }
 
-        val bitmap = viewer.centerImage.bitmap
+        val bitmap = viewer.centerImage.bitmap?.takeUnless { it.isRecycled }
         val colorSpace = bitmap?.colorSpace
-        val enabled = bitmap != null && !bitmap.isRecycled && (
+        val enabled = bitmap != null && (
             bitmap.hasGainmap() ||
                 colorSpace == ColorSpace.get(ColorSpace.Named.BT2020_PQ) ||
                 colorSpace == ColorSpace.get(ColorSpace.Named.BT2020_HLG) ||
