@@ -324,3 +324,5 @@ bugfix/settings-activity-bulletin.patch
 bugfix/table-spans.patch
 bugfix/avatar-preview-file-ref.patch
 bugfix/article-selection-null-text.patch
+bugfix/chat-keyboard-transition-gap.patch
+bugfix/keyboard-transition-delay.patch
