@@ -340,4 +340,5 @@ misc/debug-webm-stickers.patch
 feature/keep-chats-in-stack.patch
 feature/attachment-preview-resolution.patch
 feature/optimized-attachment-menu.patch
+bugfix/sticker-mask-alpha.patch
 misc/debug-photo-crop.patch
