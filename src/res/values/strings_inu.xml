@@ -615,6 +615,10 @@
     <string name="InuCallbackDataCopied">Callback data copied</string>
     <string name="InuNetwork">Network</string>
     <string name="InuAutoDisableProxyOnVpn">Disable proxy when VPN is active</string>
+    <string name="InuProxyImportFromClipboard">Import from clipboard</string>
+    <string name="InuProxyImportNothing">No new proxy links found in clipboard</string>
+    <string name="InuProxyImported_one">%1$d proxy imported</string>
+    <string name="InuProxyImported_other">%1$d proxies imported</string>
     <string name="InuFasterDownloads">Faster downloads</string>
     <string name="InuFasterUploads">Faster uploads</string>
     <string name="InuFasterTransfersInfo">Bumps chunk size and parallel request count. May improve throughput, but may also cause the adverse effect (especially for non-Premium users)</string>
