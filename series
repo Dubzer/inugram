@@ -336,3 +336,4 @@ feature/proxy-batch-import.patch
 bugfix/channel-updates-queue-pts.patch
 misc/debug-webm-stickers.patch
 feature/keep-chats-in-stack.patch
+misc/debug-photo-crop.patch
