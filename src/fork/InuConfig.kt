@@ -265,6 +265,9 @@ object InuConfig {
     val SEND_MP4_DOCUMENT_AS_VIDEO = BoolItem("send_mp4_document_as_video", true)
 
     @JvmField
+    val KEEP_CHATS_IN_STACK = BoolItem("keep_chats_in_stack", false)
+
+    @JvmField
     val SORT_ALBUMS_BY_SIZE = BoolItem("sort_albums_by_size", true)
 
     @JvmField
