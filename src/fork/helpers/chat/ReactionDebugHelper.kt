@@ -1,7 +1,6 @@
 package desu.inugram.helpers.chat
 
-import desu.inugram.InuConfig
-import org.telegram.messenger.BuildVars
+import desu.inugram.helpers.DebugLogUtils
 import org.telegram.messenger.FileLog
 import org.telegram.messenger.MessageObject
 import org.telegram.tgnet.TLRPC
@@ -13,22 +12,10 @@ object ReactionDebugHelper {
     private var staleUnreadLoggedId = 0
 
     @JvmStatic
-    fun isEnabled(): Boolean = BuildVars.LOGS_ENABLED && InuConfig.EXTRA_DEBUG_LOGS.value
+    fun isEnabled(): Boolean = DebugLogUtils.isEnabled()
 
     @JvmStatic
-    fun caller(): String {
-        val sb = StringBuilder()
-        var frames = 0
-        for (frame in Throwable().stackTrace) {
-            val name = frame.className
-            if (name.startsWith("desu.inugram.helpers.chat.ReactionDebugHelper")) continue
-            if (!name.startsWith("org.telegram") && !name.startsWith("desu.inugram")) continue
-            if (sb.isNotEmpty()) sb.append(" < ")
-            sb.append(name.substringAfterLast('.')).append('.').append(frame.methodName).append(':').append(frame.lineNumber)
-            if (++frames == 6) break
-        }
-        return sb.toString()
-    }
+    fun caller(): String = DebugLogUtils.getCaller()
 
     @JvmStatic
     fun describe(messageObject: MessageObject?): String {

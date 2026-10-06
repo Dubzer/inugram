@@ -96,7 +96,7 @@ class AboutActivity : SettingsPageActivity(), NotificationCenter.NotificationCen
             items.add(
                 UItem.asCheck(
                     TOGGLE_EXTRA_DEBUG_LOGS,
-                    LocaleController.getString(R.string.InuExtraDebugLogs),
+                    "[Inu] Extra debug instrumentation (slow)",
                 ).setChecked(InuConfig.EXTRA_DEBUG_LOGS.value)
             )
             items.add(UItem.asCustom(getOrCreateLogsRow()))

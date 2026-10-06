@@ -334,3 +334,4 @@ bugfix/search-highlight-block-offset.patch
 bugfix/video-no-thumb-placeholder.patch
 feature/proxy-batch-import.patch
 bugfix/channel-updates-queue-pts.patch
+misc/debug-webm-stickers.patch

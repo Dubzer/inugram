@@ -2,9 +2,7 @@ package desu.inugram.helpers
 
 import android.app.NotificationManager
 import android.os.Build
-import desu.inugram.InuConfig
 import org.telegram.messenger.ApplicationLoader
-import org.telegram.messenger.BuildVars
 import org.telegram.messenger.FileLoader
 import org.telegram.messenger.FileLog
 import org.telegram.messenger.MessagesStorage
@@ -14,7 +12,7 @@ import java.io.File
 
 object NotificationDebugHelper {
     @JvmStatic
-    fun isEnabled(): Boolean = BuildVars.LOGS_ENABLED && InuConfig.EXTRA_DEBUG_LOGS.value
+    fun isEnabled(): Boolean = DebugLogUtils.isEnabled()
 
     @JvmStatic
     fun onPushSkippedAsRead(dialogId: Long, msgId: Int, readMax: Int) {

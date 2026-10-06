@@ -724,7 +724,6 @@
 
     <string name="InuLogs">Debug</string>
     <string name="InuLogsEnabled">Debug mode</string>
-    <string name="InuExtraDebugLogs">[Inu] Extra debug logs</string>
     <string name="InuLogsSize">Logs size: %1$s</string>
     <string name="InuLogsShare">Share logs</string>
     <string name="InuLogsShareZip">All logs (.zip)</string>

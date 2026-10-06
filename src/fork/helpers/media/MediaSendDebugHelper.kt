@@ -3,8 +3,7 @@ package desu.inugram.helpers.media
 import android.os.Build
 import android.os.FileObserver
 import android.os.StatFs
-import desu.inugram.InuConfig
-import org.telegram.messenger.BuildVars
+import desu.inugram.helpers.DebugLogUtils
 import org.telegram.messenger.FileLoader
 import org.telegram.messenger.FileLog
 import org.telegram.messenger.MessageObject
@@ -24,7 +23,7 @@ object MediaSendDebugHelper {
     private var freeSpaceAt = 0L
 
     @JvmStatic
-    fun isEnabled(): Boolean = BuildVars.LOGS_ENABLED && InuConfig.EXTRA_DEBUG_LOGS.value
+    fun isEnabled(): Boolean = DebugLogUtils.isEnabled()
 
     @JvmStatic
     @Synchronized
