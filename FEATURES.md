@@ -256,6 +256,8 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 ## 🐶 bugfixes (vs stock)
 
 - channel update queue no longer replays the same update indefinitely after an earlier queued update advances PTS
+- flaky networks: server time offset no longer reset to the epoch by a `bad_msg_notification` inside a container (messages sent meanwhile were dated 1 Jan 1970); session resets on old retransmitted server messages re-send pending requests with fresh msg_id/seqno instead of stale ones (which made the server reject them and cascaded into more resets)
+- network stays awake in background for up to 2 minutes while generic requests (sends, getDifference) are pending, instead of pausing after 10 seconds regardless
 - sticker cutout/eraser edits no longer progressively fade and/or darken transparent PNGs
 - connection status title no longer gets stuck on "Updating..." when its transition animation is cancelled
 - accelerated video playback no longer applies an unnecessary pitch shift; live speed-slider changes use Android's low-latency audio mixer path
