@@ -350,3 +350,4 @@ bugfix/emoji-status-tabs.patch
 bugfix/case-insensitive-settings-search.patch
 feature/edited-message-date.patch
 bugfix/photo-viewer-selection-crash.patch
+bugfix/forum-cache-race.patch
