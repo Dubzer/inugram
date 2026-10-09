@@ -80,7 +80,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - minimize sticker creator button in recent stickers
 - sticker time overlay modes: show / 🐶 hide time / 🐶 hide on incoming / hide completely
 - "Refresh" in the sticker/emoji pack menu
-- compact edited indicator: pencil icon instead of the "edited" label
+- edited-message display: compact pencil indicator and configurable primary timestamp
 - toggleable message bubble tails
 - 🐶 jump-to-discussion button from comments
 - jump-to-beginning button in calendar popup - *ported from [Nekogram](https://github.com/Nekogram/Nekogram)*

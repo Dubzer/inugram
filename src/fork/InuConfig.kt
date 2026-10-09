@@ -737,6 +737,17 @@ object InuConfig {
     @JvmField
     val COMPACT_EDITED = BoolItem("compact_edited", false)
 
+    class EditedMessageDateModeItem : IntItem("edited_message_date_mode", TELEGRAM) {
+        companion object {
+            const val TELEGRAM = 0
+            const val EDIT_DATE = 1
+            const val SEND_DATE = 2
+        }
+    }
+
+    @JvmField
+    val EDITED_MESSAGE_DATE_MODE = EditedMessageDateModeItem()
+
     @JvmField
     val SHOW_FORWARDS_COUNT = BoolItem("show_forwards_count", false)
 
