@@ -4,20 +4,21 @@ Date: Mon, 3 Aug 2026 13:56:17 +0400
 Subject: Fix webm stickers stuck blank until app restart
 
 ---
- .../src/main/java/org/telegram/messenger/ImageLoader.java  | 6 ++++++
+ .../src/main/java/org/telegram/messenger/ImageLoader.java  | 7 +++++++
  .../org/telegram/ui/Components/AnimatedFileDrawable.java   | 7 +++++++
- 2 files changed, 13 insertions(+)
+ 2 files changed, 14 insertions(+)
 
 diff --git a/TMessagesProj/src/main/java/org/telegram/messenger/ImageLoader.java b/TMessagesProj/src/main/java/org/telegram/messenger/ImageLoader.java
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/messenger/ImageLoader.java
 +++ b/TMessagesProj/src/main/java/org/telegram/messenger/ImageLoader.java
-@@ -1181,6 +1181,12 @@ public class ImageLoader {
+@@ -1181,6 +1181,13 @@ public class ImageLoader {
                  } else {
                      fileDrawable.setLimitFps(limitFps);
                      Thread.interrupted();
 +                    synchronized (sync) {
 +                        if (isCancelled) {
++                            Thread.interrupted();
 +                            fileDrawable.recycle();
 +                            return;
 +                        }
