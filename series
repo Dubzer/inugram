@@ -346,3 +346,4 @@ bugfix/sent-message-server-entities.patch
 misc/debug-folder-slots.patch
 bugfix/tgnet-session-reset.patch
 bugfix/background-pending-requests.patch
+bugfix/emoji-status-tabs.patch
