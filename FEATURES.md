@@ -266,6 +266,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - "Save to Downloads" preserves the original filename on Android 10+
 - downloaded photos/videos no longer show up in the system gallery on devices whose scanner indexes app-private dirs (stock never wrote `.nomedia` into the media cache dirs; only on Android 11+, where the gallery-visible copies live elsewhere)
 - gboard image paste no longer skips PhotoViewer
+- PhotoViewer selected-media strip crash after sending/scheduling edited media while the strip is still moving
 - reordering an attach-panel album preserves per-photo captions and no longer duplicates its album caption
 - photo crop silently not applied to the sent image
 - high-quality photo cropping in PhotoViewer (crop *before* downscaling)
