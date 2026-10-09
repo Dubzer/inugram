@@ -347,3 +347,4 @@ misc/debug-folder-slots.patch
 bugfix/tgnet-session-reset.patch
 bugfix/background-pending-requests.patch
 bugfix/emoji-status-tabs.patch
+bugfix/case-insensitive-settings-search.patch
