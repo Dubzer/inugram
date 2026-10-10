@@ -353,3 +353,4 @@ bugfix/photo-viewer-selection-crash.patch
 bugfix/forum-cache-race.patch
 bugfix/edit-stale-message-object.patch
 bugfix/reaction-read-sync.patch
+hooks/code-highlight-spans.patch
