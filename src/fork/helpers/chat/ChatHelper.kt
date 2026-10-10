@@ -1304,7 +1304,7 @@ object ChatHelper {
     }
 
     @JvmStatic
-    fun maybeHandleFileClick(activity: ChatActivity, message: MessageObject): Boolean {
+    fun maybeHandleFileClick(fragment: BaseFragment, message: MessageObject): Boolean {
         val name = message.documentName ?: return false
         val isSettings = name.endsWith(SettingsBackupHelper.FILENAME_SUFFIX)
         // #if PLUGINS
@@ -1316,15 +1316,15 @@ object ChatHelper {
         if (!isSettings && !isPlugin && !isFont) return false
         val attach = message.messageOwner?.attachPath?.takeIf { it.isNotEmpty() }?.let { File(it) }
         val file = attach?.takeIf { it.exists() }
-            ?: FileLoader.getInstance(activity.currentAccount).getPathToMessage(message.messageOwner)
+            ?: FileLoader.getInstance(fragment.currentAccount).getPathToMessage(message.messageOwner)
                 ?.takeIf { it.exists() }
             ?: return false
         when {
-            isSettings -> SettingsBackupHelper.startImportFromFile(activity, file)
+            isSettings -> SettingsBackupHelper.startImportFromFile(fragment, file)
             // #if PLUGINS
-            isPlugin -> PluginImportHelper.startImportFromFile(activity, file)
+            isPlugin -> PluginImportHelper.startImportFromFile(fragment, file)
             // #endif
-            else -> FontImportHelper.startImportFromFile(activity, message, file, name)
+            else -> FontImportHelper.startImportFromFile(fragment, message, file, name)
         }
         return true
     }
