@@ -69,6 +69,7 @@ inu.interceptRpc('messages.getHistory', async ({ request: req }, next) => {
   }
   return history
 })
+inu.interceptRpc('stories.readStories', (_, next) => next())
 
 inu.withCurrentAccount((account) => {
   const me = account.getMe()
