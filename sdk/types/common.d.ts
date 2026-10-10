@@ -1468,6 +1468,8 @@ declare namespace inu {
       text: string
       /** Subtitle for the switch */
       subtitle?: string
+      /** Allow the label and subtitle to wrap instead of ellipsizing */
+      multiline?: boolean
       /** Icon shown next to the switch */
       icon?: UIIcon
       /** Current switch status */
@@ -1485,6 +1487,8 @@ declare namespace inu {
       /** Button label */
       text: InputText
       subtitle?: InputText
+      /** Allow the label and subtitle to wrap instead of ellipsizing */
+      multiline?: boolean
       /** Icon shown in the button */
       icon?: UIIcon
       /** "Value" of the button */
@@ -1503,6 +1507,8 @@ declare namespace inu {
       id?: string
       /** Label for the button */
       text: InputText
+      /** Allow the label to wrap instead of ellipsizing */
+      multiline?: boolean
       /** Icon shown in the button */
       icon?: UIIcon
       /** Select items */
