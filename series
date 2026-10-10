@@ -355,3 +355,4 @@ bugfix/reaction-read-sync.patch
 hooks/code-highlight-spans.patch
 feature/shared-media-selection-menu.patch
 bugfix/extended-grid-layout-cache.patch
+bugfix/forum-bot-menu-layering.patch
