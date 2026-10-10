@@ -1735,6 +1735,8 @@ declare namespace inu {
     icon?: UIIcon | ((ctx: GetterCtx) => UIIcon)
     visible?: (ctx: Ctx) => boolean
     callback: (ctx: Ctx) => void
+    /** Long-tap handler */
+    secondaryCallback?: (ctx: Ctx) => void
   }
 
   interface MessageActionOptions extends ActionOptions<MessageActionContext, MessageActionContext | null> {

@@ -184,6 +184,10 @@ inu.registerMessageAction({
     const words = ctx.messages.reduce((n, m) => n + m.text.split(/\s+/).length, 0)
     inu.ui.toast(`${words} words`)
   },
+  // long tap
+  secondaryCallback: (ctx) => {
+    inu.ui.toast(`${ctx.messages.length} messages`)
+  },
 })
 ```
 
@@ -203,6 +207,7 @@ and if you can't - keep the getters fast and free of I/O.
   screen calls your `text` and `icon` getters with `null` instead of a context, and never calls
   `visible`. The typings reflect this: those getters take `Ctx | null`.
 - Actions never show in secret chats.
+- `callback` handles taps. Optional `secondaryCallback` handles long taps.
 
 ## Dialogs
 

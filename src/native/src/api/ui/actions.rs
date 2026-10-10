@@ -27,6 +27,7 @@ const ALL_PLACEMENTS: i32 = -1;
 pub const DYNAMIC_TEXT: i32 = 1;
 pub const DYNAMIC_ICON: i32 = 2;
 pub const DYNAMIC_VISIBLE: i32 = 4;
+pub const HAS_SECONDARY_CALLBACK: i32 = 8;
 
 const KIND_COUNT: usize = 4;
 
@@ -71,6 +72,7 @@ struct ActionDef {
   retained_icons: RefCell<Vec<Persistent<Value<'static>>>>,
   visible: Option<Persistent<Function<'static>>>,
   callback: Persistent<Function<'static>>,
+  secondary_callback: Option<Persistent<Function<'static>>>,
 }
 
 pub struct ActionState {
@@ -150,6 +152,7 @@ impl ActionState {
     };
     let visible = opt_fn(ctx, &opts, what, "visible")?;
     let callback = req_fn(ctx, &opts, what, "callback")?;
+    let secondary_callback = opt_fn(ctx, &opts, what, "secondaryCallback")?;
 
     if state.lifecycle.is_unloading() {
       return noop_disposer(ctx);
@@ -169,7 +172,8 @@ impl ActionState {
     };
     let dynamic_fields = (if matches!(&label, Label::Dynamic(_)) { DYNAMIC_TEXT } else { 0 })
       | (if matches!(&icon, Some(ActionIcon::Dynamic(_))) { DYNAMIC_ICON } else { 0 })
-      | (if visible.is_some() { DYNAMIC_VISIBLE } else { 0 });
+      | (if visible.is_some() { DYNAMIC_VISIBLE } else { 0 })
+      | (if secondary_callback.is_some() { HAS_SECONDARY_CALLBACK } else { 0 });
     if let Some(err) =
       state.host.action_register(kind, token, &id, placements, static_text, static_icon, dynamic_fields)
     {
@@ -183,6 +187,7 @@ impl ActionState {
       retained_icons: RefCell::new(Vec::new()),
       visible: visible.map(|f| Persistent::save(ctx, f)),
       callback: Persistent::save(ctx, callback),
+      secondary_callback: secondary_callback.map(|f| Persistent::save(ctx, f)),
     });
     if let Some(previous) = registry.insert(token, Some(id), def) {
       state.host.action_unregister(kind, previous.token);
@@ -415,7 +420,14 @@ impl ActionState {
     out
   }
 
-  pub fn dispatch(self: &Rc<Self>, context: &rquickjs::Context, kind: i32, token: u32, surface_json: &str) {
+  pub fn dispatch(
+    self: &Rc<Self>,
+    context: &rquickjs::Context,
+    kind: i32,
+    token: u32,
+    secondary: bool,
+    surface_json: &str,
+  ) {
     if self.lifecycle.is_unloading() {
       return;
     }
@@ -426,7 +438,15 @@ impl ActionState {
       let Some(def) = registry.get(token) else {
         return;
       };
-      let callback = match def.callback.clone().restore(&ctx) {
+      let callback = if secondary {
+        let Some(callback) = &def.secondary_callback else {
+          return;
+        };
+        callback
+      } else {
+        &def.callback
+      };
+      let callback = match callback.clone().restore(&ctx) {
         Ok(f) => f,
         Err(e) => {
           (self.log)(&format!("{}: failed to restore callback: {e:?}", kind_name(kind)));
@@ -439,7 +459,8 @@ impl ActionState {
       if def.placements & placement == 0 {
         return;
       }
-      call_callback(&ctx, &self.log, &format!("{} callback", kind_name(kind)), &callback, (context_obj,));
+      let name = if secondary { "secondary callback" } else { "callback" };
+      call_callback(&ctx, &self.log, &format!("{} {name}", kind_name(kind)), &callback, (context_obj,));
     });
     pump_jobs(context, self.log.as_ref());
   }

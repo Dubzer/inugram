@@ -426,6 +426,7 @@ object ChatHelper {
      * on its way back.
      */
     private class MessageMenu(
+        val activity: ChatActivity,
         val surface: ActionSurface,
         val registered: Map<ActionKey, RegisteredActionRow>,
     ) {
@@ -458,6 +459,7 @@ object ChatHelper {
             .sortedWith(compareBy<MessageObject> { it.messageOwner.date }.thenBy { it.dialogId }.thenBy { it.id })
             .map { it.messageOwner }
         val menu = MessageMenu(
+            activity,
             ActionSurface.message(
                 activity.currentAccount,
                 activity.dialogId,
@@ -532,9 +534,11 @@ object ChatHelper {
         val row = PluginActions.rowAt(menu.rows, option)
         if (row == null || !PluginActions.isEnabled(row.key) || !PluginActions.isPinned(row.key)) {
             cell.visibility = View.GONE
+            cell.setOnLongClickListener(null)
             return
         }
         PluginIcons.setIcon(cell, row.text, row.icon, row.owner, R.drawable.msg_settings_old)
+        PluginActions.bindSecondaryCallback(cell, row, menu.surface) { menu.activity.closeMenu() }
     }
 
     private fun finishPluginItems(menu: MessageMenu) {
@@ -1657,6 +1661,7 @@ object ChatHelper {
                         PluginActions.dispatch(row, menu.surface)
                         activity.closeMenu()
                     }
+                    submenu.last?.let { PluginActions.bindSecondaryCallback(it, row, menu.surface) { activity.closeMenu() } }
                 }
             }
         }
@@ -1686,7 +1691,17 @@ object ChatHelper {
         group: MessageObject.GroupedMessages?,
     ): Boolean {
         if (message == null || index >= options.size) return false
-        return when (options[index]) {
+        val option = options[index]
+        // #if PLUGINS
+        if (option >= PluginActions.OPTION_BASE) {
+            val menu = messageMenu ?: return false
+            val row = PluginActions.rowAt(menu.rows, option) ?: return false
+            if (!PluginActions.dispatch(row, menu.surface, true)) return false
+            activity.closeMenu()
+            return true
+        }
+        // #endif
+        return when (option) {
             ChatActivity.OPTION_FORWARD -> when (InuConfig.FORWARD_LONG_TAP_ACTION.value) {
                 InuConfig.ForwardLongTapItem.OFF -> false
                 InuConfig.ForwardLongTapItem.CHOOSE_MODE -> openLongTapSubmenu(activity, popupLayout, cell) { swb ->

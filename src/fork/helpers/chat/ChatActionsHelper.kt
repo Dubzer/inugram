@@ -302,7 +302,10 @@ object ChatActionsHelper {
         for (row in rows) {
             val cell = headerItem.getSubItem(PluginActions.optionIdFor(row.key)) as? ActionBarMenuSubItem
             if (cell == null) unbound.add(row)
-            else PluginIcons.setIcon(cell, row.text, row.icon, row.owner, R.drawable.msg_settings_old)
+            else {
+                PluginIcons.setIcon(cell, row.text, row.icon, row.owner, R.drawable.msg_settings_old)
+                PluginActions.bindSecondaryCallback(cell, row, state.surface) { headerItem.closeSubMenu() }
+            }
         }
         if (unbound.isEmpty()) return
         val binder = object : View.OnAttachStateChangeListener {
@@ -312,6 +315,7 @@ object ChatActionsHelper {
                 for (row in unbound) {
                     val cell = headerItem.getSubItem(PluginActions.optionIdFor(row.key)) as? ActionBarMenuSubItem ?: continue
                     PluginIcons.setIcon(cell, row.text, row.icon, row.owner, R.drawable.msg_settings_old)
+                    PluginActions.bindSecondaryCallback(cell, row, state.surface) { headerItem.closeSubMenu() }
                 }
             }
 
@@ -359,6 +363,7 @@ object ChatActionsHelper {
                 PluginActions.dispatch(row, state.surface)
                 headerItem.closeSubMenu()
             }
+            submenu.last?.let { PluginActions.bindSecondaryCallback(it, row, state.surface) { headerItem.closeSubMenu() } }
         }
         if (headerItem.hasSubItem(ACTION_PLUGIN_ACTIONS)) {
             headerItem.showSubItem(ACTION_PLUGIN_ACTIONS)
@@ -872,6 +877,7 @@ object ChatActionsHelper {
                         )
                     }
                     PluginIcons.setIcon(cell, row.text, row.icon, row.owner, R.drawable.msg_settings_old)
+                    PluginActions.bindSecondaryCallback(cell, row, surface) { overflow.closeSubMenu() }
                     overflow.setSubItemShown(PluginActions.optionIdFor(row.key), true)
                 }
                 clearSubmenuRows(state.submenu)
@@ -887,6 +893,7 @@ object ChatActionsHelper {
                         dispatchSelectionPluginItem(menu, PluginActions.optionIdFor(row.key))
                         overflow.closeSubMenu()
                     }
+                    state.submenu.last?.let { PluginActions.bindSecondaryCallback(it, row, surface) { overflow.closeSubMenu() } }
                 }
                 state.actionsCell.visibility = if (submenuRows.isEmpty()) View.GONE else View.VISIBLE
                 if (enabled.isNotEmpty()) overflow.visibility = View.VISIBLE
