@@ -367,7 +367,7 @@ index 0000000..0000000 100644
          bottomOverlay.setFocusableInTouchMode(true);
          bottomOverlay.setClickable(true);
 -        chatInputBubbleContainer.addView(bottomOverlay, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 44, Gravity.BOTTOM, 7, 0, 7, 0));
-+        chatInputBubbleContainer.addView(bottomOverlay, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, ChatActivityEnterView.DEFAULT_HEIGHT, Gravity.BOTTOM, 7, 0, 7, 0));
++        chatInputBubbleContainer.addView(bottomOverlay, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, ChatActivityEnterView.DEFAULT_HEIGHT, Gravity.BOTTOM, NonIslandHelper.chatElements() ? 0 : 7, 0, NonIslandHelper.chatElements() ? 0 : 7, NonIslandHelper.chatElements() ? -9 : 0));
  
          bottomOverlayText = new TextView(context);
          bottomOverlayText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
