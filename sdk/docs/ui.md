@@ -178,6 +178,7 @@ inu.registerMessageAction({
   icon: inu.icons.common('info'),
   // bubble = on bubble tap
   // selection = multiple messages selected -> ⋮ menu
+  // sharedMedia = files selected in profile's shared media -> ⋮ menu
   placements: ['bubble', 'selection'],
   callback: (ctx) => {
     const words = ctx.messages.reduce((n, m) => n + m.text.split(/\s+/).length, 0)

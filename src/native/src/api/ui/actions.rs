@@ -21,6 +21,7 @@ pub const KIND_PROFILE: i32 = 3;
 
 pub const MESSAGE_PLACEMENT_BUBBLE: i32 = 1;
 pub const MESSAGE_PLACEMENT_SELECTION: i32 = 2;
+pub const MESSAGE_PLACEMENT_SHARED_MEDIA: i32 = 4;
 const ALL_PLACEMENTS: i32 = -1;
 
 pub const DYNAMIC_TEXT: i32 = 1;
@@ -215,11 +216,12 @@ fn parse_message_placements<'js>(ctx: &Ctx<'js>, opts: &Object<'js>, what: &str)
     let value = value?;
     let placement = value
       .as_string()
-      .ok_or_else(|| Exception::throw_type(ctx, &format!("{what}: placements must be 'bubble' or 'selection'")))?
+      .ok_or_else(|| Exception::throw_type(ctx, &format!("{what}: placements must be 'bubble', 'selection' or 'sharedMedia'")))?
       .to_string()?;
     placements |= match placement.as_str() {
       "bubble" => MESSAGE_PLACEMENT_BUBBLE,
       "selection" => MESSAGE_PLACEMENT_SELECTION,
+      "sharedMedia" => MESSAGE_PLACEMENT_SHARED_MEDIA,
       _ => return Err(Exception::throw_type(ctx, &format!("{what}: unknown placement '{placement}'"))),
     };
   }
@@ -252,6 +254,7 @@ impl ActionState {
       let placement = match source.as_str() {
         "bubble" => MESSAGE_PLACEMENT_BUBBLE,
         "selection" => MESSAGE_PLACEMENT_SELECTION,
+        "sharedMedia" => MESSAGE_PLACEMENT_SHARED_MEDIA,
         _ => return Err(Exception::throw_type(ctx, "action: malformed message source")),
       };
       let messages: Value = parsed.get("messages")?;

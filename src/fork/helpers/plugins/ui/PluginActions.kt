@@ -54,6 +54,7 @@ object PluginActions : SessionResource {
     // keep in sync with rust `actions::MESSAGE_PLACEMENT_*`
     const val MESSAGE_PLACEMENT_BUBBLE = 1
     const val MESSAGE_PLACEMENT_SELECTION = 2
+    const val MESSAGE_PLACEMENT_SHARED_MEDIA = 4
     private const val ALL_PLACEMENTS = -1
     private const val PLUGIN_ORDER_PREFIX = "p:"
 
@@ -70,7 +71,6 @@ object PluginActions : SessionResource {
     private val registry = ActionRegistry<QuickJs>()
 
     @Volatile private var counts = IntArray(KIND_COUNT)
-    @Volatile private var selectionCount = 0
     @Volatile private var registeredRows = List(KIND_COUNT) { emptyList<RegisteredActionRow>() }
 
     private val optionIds = HashMap<ActionKey, Int>()
@@ -128,8 +128,8 @@ object PluginActions : SessionResource {
     fun rowAt(rows: List<ActionRow>, optionId: Int): ActionRow? = rows.firstOrNull { optionIdFor(it.key) == optionId }
 
     fun rowCount(kind: Int, placements: Int = getDefaultPlacements(kind)): Int =
-        if (kind == KIND_MESSAGE && placements == MESSAGE_PLACEMENT_SELECTION) selectionCount
-        else counts.getOrElse(kind) { 0 }
+        if (placements == getDefaultPlacements(kind)) counts.getOrElse(kind) { 0 }
+        else registeredRows.getOrElse(kind) { emptyList() }.count { it.placements and placements != 0 }
 
     fun hasRows(kind: Int, placements: Int = getDefaultPlacements(kind)): Boolean = rowCount(kind, placements) > 0
 
@@ -315,7 +315,6 @@ object PluginActions : SessionResource {
         }
         if (rows == registeredRows) return
         counts = IntArray(KIND_COUNT) { kind -> rows[kind].count { it.placements and getDefaultPlacements(kind) != 0 } }
-        selectionCount = rows[KIND_MESSAGE].count { it.placements and MESSAGE_PLACEMENT_SELECTION != 0 }
         registeredRows = rows
         if (onCountsChanged.isEmpty()) return
         AndroidUtilities.runOnUIThread { for (redraw in onCountsChanged) redraw() }

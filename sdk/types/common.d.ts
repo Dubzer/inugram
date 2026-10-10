@@ -1716,10 +1716,10 @@ declare namespace inu {
     dialogId: number
     topicId?: number
   }
-  type MessageActionSource = 'bubble' | 'selection'
+  type MessageActionSource = 'bubble' | 'selection' | 'sharedMedia'
   interface MessageActionContext extends ChatActionContext {
     source: MessageActionSource
-    /** Oldest to newest. A bubble expands its album; a selection contains exactly what the user selected. */
+    /** Oldest to newest. A bubble expands its album; a selection or shared media contains exactly what the user selected. */
     messages: readonly Message[]
   }
 

@@ -74,11 +74,13 @@ import org.telegram.ui.ActionBar.ActionBarMenuSubItem
 import org.telegram.ui.ActionBar.ActionBarPopupWindow
 import org.telegram.ui.ActionBar.AlertDialog
 import org.telegram.ui.ActionBar.BottomSheet
+import org.telegram.ui.ActionBar.BaseFragment
 import org.telegram.ui.ActionBar.Theme
 import org.telegram.ui.BasePermissionsActivity
 import org.telegram.ui.Cells.ChatMessageCell
 import org.telegram.ui.ChatActivity
 import org.telegram.ui.Components.AnimatedEmojiSpan
+import org.telegram.ui.Components.Bulletin
 import org.telegram.ui.Components.BulletinFactory
 import org.telegram.ui.Components.ChatActivityEnterView
 import org.telegram.ui.Components.ColoredImageSpan
@@ -218,13 +220,22 @@ object ChatHelper {
     }
 
     @JvmStatic
-    fun forwardToSavedMessages(activity: ChatActivity, messages: ArrayList<MessageObject>) {
+    fun forwardToSavedMessages(fragment: BaseFragment, messages: ArrayList<MessageObject>) {
         if (messages.isEmpty()) return
-        val selfId = UserConfig.getInstance(activity.currentAccount).clientUserId
-        SendMessagesHelper.getInstance(activity.currentAccount)
+        val selfId = UserConfig.getInstance(fragment.currentAccount).clientUserId
+        SendMessagesHelper.getInstance(fragment.currentAccount)
             .sendMessage(messages, selfId, false, false, true, 0, 0L)
-        activity.createUndoView()
-        activity.undoView.showWithAction(selfId, UndoView.ACTION_FWD_MESSAGES, messages.size)
+        if (fragment is ChatActivity) {
+            fragment.createUndoView()
+            fragment.undoView.showWithAction(selfId, UndoView.ACTION_FWD_MESSAGES, messages.size)
+        } else {
+            BulletinFactory.createForwardedBulletin(
+                fragment.context, fragment, null, 1, selfId, messages.size,
+                fragment.getThemedColor(Theme.key_undo_background),
+                fragment.getThemedColor(Theme.key_undo_infoColor),
+                Bulletin.DURATION_SHORT,
+            ).show()
+        }
     }
 
     private fun removeWallpaperKey(currentAccount: Int, dialogId: Long) = "remove_wallpaper:$currentAccount:$dialogId"
@@ -1545,9 +1556,7 @@ object ChatHelper {
 
     @JvmStatic
     fun onFragmentDestroy(activity: ChatActivity) {
-        // #if PLUGINS
         ChatActionsHelper.onFragmentDestroy(activity)
-        // #endif
         TranslateHelper.resetForDialog(activity.dialogId)
     }
 

@@ -106,6 +106,7 @@ fn read_log(ctx: &Context) -> String {
 pub(crate) const CHAT_SURFACE: &str = r#"{"accountId":0,"dialogId":-100,"topicId":7}"#;
 pub(crate) const MESSAGE_SURFACE: &str = r#"{"accountId":0,"dialogId":-100,"source":"bubble","messages":[{"_":"message","id":11,"date":1,"message":"one","peer_id":{"_":"peerChat","chat_id":"100"},"dialog_id":"-100","grouped_id":"77"},{"_":"message","id":12,"date":2,"message":"two","peer_id":{"_":"peerChat","chat_id":"100"},"dialog_id":"-100","grouped_id":"77"}]}"#;
 pub(crate) const SELECTION_SURFACE: &str = r#"{"accountId":0,"dialogId":-100,"topicId":7,"source":"selection","messages":[{"_":"message","id":3,"date":1,"message":"three","peer_id":{"_":"peerChat","chat_id":"200"},"dialog_id":"-200"},{"_":"message","id":14,"date":2,"message":"fourteen","peer_id":{"_":"peerChat","chat_id":"100"},"dialog_id":"-100"}]}"#;
+pub(crate) const SHARED_MEDIA_SURFACE: &str = r#"{"accountId":0,"dialogId":-100,"source":"sharedMedia","messages":[{"_":"message","id":15,"date":3,"message":"","peer_id":{"_":"peerChat","chat_id":"100"},"dialog_id":"-100"}]}"#;
 
 pub(crate) fn row(token: u32, text: &str) -> String {
   format!(r#"{{"token":{token},"text":"{text}"}}"#)
@@ -164,7 +165,8 @@ fn message_placements_filter_each_surface_and_settings_include_every_placement()
     r#"
       inu.registerMessageAction({ id: 'bubble', text: 'bubble', callback: () => {} });
       inu.registerMessageAction({ id: 'selection', placements: ['selection'], text: 'selection', callback: () => {} });
-      inu.registerMessageAction({ id: 'both', placements: ['bubble', 'selection'], text: 'both', callback: () => {} })
+      inu.registerMessageAction({ id: 'both', placements: ['bubble', 'selection'], text: 'both', callback: () => {} });
+      inu.registerMessageAction({ id: 'media', placements: ['selection', 'sharedMedia'], text: 'media', callback: () => {} })
     "#,
   );
 
@@ -174,11 +176,12 @@ fn message_placements_filter_each_surface_and_settings_include_every_placement()
   );
   assert_eq!(
     state.render(&ctx, KIND_MESSAGE, SELECTION_SURFACE).unwrap(),
-    rows(&[row(2, "selection"), row(3, "both")]),
+    rows(&[row(2, "selection"), row(3, "both"), row(4, "media")]),
   );
+  assert_eq!(state.render(&ctx, KIND_MESSAGE, SHARED_MEDIA_SURFACE).unwrap(), rows(&[row(4, "media")]));
   assert_eq!(
     state.render(&ctx, KIND_MESSAGE, "null").unwrap(),
-    rows(&[row(1, "bubble"), row(2, "selection"), row(3, "both")]),
+    rows(&[row(1, "bubble"), row(2, "selection"), row(3, "both"), row(4, "media")]),
   );
 }
 
