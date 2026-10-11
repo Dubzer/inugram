@@ -431,6 +431,7 @@ class PluginInfoHeaderView(context: Context) : LinearLayout(context) {
     }
 
     init {
+        isClickable = true
         orientation = VERTICAL
         setBackgroundColor(Theme.getColor(Theme.key_windowBackgroundWhite))
         setPadding(0, 0, 0, AndroidUtilities.dp(20f))
