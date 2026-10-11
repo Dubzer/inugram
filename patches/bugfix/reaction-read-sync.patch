@@ -5,8 +5,8 @@ Subject: report each read reaction to server
 
 ---
  .../messenger/MessagesController.java         | 58 ++++++++++++++++++-
- .../java/org/telegram/ui/ChatActivity.java    |  6 +-
- 2 files changed, 60 insertions(+), 4 deletions(-)
+ .../java/org/telegram/ui/ChatActivity.java    | 20 ++++++-
+ 2 files changed, 74 insertions(+), 4 deletions(-)
 
 diff --git a/TMessagesProj/src/main/java/org/telegram/messenger/MessagesController.java b/TMessagesProj/src/main/java/org/telegram/messenger/MessagesController.java
 index 0000000..0000000 100644
@@ -120,7 +120,28 @@ index 0000000..0000000 100644
                      if (reactionsMentionCount <= 0) {
                          getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
                      }
-@@ -24527,7 +24527,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -24511,6 +24511,20 @@ public class ChatActivity extends BaseFragment implements
+             long topicId = (long) args[1];
+             if (dialogId == dialog_id && ((!isTopic && (!ChatObject.isMonoForum(currentChat) || getTopicId() == 0)) || topicId == getTopicId())) {
+                 reactionsMentionCount = (int) args[2];
++                if (topicId == 0) {
++                    TLRPC.Dialog dialog = getMessagesController().dialogs_dict.get(dialogId);
++                    if (dialog != null) {
++                        reactionsMentionCount = dialog.unread_reactions_count;
++                    }
++                } else {
++                    TLRPC.TL_forumTopic topic = getMessagesController().getTopicsController().findTopic(-dialogId, topicId);
++                    if (topic != null) {
++                        reactionsMentionCount = topic.unread_reactions_count;
++                    }
++                }
++                if (reactionsMentionCount != (int) args[2] && desu.inugram.helpers.chat.ReactionDebugHelper.isEnabled()) {
++                    FileLog.d("InuRx[" + classGuid + "] counter notification stale did=" + dialogId + " topic=" + topicId + " posted=" + args[2] + " current=" + reactionsMentionCount);
++                }
+                 if (desu.inugram.helpers.chat.ReactionDebugHelper.isEnabled()) {
+                     FileLog.d("InuRx[" + classGuid + "] counter notification did=" + dialogId + " topic=" + topicId + " count=" + reactionsMentionCount + " messages=" + args[3]);
+                 }
+@@ -24527,7 +24541,7 @@ public class ChatActivity extends BaseFragment implements
                          }
                          if (cell != null && reactionsMentionCount > 0) {
                              reactionsMentionCount--;
