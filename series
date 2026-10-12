@@ -366,3 +366,4 @@ bugfix/profile-post-button-flicker.patch
 bugfix/sticker-pack-edit.patch
 bugfix/forum-title-overlay.patch
 bugfix/animated-drawable-recycle-interrupt.patch
+bugfix/story-reactions-window-keyboard.patch
