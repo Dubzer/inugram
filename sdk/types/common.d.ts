@@ -1197,6 +1197,8 @@ declare namespace inu {
        * @throws if the button was not declared
        */
       setButton(button: { text: InputText } | null): void
+      /** Scroll to an entry once it is loaded */
+      scrollTo(key: string): void
       /** Close the screen */
       close(): void
       /** A promise that resolves when the user leaves the screen */
@@ -1260,6 +1262,8 @@ declare namespace inu {
        * with the `key` of the newest entry the user has on the screen
        */
       onRead?(key: string): void
+      /** Called when the user taps the chat header */
+      onHeaderTap?(): void
       /**
        * A button on the bottom of the screen (where a Mute/Join button would reside)
        *
