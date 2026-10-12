@@ -361,3 +361,4 @@ bugfix/emoji-panel-blur.patch
 bugfix/rich-message-state.patch
 bugfix/optimistic-saved-forward-ownership.patch
 bugfix/photo-editor-blur-outline.patch
+bugfix/notification-avatar-reload.patch

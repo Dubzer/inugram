@@ -373,6 +373,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - notifications for chats read on another device no longer linger forever when the app process was killed in between (stock only tracked posted notifications in memory)
 - more stale notification fixes: reaction, "scheduled message sent", story and forum-topic notifications now clear when read/seen on another device while the app is connected (stock only cleared these via FCM pushes, which aren't delivered to online sessions, or on opening the chat locally); notification refresh is no longer skipped when unread counts happen to stay equal (forums, communities, muted chats)
 - unchanged notifications are no longer re-posted on every update (stock re-notifies every chat each time anything changes, making notification bridges like Mi Fitness re-forward the whole stack to the wearable)
+- notification avatars no longer go missing after the system evicts them from cache: a missing avatar is downloaded and the notification updated silently once it arrives
 - crash long-pressing a sticker set while off-screen rows are cached (reorder update bound null item on cached/hidden holders)
 - crash cutting out a sticker after the photo editor recycled the source image mid-segmentation
 - storage usage cached-media list intermittently refusing to scroll
