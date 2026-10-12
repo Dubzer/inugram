@@ -364,3 +364,4 @@ bugfix/photo-editor-blur-outline.patch
 bugfix/notification-avatar-reload.patch
 bugfix/profile-post-button-flicker.patch
 bugfix/sticker-pack-edit.patch
+bugfix/forum-title-overlay.patch
