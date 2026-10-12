@@ -1081,13 +1081,13 @@ declare namespace inu {
 
     /**
      * Target for {@link openPage}
-     * - `chat`: open a specific dialog (and optionally topic)
+     * - `chat`: open a specific dialog (and optionally topic), optionally at `messageId`
      * - `profile`: open a specific user/channel's profile
      * - `dialogs`: open a list of dialogs
      * - `settings`: open the settings page
      */
     type PageTarget
-      = | { type: 'chat', dialogId: number, topicId?: number, account?: number }
+      = | { type: 'chat', dialogId: number, topicId?: number, messageId?: number, account?: number }
         | { type: 'profile', dialogId: number, account?: number }
         | { type: 'dialogs', account?: number }
         | { type: 'settings', account?: number }
