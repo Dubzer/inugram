@@ -359,3 +359,4 @@ bugfix/forum-bot-menu-layering.patch
 bugfix/deleted-bot-bottom-overlay.patch
 bugfix/emoji-panel-blur.patch
 bugfix/rich-message-state.patch
+bugfix/optimistic-saved-forward-ownership.patch
