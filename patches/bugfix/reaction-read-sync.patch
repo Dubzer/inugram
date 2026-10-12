@@ -247,7 +247,7 @@ diff --git a/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java b/TMe
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java
 +++ b/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java
-@@ -16423,7 +16423,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -16416,7 +16416,7 @@ public class ChatActivity extends BaseFragment implements
                  if (messageObject != null && fragmentOpened && openAnimationEnded && !inPreviewMode && (chatListItemAnimator == null || !chatListItemAnimator.isRunning()) && messageCell.checkUnreadReactions(clipTop, chatListView.getMeasuredHeight() - blurredViewBottomOffset)) {
                      desu.inugram.helpers.chat.ReactionDebugHelper.onVisibleRead(classGuid, messageCell, reactionsMentionCount);
                      reactionsMentionCount--;
@@ -256,7 +256,7 @@ index 0000000..0000000 100644
                      if (reactionsMentionCount <= 0) {
                          getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
                      }
-@@ -16459,7 +16459,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -16452,7 +16452,7 @@ public class ChatActivity extends BaseFragment implements
                  if (messageObject != null && fragmentOpened && openAnimationEnded && !inPreviewMode && (chatListItemAnimator == null || !chatListItemAnimator.isRunning()) && cell.checkUnreadReactions(clipTop, chatListView.getMeasuredHeight() - blurredViewBottomOffset)) {
                      desu.inugram.helpers.chat.ReactionDebugHelper.onVisibleRead(classGuid, cell, reactionsMentionCount);
                      reactionsMentionCount--;
@@ -265,7 +265,7 @@ index 0000000..0000000 100644
                      if (reactionsMentionCount <= 0) {
                          getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
                      }
-@@ -24632,6 +24632,20 @@ public class ChatActivity extends BaseFragment implements
+@@ -24625,6 +24625,20 @@ public class ChatActivity extends BaseFragment implements
              long topicId = (long) args[1];
              if (dialogId == dialog_id && ((!isTopic && (!ChatObject.isMonoForum(currentChat) || getTopicId() == 0)) || topicId == getTopicId())) {
                  reactionsMentionCount = (int) args[2];
@@ -286,7 +286,7 @@ index 0000000..0000000 100644
                  if (desu.inugram.helpers.chat.ReactionDebugHelper.isEnabled()) {
                      FileLog.d("InuRx[" + classGuid + "] counter notification did=" + dialogId + " topic=" + topicId + " count=" + reactionsMentionCount + " messages=" + args[3]);
                  }
-@@ -24648,7 +24662,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -24641,7 +24655,7 @@ public class ChatActivity extends BaseFragment implements
                          }
                          if (cell != null && reactionsMentionCount > 0) {
                              reactionsMentionCount--;
@@ -295,7 +295,7 @@ index 0000000..0000000 100644
                              AndroidUtilities.runOnUIThread(() -> {
                                  playReactionAnimation(messageId);
                              }, 200);
-@@ -47371,15 +47385,23 @@ public class ChatActivity extends BaseFragment implements
+@@ -47354,15 +47368,23 @@ public class ChatActivity extends BaseFragment implements
                  FileLog.d("InuRx[" + classGuid + "] jump click did=" + dialog_id + " count=" + reactionsMentionCount);
              }
              wasManualScroll = true;

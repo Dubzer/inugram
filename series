@@ -75,7 +75,6 @@ debloat/motion-photos.patch
 feature/long-press-reply-in-replies.patch
 feature/animation-multiplier.patch
 feature/predictive-back.patch
-feature/search-media-type-filter.patch
 debloat/disable-bg-parallax.patch
 feature/no-join-discuss.patch
 feature/voice-recorder.patch
@@ -371,3 +370,4 @@ bugfix/sheet-dialog-dismiss.patch
 bugfix/item-options-touch-through.patch
 feature/join-request-open-profile.patch
 feature/join-request-open-page.patch
+feature/chat-search-filters.patch
