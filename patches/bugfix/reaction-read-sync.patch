@@ -265,7 +265,7 @@ index 0000000..0000000 100644
                      if (reactionsMentionCount <= 0) {
                          getMessagesController().markReactionsAsRead(dialog_id, getTopicId());
                      }
-@@ -24517,6 +24517,20 @@ public class ChatActivity extends BaseFragment implements
+@@ -24521,6 +24521,20 @@ public class ChatActivity extends BaseFragment implements
              long topicId = (long) args[1];
              if (dialogId == dialog_id && ((!isTopic && (!ChatObject.isMonoForum(currentChat) || getTopicId() == 0)) || topicId == getTopicId())) {
                  reactionsMentionCount = (int) args[2];
@@ -286,7 +286,7 @@ index 0000000..0000000 100644
                  if (desu.inugram.helpers.chat.ReactionDebugHelper.isEnabled()) {
                      FileLog.d("InuRx[" + classGuid + "] counter notification did=" + dialogId + " topic=" + topicId + " count=" + reactionsMentionCount + " messages=" + args[3]);
                  }
-@@ -24533,7 +24547,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -24537,7 +24551,7 @@ public class ChatActivity extends BaseFragment implements
                          }
                          if (cell != null && reactionsMentionCount > 0) {
                              reactionsMentionCount--;
@@ -295,7 +295,7 @@ index 0000000..0000000 100644
                              AndroidUtilities.runOnUIThread(() -> {
                                  playReactionAnimation(messageId);
                              }, 200);
-@@ -47144,15 +47158,23 @@ public class ChatActivity extends BaseFragment implements
+@@ -47158,15 +47172,23 @@ public class ChatActivity extends BaseFragment implements
                  FileLog.d("InuRx[" + classGuid + "] jump click did=" + dialog_id + " count=" + reactionsMentionCount);
              }
              wasManualScroll = true;
