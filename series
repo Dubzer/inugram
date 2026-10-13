@@ -367,3 +367,4 @@ bugfix/forum-title-overlay.patch
 bugfix/animated-drawable-recycle-interrupt.patch
 bugfix/story-reactions-window-keyboard.patch
 bugfix/folder-slot-stolen-by-picker.patch
+bugfix/transcription-on-message-replace.patch
