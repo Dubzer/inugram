@@ -366,3 +366,4 @@ bugfix/sticker-pack-edit.patch
 bugfix/forum-title-overlay.patch
 bugfix/animated-drawable-recycle-interrupt.patch
 bugfix/story-reactions-window-keyboard.patch
+bugfix/folder-slot-stolen-by-picker.patch
