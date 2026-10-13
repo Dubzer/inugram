@@ -61,7 +61,7 @@ index 0000000..0000000 100644
                  });
              }
          });
-@@ -14496,6 +14500,60 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -14495,6 +14499,60 @@ public class MessagesController extends BaseController implements NotificationCe
          }
      }
  
@@ -122,7 +122,7 @@ index 0000000..0000000 100644
      public long createDeleteShowOnceTask(long dialogId, int mid) {
          NativeByteBuffer data = null;
          try {
-@@ -19630,6 +19688,7 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -19629,6 +19687,7 @@ public class MessagesController extends BaseController implements NotificationCe
                      }
                  });
  
@@ -130,7 +130,7 @@ index 0000000..0000000 100644
                  boolean isDialogCreated = createdDialogIds.contains(message.dialog_id);
                  MessageObject obj = new MessageObject(currentAccount, message, usersDict, chatsDict, isDialogCreated, isDialogCreated);
                  getTranslateController().invalidateTranslation(obj);
-@@ -19704,7 +19763,7 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -19703,7 +19762,7 @@ public class MessagesController extends BaseController implements NotificationCe
                      FileLog.d("InuRx update reactions did=" + dialogId + " mid=" + update.msg_id + " top=" + update.top_msg_id + " updateUnread=" + update.updateUnreadState + " " + desu.inugram.helpers.chat.ReactionDebugHelper.describe(update.reactions) + " from " + desu.inugram.helpers.chat.ReactionDebugHelper.caller());
                  }
  
@@ -139,7 +139,7 @@ index 0000000..0000000 100644
  
                  if (update.updateUnreadState) {
                      SparseBooleanArray sparseBooleanArray = new SparseBooleanArray();
-@@ -19715,6 +19774,7 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -19714,6 +19773,7 @@ public class MessagesController extends BaseController implements NotificationCe
                      }
                      checkUnreadReactions(dialogId, topicId, sparseBooleanArray);
                  }
@@ -147,7 +147,7 @@ index 0000000..0000000 100644
                  if (updatesOnMainThread == null) {
                      updatesOnMainThread = new ArrayList<>();
                  }
-@@ -21472,8 +21532,11 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -21471,8 +21531,11 @@ public class MessagesController extends BaseController implements NotificationCe
                          newUnreadCount += hasUnreadReaction ? 1 : -1;
                          changed = true;
                      }
@@ -160,7 +160,7 @@ index 0000000..0000000 100644
                  }
                  if (hasUnreadReaction) {
                      newUnreadMessages.add(messageId);
-@@ -21515,6 +21578,24 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -21514,6 +21577,24 @@ public class MessagesController extends BaseController implements NotificationCe
          });
      }
  
