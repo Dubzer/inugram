@@ -477,7 +477,7 @@ object PluginChatHistory : SessionResource {
     private val REAL_MESSAGE_OPTIONS = setOf(
         ChatActivity.OPTION_FORWARD, ChatHelper.OPTION_FORWARD_NO_QUOTE, ChatHelper.OPTION_SAVE,
         ChatHelper.OPTION_REPLY_IN, ChatHelper.OPTION_SHOW_IN_CHAT,
-        ChatActivity.OPTION_VIEW_REPLIES_OR_THREAD, ChatActivity.OPTION_COPY_LINK,
+        ChatActivity.OPTION_VIEW_REPLIES_OR_THREAD, ChatActivity.OPTION_COPY_LINK, ChatActivity.OPTION_SEND_MONEY,
     )
 
     /** stock gates view thread and copy link on the screen's chat, which this screen has none of */

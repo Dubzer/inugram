@@ -50,7 +50,6 @@ feature/id-in-profile.patch
 feature/hide-spoiler-pending.patch
 bugfix/paid-reaction-animation.patch
 feature/folders-display-mode.patch
-hooks/internal-web-app.patch
 hooks/profile-menu.patch
 debloat/disable-chat-themes.patch
 bugfix/attach-panel-perf.patch
