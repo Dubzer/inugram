@@ -146,7 +146,7 @@ async function ensureAdGuardFilter() {
   // AdGuard URL Tracking filter (list 17). Bundled as an asset; gitignored.
   const target = join(rootDir, 'src/res/assets/adguard_url_tracking.txt')
   if (await fs.stat(target).then(() => true, () => false)) return
-  const url = 'https://filters.adtidy.org/extension/ublock/filters/17.txt'
+  const url = 'https://filters.adtidy.org/android/filters/17.txt'
   step(`Downloading AdGuard URL Tracking filter -> ${target}`)
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Failed to download ${url}: ${res.status} ${res.statusText}`)
