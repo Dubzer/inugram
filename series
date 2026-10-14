@@ -369,3 +369,4 @@ bugfix/folder-slot-stolen-by-picker.patch
 bugfix/transcription-on-message-replace.patch
 bugfix/sheet-dialog-dismiss.patch
 bugfix/item-options-touch-through.patch
+feature/join-request-open-profile.patch

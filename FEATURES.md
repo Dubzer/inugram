@@ -127,6 +127,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - show id in profile, show user json
 - long-tap the name in profile to copy it
 - long-tap a selected user chip (privacy exceptions, add members, etc.) to open their profile (channels open the chat instead)
+- "Open Profile" in the join request preview menu
 - "Stop" button in a bot profile stops (blocks) the bot instead of offering to delete the chat
 - 🐶 drag the pinned-music sheet by its header to scroll/expand the playlist
 - long-tap inline callback button to copy text or callback data
@@ -298,6 +299,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - image memory cache sized off `getMemoryClass()` while the app runs with `android:largeHeap` — the cache was ~29MB instead of ~56MB, too small to hold the shared media grid and the photo viewer's full-screen bitmaps at once, so opening any photo evicted the whole grid and every cell flashed its blurred thumbnail
 - attach panel: better perf, safe close before fully open
 - paid reaction animation respects litemode
+- context menus no longer let the list behind them scroll when a drag starts just before the menu window takes input
 - dialogs shown over a story (or another attached sheet) no longer lose their dismiss callback (stock bug: the fragment handed the dialog to the sheet and dropped the listener)
 - custom emoji reaction burst respects litemode (stock only gated the "around" animation of regular emoji)
 - reaction counter shift during long-tap menu
