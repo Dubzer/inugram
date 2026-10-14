@@ -110,6 +110,14 @@ export const forkSyncFiles: ForkSyncFile[] = [
   },
   // assets
   {
+    source: 'src/res/animator/*.xml',
+    target: 'TMessagesProj/src/main/res/animator',
+  },
+  {
+    source: 'src/res/values-v31/styles_inu_splash.xml',
+    target: 'TMessagesProj/src/main/res/values-v31',
+  },
+  {
     source: 'src/res/values/strings_inu.xml',
     target: 'TMessagesProj/src/main/res/values',
   },

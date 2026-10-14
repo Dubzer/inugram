@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These names are persisted by Android; keep them stable across app updates. -->
+    <style name="InuSplashStock" parent="Theme.TMessages.Start">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/inu_splash_stock</item>
+    </style>
+    <style name="InuSplashVintage" parent="Theme.TMessages.Start">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/inu_splash_vintage</item>
+    </style>
+    <style name="InuSplashAqua" parent="Theme.TMessages.Start">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/inu_splash_aqua</item>
+    </style>
+    <style name="InuSplashPremium" parent="Theme.TMessages.Start">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/inu_splash_premium</item>
+    </style>
+    <style name="InuSplashTurbo" parent="Theme.TMessages.Start">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/inu_splash_turbo</item>
+    </style>
+    <style name="InuSplashNox" parent="Theme.TMessages.Start">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/inu_splash_nox</item>
+    </style>
+</resources>
