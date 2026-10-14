@@ -128,6 +128,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - long-tap the name in profile to copy it
 - long-tap a selected user chip (privacy exceptions, add members, etc.) to open their profile (channels open the chat instead)
 - "Open Profile" in the join request preview menu
+- long-tap the join requests top bar to open the full requests page
 - "Stop" button in a bot profile stops (blocks) the bot instead of offering to delete the chat
 - 🐶 drag the pinned-music sheet by its header to scroll/expand the playlist
 - long-tap inline callback button to copy text or callback data
