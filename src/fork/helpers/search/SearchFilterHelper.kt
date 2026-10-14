@@ -196,6 +196,7 @@ class SearchFilterHelper(
     private fun showMenu(anchor: View) {
         val options = ItemOptions
             .makeOptions(fragment, anchor)
+            .setLongPressSelectionEnabled(false)
             .setScrimViewBackground(GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
                 setColor(fragment.getThemedColor(Theme.key_chat_messagePanelBackground))
