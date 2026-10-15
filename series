@@ -373,3 +373,4 @@ feature/join-request-open-page.patch
 feature/chat-search-filters.patch
 bugfix/scrim-menu-theme.patch
 bugfix/adaptive-shortcut-icons.patch
+bugfix/photo-viewer-reparent.patch
