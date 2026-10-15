@@ -193,7 +193,7 @@ index 0000000..0000000 100644
 +                viewTop = (height - imageView.getMeasuredHeight()) / 2;
 +            }
 +            final boolean inu_colorful = imageView.getBackground() instanceof SettingsActivity.SettingCell.Background;
-+            final int inu_imageLeft = desu.inugram.helpers.theme.M3SectionsHelper.isEnabled() && imageLeft == 16 ? (inu_colorful ? 14 : 21) : imageLeft;
++            final int inu_imageLeft = desu.inugram.helpers.theme.M3SectionsHelper.isEnabled() && (inu_colorful || imageLeft == 16) ? (inu_colorful ? 16 : 21) : imageLeft;
 +            viewLeft = !LocaleController.isRTL ? dp(inu_imageLeft) : width - imageView.getMeasuredWidth() - dp(inu_imageLeft);
              imageView.layout(viewLeft, viewTop, viewLeft + imageView.getMeasuredWidth(), viewTop + imageView.getMeasuredHeight());
          }
@@ -210,7 +210,7 @@ index 0000000..0000000 100644
      }
  
      protected int getOffsetFromImage(boolean colourful) {
-+        if (desu.inugram.helpers.theme.M3SectionsHelper.isEnabled()) return 60;
++        if (desu.inugram.helpers.theme.M3SectionsHelper.isEnabled()) return colourful ? 70 : 60;
          return colourful ? 52 : 58;
      }
  
