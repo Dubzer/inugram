@@ -33,9 +33,18 @@ object M3SectionsHelper {
     private val path = Path()
     private val rect = RectF()
     private val radii = FloatArray(8)
+    private val splitDividerPaint = Paint()
 
     @JvmStatic
     fun isEnabled(): Boolean = InuConfig.M3_SECTIONS_STYLE.value
+
+    /** Theme.dividerPaint is hidden while section children draw, so vertical split lines need their own */
+    @JvmStatic
+    fun getSplitDividerPaint(resourcesProvider: Theme.ResourcesProvider?): Paint {
+        if (!isEnabled()) return Theme.dividerPaint
+        splitDividerPaint.color = Theme.getColor(Theme.key_divider, resourcesProvider)
+        return splitDividerPaint
+    }
 
     @JvmStatic
     fun shadowHeightDp(nextItem: UItem?, stockDp: Int): Int {

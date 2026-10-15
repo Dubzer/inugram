@@ -1510,6 +1510,13 @@ declare namespace inu {
       checked: boolean
       /** Switch change (click) handler */
       onChange: (checked: boolean, anchor: UIAnchor) => void
+      /**
+       * Row body click handler
+       *
+       * When set, the row is split: tapping the body calls this,
+       * and only tapping the switch calls {@link onChange}
+       */
+      onClick?: (anchor: UIAnchor) => void
       /** Secondary tap (long tap) handler */
       onSecondaryClick?: (anchor: UIAnchor) => void
     }): UIElement

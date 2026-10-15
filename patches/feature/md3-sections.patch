@@ -7,6 +7,7 @@ Subject: md3-style sections redesign
  .../telegram/messenger/RichMessageLayout.java |  2 +-
  .../ui/ActionBar/ThemeDescription.java        |  7 ++-
  .../java/org/telegram/ui/BoostsActivity.java  |  5 ++
+ .../ui/Cells/NotificationsCheckCell.java      |  2 +-
  .../java/org/telegram/ui/Cells/TextCell.java  | 35 ++++++++++--
  .../org/telegram/ui/Cells/TextCheckCell.java  |  6 ++-
  .../ui/Cells/TextDetailSettingsCell.java      |  8 +--
@@ -18,14 +19,14 @@ Subject: md3-style sections redesign
  .../ui/Components/RecyclerListView.java       | 54 ++++++++++++++++---
  .../ui/Components/TranslateAlert3.java        |  3 +-
  .../ui/Components/UniversalAdapter.java       | 15 +++++-
- .../telegram/ui/LiteModeSettingsActivity.java |  7 +++
+ .../telegram/ui/LiteModeSettingsActivity.java | 11 +++-
  .../java/org/telegram/ui/LogoutActivity.java  |  4 +-
  .../telegram/ui/MessageStatisticActivity.java |  2 +
  .../org/telegram/ui/PeerColorActivity.java    |  9 ++--
  .../org/telegram/ui/ProxyListActivity.java    |  5 --
  .../org/telegram/ui/SettingsActivity.java     | 18 +++++++
  .../org/telegram/ui/StatisticActivity.java    |  1 +
- 21 files changed, 182 insertions(+), 34 deletions(-)
+ 22 files changed, 185 insertions(+), 37 deletions(-)
 
 diff --git a/TMessagesProj/src/main/java/org/telegram/messenger/RichMessageLayout.java b/TMessagesProj/src/main/java/org/telegram/messenger/RichMessageLayout.java
 index 0000000..0000000 100644
@@ -106,6 +107,19 @@ index 0000000..0000000 100644
              } else if (holder.getItemViewType() == DIVIDER_TEXT_VIEW_TYPE) {
                  TextInfoPrivacyCell privacyCell = (TextInfoPrivacyCell) holder.itemView;
                  privacyCell.setText(items.get(position).title);
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Cells/NotificationsCheckCell.java b/TMessagesProj/src/main/java/org/telegram/ui/Cells/NotificationsCheckCell.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Cells/NotificationsCheckCell.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Cells/NotificationsCheckCell.java
+@@ -218,7 +218,7 @@ public class NotificationsCheckCell extends FrameLayout {
+         if (drawLine) {
+             int x = LocaleController.isRTL ? dp(76) : getMeasuredWidth() - dp(76) - 1;
+             int y = (getMeasuredHeight() - dp(22)) / 2;
+-            canvas.drawRect(x, y, x + 2, y + dp(22), Theme.dividerPaint);
++            canvas.drawRect(x, y, x + 2, y + dp(22), desu.inugram.helpers.theme.M3SectionsHelper.getSplitDividerPaint(resourcesProvider));
+         }
+     }
+ 
 diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Cells/TextCell.java b/TMessagesProj/src/main/java/org/telegram/ui/Cells/TextCell.java
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/Cells/TextCell.java
@@ -630,6 +644,24 @@ index 0000000..0000000 100644
              } else if (viewType == VIEW_TYPE_SWITCH2) {
                  TextCell textCell = (TextCell) holder.itemView;
                  if (item.type == SWITCH_TYPE_SMOOTH_TRANSITIONS) {
+@@ -642,7 +649,7 @@ public class LiteModeSettingsActivity extends BaseFragment {
+             if (LocaleController.isRTL) {
+                 if (needLine) {
+                     float x = dp(19 + 37 + 19);
+-                    canvas.drawRect(x - dp(0.66f), (getMeasuredHeight() - dp(20)) / 2f, x, (getMeasuredHeight() + dp(20)) / 2f, Theme.dividerPaint);
++                    canvas.drawRect(x - dp(0.66f), (getMeasuredHeight() - dp(20)) / 2f, x, (getMeasuredHeight() + dp(20)) / 2f, desu.inugram.helpers.theme.M3SectionsHelper.getSplitDividerPaint(null));
+                 }
+                 if (needDivider) {
+                     canvas.drawLine(getMeasuredWidth() - dp(64) + (textView.getTranslationX() < 0 ? dp(-32) : 0), getMeasuredHeight() - 1, 0, getMeasuredHeight() - 1, Theme.dividerPaint);
+@@ -650,7 +657,7 @@ public class LiteModeSettingsActivity extends BaseFragment {
+             } else {
+                 if (needLine) {
+                     float x = getMeasuredWidth() - dp(19 + 37 + 19);
+-                    canvas.drawRect(x - dp(0.66f), (getMeasuredHeight() - dp(20)) / 2f, x, (getMeasuredHeight() + dp(20)) / 2f, Theme.dividerPaint);
++                    canvas.drawRect(x - dp(0.66f), (getMeasuredHeight() - dp(20)) / 2f, x, (getMeasuredHeight() + dp(20)) / 2f, desu.inugram.helpers.theme.M3SectionsHelper.getSplitDividerPaint(null));
+                 }
+                 if (needDivider) {
+                     canvas.drawLine(dp(64) + textView.getTranslationX(), getMeasuredHeight() - 1, getMeasuredWidth(), getMeasuredHeight() - 1, Theme.dividerPaint);
 diff --git a/TMessagesProj/src/main/java/org/telegram/ui/LogoutActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/LogoutActivity.java
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/LogoutActivity.java
