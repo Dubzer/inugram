@@ -170,7 +170,7 @@ index 0000000..0000000 100644
                          if (index < 0) {
                              blockePeers.put(user.id, 1);
                              getNotificationCenter().postNotificationName(NotificationCenter.blockedUsersDidLoad);
-@@ -19224,7 +19232,7 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -19226,7 +19234,7 @@ public class MessagesController extends BaseController implements NotificationCe
                  TL_update.TL_updatePeerBlocked finalUpdate = (TL_update.TL_updatePeerBlocked) baseUpdate;
                  getMessagesStorage().getStorageQueue().postRunnable(() -> AndroidUtilities.runOnUIThread(() -> {
                      long id = MessageObject.getPeerId(finalUpdate.peer_id);
@@ -179,7 +179,7 @@ index 0000000..0000000 100644
                          if (blockePeers.indexOfKey(id) < 0) {
                              blockePeers.put(id, 1);
                          }
-@@ -22211,6 +22219,7 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -22213,6 +22221,7 @@ public class MessagesController extends BaseController implements NotificationCe
          }
          for (int a = 0, N = allDialogs.size(); a < N; a++) {
              TLRPC.Dialog d = allDialogs.get(a);
@@ -187,7 +187,7 @@ index 0000000..0000000 100644
              final boolean isCommunity = d instanceof TLRPC.TL_dialogCommunity;
              if (d instanceof TLRPC.TL_dialog || isCommunity) {
                  long dialogId = d.id;
-@@ -22424,6 +22433,7 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -22426,6 +22435,7 @@ public class MessagesController extends BaseController implements NotificationCe
                  }
                  for (int a = 0, N = allDialogs.size(); a < N; a++) {
                      final TLRPC.Dialog d = allDialogs.get(a);
@@ -195,7 +195,7 @@ index 0000000..0000000 100644
                      final boolean isCommunity = d instanceof TLRPC.TL_dialogCommunity;
                      if (d instanceof TLRPC.TL_dialog || isCommunity) {
                          long dialogId = d.id;
-@@ -22463,6 +22473,7 @@ public class MessagesController extends BaseController implements NotificationCe
+@@ -22465,6 +22475,7 @@ public class MessagesController extends BaseController implements NotificationCe
          }
          for (int a = 0, N = allDialogs.size(); a < N; a++) {
              TLRPC.Dialog d = allDialogs.get(a);
@@ -231,7 +231,7 @@ index 0000000..0000000 100644
                      if (add) {
                          dids.add(dialogId);
                      }
-@@ -18288,6 +18291,7 @@ public class MessagesStorage extends BaseController {
+@@ -18309,6 +18312,7 @@ public class MessagesStorage extends BaseController {
              }
              while (cursor.next()) {
                  long id = cursor.longValue(0);
@@ -239,7 +239,7 @@ index 0000000..0000000 100644
                  DialogsSearchAdapter.DialogSearchResult dialogSearchResult = new DialogsSearchAdapter.DialogSearchResult();
                  dialogSearchResult.date = cursor.intValue(1);
                  dialogsResult.put(id, dialogSearchResult);
-@@ -18563,6 +18567,9 @@ public class MessagesStorage extends BaseController {
+@@ -18584,6 +18588,9 @@ public class MessagesStorage extends BaseController {
                  cursor = getDatabase().queryFinalized("SELECT u.data, u.status, u.name, u.uid FROM users as u INNER JOIN contacts as c ON u.uid = c.uid");
                  while (cursor.next()) {
                      long uid = cursor.longValue(3);

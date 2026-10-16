@@ -21,6 +21,16 @@ object InuDatabaseHelper {
             version = 1
         }
 
+        // fixup broken holes caused by older phantom-peek-dialogs.patch
+        if (version == 1) {
+            for (table in listOf("messages_v2", "messages_holes", "media_v4", "media_holes_v2", "media_counts_v2")) {
+                db.executeFast("DELETE FROM $table WHERE uid NOT IN (SELECT did FROM dialogs WHERE folder_id >= 0)")
+                    .stepThis().dispose();
+            }
+            writeKv(db, "version", "2")
+            version = 2
+        }
+
         Log.d("InuDatabaseHelper", "migrating finished, new version = $version")
     }
 
