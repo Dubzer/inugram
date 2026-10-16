@@ -1817,9 +1817,9 @@ declare namespace inu {
 
   interface ActionOptions<Ctx, GetterCtx = Ctx> {
     id: string
-    text: string | ((ctx: GetterCtx) => string)
-    icon?: UIIcon | ((ctx: GetterCtx) => UIIcon)
-    visible?: (ctx: Ctx) => boolean
+    text: string | ((ctx: GetterCtx) => MaybePromise<string>)
+    icon?: UIIcon | ((ctx: GetterCtx) => MaybePromise<UIIcon>)
+    visible?: (ctx: Ctx) => MaybePromise<boolean>
     callback: (ctx: Ctx) => void
     /** Long-tap handler */
     secondaryCallback?: (ctx: Ctx) => void
@@ -1832,6 +1832,8 @@ declare namespace inu {
 
   /**
    * Register a global action handler, shown in the drawer or the hamburger menu on the main page
+   *
+   * Getters may be async. Rows whose getters have not settled within the render budget are not shown.
    *
    * **Limits: 150 ms to render plugin actions, 8 rows per menu per plugin.**
    */

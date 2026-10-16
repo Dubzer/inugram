@@ -196,7 +196,11 @@ inu.registerMessageAction({
 `text` and `icon` can be plain values or getters. `visible` is always a getter.
 
 Prefer static `text` and `icon` values, as they are cheaper to compute,
-and if you can't - keep the getters fast and free of I/O.
+and if you can't - keep the getters fast.
+
+Getters may return promises, e.g. to `await` a cached database read. The whole menu has a 150 ms
+budget: rows still pending by then are not shown, and late answers are ignored. Network requests
+will usually miss it.
 
 ### Other rules
 
