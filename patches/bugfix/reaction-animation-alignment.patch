@@ -118,7 +118,7 @@ diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Components/Reactions/Re
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/Components/Reactions/ReactionsLayoutInBubble.java
 +++ b/TMessagesProj/src/main/java/org/telegram/ui/Components/Reactions/ReactionsLayoutInBubble.java
-@@ -1021,7 +1021,7 @@ public class ReactionsLayoutInBubble {
+@@ -1022,7 +1022,7 @@ public class ReactionsLayoutInBubble {
              ImageReceiver imageReceiver = animatedEmojiDrawable != null ? animatedEmojiDrawable.getImageReceiver() : this.imageReceiver;
              if (isSmall && imageReceiver != null) {
                  imageReceiver.setAlpha(alpha);

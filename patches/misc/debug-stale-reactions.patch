@@ -412,7 +412,7 @@ diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Components/Reactions/Re
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/Components/Reactions/ReactionsLayoutInBubble.java
 +++ b/TMessagesProj/src/main/java/org/telegram/ui/Components/Reactions/ReactionsLayoutInBubble.java
-@@ -112,7 +112,7 @@ public class ReactionsLayoutInBubble {
+@@ -113,7 +113,7 @@ public class ReactionsLayoutInBubble {
      HashMap<String, ReactionButton> lastDrawingReactionButtons = new HashMap<>();
      HashMap<String, ReactionButton> lastDrawingReactionButtonsTmp = new HashMap<>();
      View parentView;
