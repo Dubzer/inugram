@@ -486,10 +486,55 @@ declare namespace inu {
       asDocument?: boolean
     }): Promise<LocalMedia>
 
-    /** @needs-grant account.read(peers) */
-    getUserFull(peer: InputPeerLike): Promise<tl.TypeUserFull | null>
-    /** @needs-grant account.read(peers) */
-    getChatFull(peer: InputPeerLike): Promise<tl.TypeChatFull | null>
+    /**
+     * Get the full user.
+     *
+     * Reads the app's cache (memory or database) first, otherwise asks the server.
+     *
+     * A cached result may be stale: pass `force` to always ask the server, or use
+     * {@link getUserFullCached} to skip the network.
+     *
+     * @throws if the chat itself is not cached or the peer is a chat.
+     *
+     * @needs-grant account.read(peers)
+     */
+    getUserFull(
+      peer: InputPeerLike,
+      options?: {
+        /** skip the cache and ask the server */
+        force?: boolean
+      },
+    ): Promise<tl.TypeUserFull | null>
+    /**
+     * Returns the full chat from the app's cache (memory or database), otherwise from the server.
+     * A cached result may be stale: pass `force` to always ask the server, or use
+     * {@link getChatFullCached} to skip the network.
+     *
+     * @throws if the chat itself is not cached or the peer is a user.
+     *
+     * @needs-grant account.read(peers)
+     */
+    getChatFull(
+      peer: InputPeerLike,
+      options?: {
+        /** skip the cache and ask the server */
+        force?: boolean
+      },
+    ): Promise<tl.TypeChatFull | null>
+    /**
+     * Returns the full user from the app's cache (memory or database), or `null` if missing.
+     * Never uses the network, but may block on a database read.
+     *
+     * @needs-grant account.read(peers)
+     */
+    getUserFullCached(peer: InputPeerLike): tl.TypeUserFull | null
+    /**
+     * Returns the full chat from the app's cache (memory or database), or `null` if missing
+     * or the peer is a user. Never uses the network, but may block on a database read.
+     *
+     * @needs-grant account.read(peers)
+     */
+    getChatFullCached(peer: InputPeerLike): tl.TypeChatFull | null
 
     /**
      * `fields` preloads selected fields for faster reads, as in {@link getDialogsCached}.
