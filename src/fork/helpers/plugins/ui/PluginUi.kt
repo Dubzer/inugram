@@ -292,6 +292,7 @@ object PluginUi : SessionResource {
                 }
                 if (radioStyle) {
                     opts.addChecked(item.checked == true, item.text, onClick)
+                    if (item.danger) opts.last?.setColors(Theme.getColor(Theme.key_text_RedRegular), Theme.getColor(Theme.key_text_RedRegular))
                 } else {
                     opts.add(0, item.text, item.danger, onClick)
                 }

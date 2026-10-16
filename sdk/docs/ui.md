@@ -93,6 +93,8 @@ In simple cases, you don't really need row IDs, and it is automatically derived 
 | `slider` | A slider with an optional title, value formatter and reset button. As mentioned above, `onChange` is only fired on release, to avoid too many re-renders |
 | `separator(text?)` | A divider with optional footer text. |
 
+See [elements.md](elements.md) for screenshots of every element, menus and dialogs.
+
 ### Menus
 
 Every callback on a row gets a `UIAnchor` as its last argument, allowing you to open a popup menu
@@ -144,7 +146,7 @@ showing a "Settings" button next to the plugin's name in the app's list.
 Many of the UI rows accept an `icon` parameter, which is an `UIIcon`. You can get one using:
 
 | Function | Description |
-| --- | --- | --- |
+| --- | --- |
 | `common(name)` | A built-in icon from a fixed list |
 | `animation(name)` | A built-in animated icon |
 | `customEmoji(id, options?)` | A Telegram custom emoji by its ID |
@@ -210,6 +212,7 @@ will usually miss it.
 - Users can hide, pin and reorder chat and message actions in the app's menu settings. That
   screen calls your `text` and `icon` getters with `null` instead of a context, and never calls
   `visible`. The typings reflect this: those getters take `Ctx | null`.
+- Unpinned rows go into an "Actions" submenu, unless only one row is visible: then it shows inline.
 - Actions never show in secret chats.
 - `callback` handles taps. Optional `secondaryCallback` handles long taps.
 
