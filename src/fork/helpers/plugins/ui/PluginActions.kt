@@ -211,6 +211,11 @@ object PluginActions : SessionResource {
             .sortedWith(compareBy<ActionRow> { positions[it.key.storageKey] ?: Int.MAX_VALUE }.thenBy { rows.indexOf(it) })
     }
 
+    fun isShownInline(key: ActionKey, enabled: List<ActionRow>): Boolean = enabled.size == 1 || isPinned(key)
+
+    fun getSubmenuRows(kind: Int, enabled: List<ActionRow>): List<ActionRow> =
+        if (enabled.size == 1) emptyList() else orderRows(kind, enabled, false)
+
     fun mainOrder(kind: Int, builtIns: List<String>, plugins: List<ActionKey>): List<String> {
         val available = builtIns.map(::builtInOrderKey) + plugins.map(::pluginOrderKey)
         val saved = config(kind).value.mainOrder
