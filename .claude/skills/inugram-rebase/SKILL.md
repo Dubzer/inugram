@@ -281,8 +281,9 @@ it to `REAL_MESSAGE_OPTIONS`; otherwise leave it out. Log the ones left out to `
 
 ### 7. Forced SQLite indexes still exist
 
-`bugfix__storage-query-plans` pins stock queries to specific indexes with
-`INDEXED BY`, because SQLite (no `ANALYZE` stats) picks full-dialog scans for them.
+`bugfix__storage-query-plans` and `bugfix__keep-history-on-channel-too-long` pin
+stock queries to specific indexes with `INDEXED BY`, because SQLite (no `ANALYZE`
+stats) picks full-dialog scans for them.
 If upstream renames or drops one of those indexes, the statement fails at prepare
 time and `checkSQLException` swallows it, so the query silently does nothing.
 

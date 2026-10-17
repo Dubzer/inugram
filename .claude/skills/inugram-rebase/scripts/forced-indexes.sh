@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Checks that every `INDEXED BY` in stock (bugfix__storage-query-plans) names an index the
+# Checks that every `INDEXED BY` in stock (bugfix__storage-query-plans and others) names an index the
 # rebased schema still creates. A missing index fails the statement at prepare time, and
 # checkSQLException swallows it, so the query silently stops doing anything.
 set -euo pipefail
