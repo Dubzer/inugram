@@ -443,6 +443,9 @@ object InuConfig {
     val PROFILE_PREFER_MEDIA_TAB = BoolItem("profile_prefer_media_tab", true)
 
     @JvmField
+    val SHOW_PROFILE_GIFT_BUTTON = BoolItem("show_profile_gift_button", false)
+
+    @JvmField
     val DISABLE_MOTION_PHOTOS = BoolItem("disable_motion_photos", true)
 
     @JvmField

@@ -193,6 +193,7 @@
     <string name="InuReduceProfileMotion">Reduce profile motion</string>
     <string name="InuProfilePreferMediaTab">Prefer \"Media\" tab</string>
     <string name="InuProfilePreferMediaTabInfo">…over Gifts and Posts tabs</string>
+    <string name="InuShowProfileGiftButton">Show \"Gift\" action button</string>
     <string name="InuDisableMotionPhotos">Disable motion photos</string>
     <string name="InuDisableMotionPhotosInfo">Don\'t detect or render motion photos, in picker and in messages</string>
     <string name="InuDisableVolumePlayVideo">Disable volume keys playing videos</string>
