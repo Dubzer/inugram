@@ -5,6 +5,8 @@ import org.telegram.SQLite.SQLiteDatabase
 import org.telegram.messenger.MessagesStorage
 
 object InuDatabaseHelper {
+    private const val VERSION = 2
+
     @JvmStatic
     fun migrate(messagesStorage: MessagesStorage) {
         val db = messagesStorage.database;
@@ -13,6 +15,7 @@ object InuDatabaseHelper {
             .stepThis().dispose();
         var version = readKv(db, "version")?.toInt() ?: 0;
         Log.d("InuDatabaseHelper", "migrating from version $version")
+        if (version < VERSION) messagesStorage.inu_startDatabaseMigration()
 
         if (version == 0) {
             db.executeFast("CREATE TABLE IF NOT EXISTS inu_folder_meta(filter_id INTEGER PRIMARY KEY, emoticon TEXT)")

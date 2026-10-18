@@ -364,7 +364,7 @@ diff --git a/TMessagesProj/src/main/java/org/telegram/messenger/MessagesStorage.
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/messenger/MessagesStorage.java
 +++ b/TMessagesProj/src/main/java/org/telegram/messenger/MessagesStorage.java
-@@ -18699,7 +18699,11 @@ public class MessagesStorage extends BaseController {
+@@ -18702,7 +18702,11 @@ public class MessagesStorage extends BaseController {
      }
  
      public void updateUnreadReactionsCount(long dialogId, long topicId, int count, boolean increment) {
@@ -377,7 +377,7 @@ index 0000000..0000000 100644
      }
  
      public void updateUnreadPollVotesCount(long dialogId, long topicId, int count) {
-@@ -18707,12 +18711,12 @@ public class MessagesStorage extends BaseController {
+@@ -18710,12 +18714,12 @@ public class MessagesStorage extends BaseController {
      }
  
      public void updateUnreadPollVotesCount(long dialogId, long topicId, int count, boolean increment) {
@@ -393,7 +393,7 @@ index 0000000..0000000 100644
          }
          storageQueue.postRunnable(() -> {
              SQLitePreparedStatement state = null;
-@@ -18734,7 +18738,7 @@ public class MessagesStorage extends BaseController {
+@@ -18737,7 +18741,7 @@ public class MessagesStorage extends BaseController {
                      state.dispose();
                      state = null;
  
@@ -402,7 +402,7 @@ index 0000000..0000000 100644
                          state = database.executeFast(String.format(Locale.ENGLISH, "UPDATE %s SET state = 0 WHERE dialog_id = ? AND topic_id = ? ", tableMentionsForTopics));
                          state.bindLong(1, dialogId);
                          state.bindLong(2, topicId);
-@@ -18758,7 +18762,7 @@ public class MessagesStorage extends BaseController {
+@@ -18761,7 +18765,7 @@ public class MessagesStorage extends BaseController {
                      state.dispose();
                      state = null;
  
@@ -411,7 +411,7 @@ index 0000000..0000000 100644
                          state = database.executeFast(String.format(Locale.ENGLISH, "UPDATE %s SET state = 0 WHERE dialog_id = ?", tableMentionsForDialogs));
                          state.bindLong(1, dialogId);
                          state.step();
-@@ -18798,6 +18802,78 @@ public class MessagesStorage extends BaseController {
+@@ -18801,6 +18805,78 @@ public class MessagesStorage extends BaseController {
          return "[" + result.toString().trim() + "]";
      }
  
