@@ -1320,15 +1320,24 @@ object ChatHelper {
     @JvmStatic
     fun maybeHandleFileClick(fragment: BaseFragment, message: MessageObject): Boolean {
         val name = message.documentName ?: return false
+        return maybeHandleFile(fragment, name, message.mimeType) {
+            message.messageOwner?.attachPath?.takeIf { it.isNotEmpty() }?.let { File(it) }?.takeIf { it.exists() }
+                ?: FileLoader.getInstance(fragment.currentAccount).getPathToMessage(message.messageOwner)
+        }
+    }
+
+    @JvmStatic
+    fun maybeHandleRichDocumentClick(document: TLRPC.Document, file: File): Boolean {
+        val fragment = LaunchActivity.getSafeLastFragment() ?: return false
+        return maybeHandleFile(fragment, FileLoader.getDocumentFileName(document), document.mime_type) { file }
+    }
+
+    private fun maybeHandleFile(fragment: BaseFragment, name: String, mimeType: String?, resolveFile: () -> File?): Boolean {
         val isSettings = name.endsWith(SettingsBackupHelper.FILENAME_SUFFIX)
         val isPlugin = !isSettings && name.endsWith(".inu.js", ignoreCase = true)
         val isFont = !isSettings && !isPlugin && FontImportHelper.isFontFileName(name)
         if (!isSettings && !isPlugin && !isFont) return false
-        val attach = message.messageOwner?.attachPath?.takeIf { it.isNotEmpty() }?.let { File(it) }
-        val file = attach?.takeIf { it.exists() }
-            ?: FileLoader.getInstance(fragment.currentAccount).getPathToMessage(message.messageOwner)
-                ?.takeIf { it.exists() }
-            ?: return false
+        val file = resolveFile()?.takeIf { it.exists() } ?: return false
         when {
             isSettings -> SettingsBackupHelper.startImportFromFile(fragment, file)
             // #if PLUGINS
@@ -1345,7 +1354,7 @@ object ChatHelper {
                 R.string.InuPluginsOpenSettings,
             ) { AboutActivity() }
             // #endif
-            else -> FontImportHelper.startImportFromFile(fragment, message, file, name)
+            else -> FontImportHelper.startImportFromFile(fragment, file, name, mimeType)
         }
         return true
     }
