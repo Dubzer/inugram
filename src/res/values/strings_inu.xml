@@ -16,6 +16,7 @@
     <string name="InuAppearance">Appearance</string>
     <string name="InuLookAndFeel">Look &amp; Feel</string>
     <string name="InuBehavior">Behavior</string>
+    <string name="InuAnimatedAvatars">Animated avatars</string>
     <string name="InuPerformanceClass">Performance class</string>
     <string name="InuPerformanceClassInfo">It is not recommended to change this settings, as this might tank performance on low-performance budget devices</string>
     <string name="InuPerformanceClassMeasured">Measured</string>
