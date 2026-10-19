@@ -77,8 +77,7 @@
     <string name="InuHideRepostToStory">「ストーリーに転送」を非表示</string>
     <string name="InuHideTrendingStickers">人気のスタンプを非表示</string>
     <string name="InuBottomTabs">下部タブ</string>
-    <string name="InuBottomTabsHide">下部タブを非表示</string>
-    <string name="InuBottomTabsHideInfo">項目はメイン画面のハンバーガーメニューに移動します</string>
+    <string name="InuNavigation">ナビゲーション</string>
     <string name="InuHideContactsTab">連絡先タブを非表示</string>
     <string name="InuCompactMode">コンパクトモード</string>
     <string name="InuCompactModeInfo">タイトルを非表示にし、タブを小さくします</string>
@@ -608,7 +607,7 @@
     <string name="InuSendToDiscussWithoutJoin">ディスカッショングループに参加せずに書き込む</string>
     <string name="InuSendToDiscussWithoutJoinInfo">ディスカッショングループのクライアント側メンバーシップチェックをスキップします</string>
     <string name="InuNavigationDrawer">ナビゲーションドロワー</string>
-    <string name="InuNavigationDrawerInfo">12.0 以前のハンバーガーサイドドロワーを復活させます。再起動が必要です。</string>
+    <string name="InuNavigationDrawerInfo">12.0 以前のハンバーガーサイドドロワーを復活させます。</string>
     <string name="InuDrawerBackGesture">戻るジェスチャーでドロワーを開く</string>
     <string name="InuDrawerBackGestureInfo">チャットリストの左端から戻るスワイプをすると、アプリを終了せずにドロワーを開きます。</string>
     <string name="InuMaterial3">Material Design 3</string>

@@ -5,7 +5,7 @@
     <string name="InuSendToDiscussWithoutJoin">Писати в групи обговорення без вступу</string>
     <string name="InuSendToDiscussWithoutJoinInfo">Пропускати клієнтську перевірку членства для груп обговорення</string>
     <string name="InuNavigationDrawer">Бічна панель (Drawer)</string>
-    <string name="InuNavigationDrawerInfo">Повертає бічне гамбургер-меню з версій до 12.0. Потрібен перезапуск.</string>
+    <string name="InuNavigationDrawerInfo">Повертає бічне гамбургер-меню з версій до 12.0.</string>
     <string name="InuDrawerBackGesture">Відкривати панель жестом «Назад»</string>
     <string name="InuDrawerBackGestureInfo">Свайп назад від лівого краю списку чатів відкриває бічну панель замість виходу з додатка.</string>
     <string name="InuSettings">Налаштування Inugram</string>
@@ -117,8 +117,7 @@
     <string name="InuHideRepostToStory">Приховати «Репост в Історію»</string>
     <string name="InuHideTrendingStickers">Приховати популярні наліпки</string>
     <string name="InuBottomTabs">Нижні вкладки</string>
-    <string name="InuBottomTabsHide">Приховати нижні вкладки</string>
-    <string name="InuBottomTabsHideInfo">Елементи переміщуються у бічне меню головного екрана</string>
+    <string name="InuNavigation">Навігація</string>
     <string name="InuHideContactsTab">Приховати вкладку «Контакти»</string>
     <string name="InuCompactMode">Компактний режим</string>
     <string name="InuCompactModeInfo">Приховує заголовки та зменшує розмір вкладок</string>

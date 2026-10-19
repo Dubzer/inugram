@@ -77,8 +77,7 @@
     <string name="InuHideRepostToStory">Скрыть «Опубликовать в истории»</string>
     <string name="InuHideTrendingStickers">Скрыть популярные стикеры</string>
     <string name="InuBottomTabs">Нижние вкладки</string>
-    <string name="InuBottomTabsHide">Скрыть нижние вкладки</string>
-    <string name="InuBottomTabsHideInfo">Пункты перемещаются в гамбургер-меню главного экрана</string>
+    <string name="InuNavigation">Навигация</string>
     <string name="InuHideContactsTab">Скрыть вкладку «Контакты»</string>
     <string name="InuCompactMode">Компактный режим</string>
     <string name="InuCompactModeInfo">Скрывает названия и уменьшает вкладки</string>
@@ -617,7 +616,7 @@
     <string name="InuSendToDiscussWithoutJoin">Писать в комментарии без вступления</string>
     <string name="InuSendToDiscussWithoutJoinInfo">Пропускать клиентскую проверку членства для групп обсуждения (комментариев)</string>
     <string name="InuNavigationDrawer">Боковое меню</string>
-    <string name="InuNavigationDrawerInfo">Возвращает боковое гамбургер-меню из версий до 12.0. Требуется перезапуск.</string>
+    <string name="InuNavigationDrawerInfo">Возвращает боковое гамбургер-меню из версий до 12.0.</string>
     <string name="InuDrawerBackGesture">Открывать меню жестом «назад»</string>
     <string name="InuDrawerBackGestureInfo">Свайп назад от левого края списка чатов открывает боковое меню вместо выхода из приложения.</string>
     <string name="InuMaterial3">Material Design 3</string>

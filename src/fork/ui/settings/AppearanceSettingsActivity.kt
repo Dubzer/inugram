@@ -7,6 +7,7 @@ import desu.inugram.InuConfig
 import desu.inugram.InuHooks
 import desu.inugram.SearchRegistry
 import desu.inugram.helpers.InuUtils
+import desu.inugram.helpers.dialogs.DrawerHelper
 import desu.inugram.helpers.theme.MonetHelper
 import desu.inugram.ui.settings.fonts.FontsSettingsActivity
 import org.telegram.messenger.LocaleController
@@ -47,6 +48,50 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 }
             )
         )
+        items.add(UItem.asShadow(null))
+
+        items.add(UItem.asHeader(LocaleController.getString(R.string.InuNavigation)))
+        items.add(
+            mkTwoLineCheckItem(
+                TOGGLE_NAVIGATION_DRAWER,
+                R.string.InuNavigationDrawer,
+                R.string.InuNavigationDrawerInfo,
+                InuConfig.NAVIGATION_DRAWER.value,
+            )
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && InuConfig.NAVIGATION_DRAWER.value) {
+            items.add(
+                mkTwoLineCheckItem(
+                    TOGGLE_DRAWER_BACK_GESTURE,
+                    R.string.InuDrawerBackGesture,
+                    R.string.InuDrawerBackGestureInfo,
+                    InuConfig.DRAWER_BACK_GESTURE.value,
+                )
+            )
+            items.add(UItem.asShadow(null))
+        }
+        items.add(
+            UItem.asCheck(
+                TOGGLE_BOTTOM_TABS,
+                LocaleController.getString(R.string.InuBottomTabs),
+            ).setChecked(!InuConfig.BOTTOM_TABS_HIDE.value)
+        )
+        if (!InuConfig.BOTTOM_TABS_HIDE.value) {
+            items.add(
+                UItem.asCheck(
+                    TOGGLE_HIDE_CONTACTS_TAB,
+                    LocaleController.getString(R.string.InuHideContactsTab),
+                ).setChecked(InuConfig.BOTTOM_TABS_HIDE_CONTACTS.value)
+            )
+            items.add(
+                mkTwoLineCheckItem(
+                    TOGGLE_COMPACT_MODE,
+                    R.string.InuCompactMode,
+                    R.string.InuCompactModeInfo,
+                    InuConfig.BOTTOM_TABS_COMPACT_MODE.value,
+                )
+            )
+        }
         items.add(UItem.asShadow(null))
 
         items.add(UItem.asHeader(addExperimentalSpan(LocaleController.getString(R.string.InuMaterial3))))
@@ -121,24 +166,6 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         items.add(
             UItem.asHeader(addExperimentalSpan(LocaleController.getString(R.string.InuNonIslandUI)))
         )
-        items.add(
-            mkTwoLineCheckItem(
-                TOGGLE_NAVIGATION_DRAWER,
-                R.string.InuNavigationDrawer,
-                R.string.InuNavigationDrawerInfo,
-                InuConfig.NAVIGATION_DRAWER.value,
-            )
-        )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && InuConfig.NAVIGATION_DRAWER.value) {
-            items.add(
-                mkTwoLineCheckItem(
-                    TOGGLE_DRAWER_BACK_GESTURE,
-                    R.string.InuDrawerBackGesture,
-                    R.string.InuDrawerBackGestureInfo,
-                    InuConfig.DRAWER_BACK_GESTURE.value,
-                )
-            )
-        }
         items.add(
             UItem.asCheck(
                 TOGGLE_NON_ISLAND_FOLDERS_BAR,
@@ -315,13 +342,36 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 val new = InuConfig.NAVIGATION_DRAWER.toggle()
                 (view as? NotificationsCheckCell)?.isChecked = new
                 listView.adapter.update(true)
-                showRestartBulletin()
+                if (new) DrawerHelper.ensureSetup(parentLayout) else DrawerHelper.teardown(parentLayout)
+                softRebuild()
+                if (new && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && InuConfig.DRAWER_BACK_GESTURE.value) {
+                    showRestartBulletin()
+                }
             }
 
             TOGGLE_DRAWER_BACK_GESTURE -> {
                 val new = InuConfig.DRAWER_BACK_GESTURE.toggle()
                 (view as? NotificationsCheckCell)?.isChecked = new
                 showRestartBulletin()
+            }
+
+            TOGGLE_BOTTOM_TABS -> {
+                val new = !InuConfig.BOTTOM_TABS_HIDE.toggle()
+                (view as? TextCheckCell)?.isChecked = new
+                listView.adapter.update(true)
+                softRebuild()
+            }
+
+            TOGGLE_HIDE_CONTACTS_TAB -> {
+                val new = InuConfig.BOTTOM_TABS_HIDE_CONTACTS.toggle()
+                (view as? TextCheckCell)?.isChecked = new
+                showRestartBulletin()
+            }
+
+            TOGGLE_COMPACT_MODE -> {
+                val new = InuConfig.BOTTOM_TABS_COMPACT_MODE.toggle()
+                (view as? NotificationsCheckCell)?.isChecked = new
+                softRebuild()
             }
 
             TOGGLE_NON_ISLAND_FOLDERS_BAR -> {
@@ -382,6 +432,9 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         private val TOGGLE_HIDE_FADE_VIEW = InuUtils.generateId()
         private val TOGGLE_NAVIGATION_DRAWER = InuUtils.generateId()
         private val TOGGLE_DRAWER_BACK_GESTURE = InuUtils.generateId()
+        private val TOGGLE_BOTTOM_TABS = InuUtils.generateId()
+        private val TOGGLE_HIDE_CONTACTS_TAB = InuUtils.generateId()
+        private val TOGGLE_COMPACT_MODE = InuUtils.generateId()
         private val TOGGLE_NON_ISLAND_FOLDERS_BAR = InuUtils.generateId()
         private val TOGGLE_NON_ISLAND_SHARED_MEDIA_TABS = InuUtils.generateId()
         private val TOGGLE_NON_ISLAND_GLOBAL_SEARCH = InuUtils.generateId()
@@ -444,6 +497,9 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("predictive-back-mode", R.string.InuPredictiveBack, BUTTON_PREDICTIVE_BACK_MODE),
                 SearchRegistry.Entry("navigation-drawer", R.string.InuNavigationDrawer, TOGGLE_NAVIGATION_DRAWER),
                 SearchRegistry.Entry("drawer-back-gesture", R.string.InuDrawerBackGesture, TOGGLE_DRAWER_BACK_GESTURE),
+                SearchRegistry.Entry("bottom-tabs-hide", R.string.InuBottomTabs, TOGGLE_BOTTOM_TABS),
+                SearchRegistry.Entry("hide-contacts-tab", R.string.InuHideContactsTab, TOGGLE_HIDE_CONTACTS_TAB),
+                SearchRegistry.Entry("compact-mode", R.string.InuCompactMode, TOGGLE_COMPACT_MODE),
                 SearchRegistry.Entry("non-island-folders-bar", R.string.InuNonIslandFoldersBar, TOGGLE_NON_ISLAND_FOLDERS_BAR),
                 SearchRegistry.Entry("non-island-shared-media-tabs", R.string.InuNonIslandSharedMediaTabs, TOGGLE_NON_ISLAND_SHARED_MEDIA_TABS),
                 SearchRegistry.Entry("non-island-global-search", R.string.InuNonIslandGlobalSearch, TOGGLE_NON_ISLAND_GLOBAL_SEARCH),

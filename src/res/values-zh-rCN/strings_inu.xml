@@ -77,8 +77,7 @@
     <string name="InuHideRepostToStory">隐藏「转发到快拍」</string>
     <string name="InuHideTrendingStickers">隐藏热门贴纸</string>
     <string name="InuBottomTabs">底部标签</string>
-    <string name="InuBottomTabsHide">隐藏底部标签</string>
-    <string name="InuBottomTabsHideInfo">条目会移入主屏幕的汉堡菜单</string>
+    <string name="InuNavigation">导航</string>
     <string name="InuHideContactsTab">隐藏联系人标签</string>
     <string name="InuCompactMode">紧凑模式</string>
     <string name="InuCompactModeInfo">隐藏标题并缩小标签</string>
@@ -607,7 +606,7 @@
     <string name="InuSendToDiscussWithoutJoin">不加入即在讨论组发言</string>
     <string name="InuSendToDiscussWithoutJoinInfo">跳过讨论组的客户端成员检查</string>
     <string name="InuNavigationDrawer">侧边抽屉</string>
-    <string name="InuNavigationDrawerInfo">恢复 12.0 之前的汉堡侧边抽屉。需重启。</string>
+    <string name="InuNavigationDrawerInfo">恢复 12.0 之前的汉堡侧边抽屉。</string>
     <string name="InuDrawerBackGesture">用返回手势打开抽屉</string>
     <string name="InuDrawerBackGestureInfo">从聊天列表左边缘向内滑动返回时打开抽屉，而不是退出应用。</string>
     <string name="InuMaterial3">Material Design 3</string>

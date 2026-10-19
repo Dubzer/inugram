@@ -5,7 +5,7 @@
     <string name="InuSendToDiscussWithoutJoin">Katılmadan tartışma gruplarına yaz</string>
     <string name="InuSendToDiscussWithoutJoinInfo">Tartışma grupları için yalnızca istemci tarafındaki üyelik kontrolünü atlar</string>
     <string name="InuNavigationDrawer">Gezinme menüsü</string>
-    <string name="InuNavigationDrawerInfo">v12.0 öncesi sol yan menüyü geri getirir. Yeniden başlatma gerektirir.</string>
+    <string name="InuNavigationDrawerInfo">v12.0 öncesi sol yan menüyü geri getirir.</string>
     <string name="InuDrawerBackGesture">Geri hareketiyle yan menüyü aç</string>
     <string name="InuDrawerBackGestureInfo">Sohbet listesinin sol kenarından sağa kaydırmak, uygulamadan çıkmak yerine yan menüyü açar.</string>
     <string name="InuSettings">Inugram Ayarları</string>
@@ -117,8 +117,7 @@
     <string name="InuHideRepostToStory">\"Hikayede Yeniden Paylaş\"ı gizle</string>
     <string name="InuHideTrendingStickers">Trend çıkartmaları gizle</string>
     <string name="InuBottomTabs">Alt sekmeler</string>
-    <string name="InuBottomTabsHide">Alt sekmeleri gizle</string>
-    <string name="InuBottomTabsHideInfo">Ögeler ana ekranın sol yan menüsüne taşınır</string>
+    <string name="InuNavigation">Gezinme</string>
     <string name="InuHideContactsTab">Kişiler sekmesini gizle</string>
     <string name="InuCompactMode">Kompakt mod</string>
     <string name="InuCompactModeInfo">Başlıkları gizler ve sekmeleri küçültür</string>
