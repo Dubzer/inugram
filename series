@@ -382,3 +382,4 @@ feature/app-icon-splash.patch
 feature/profile-gift-button.patch
 bugfix/expanded-dark-theme.patch
 bugfix/no-quick-ack-sent-state.patch
+bugfix/sent-message-server-order.patch
