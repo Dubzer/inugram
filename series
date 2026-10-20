@@ -381,3 +381,4 @@ bugfix/keep-channel-queue-during-diff.patch
 feature/app-icon-splash.patch
 feature/profile-gift-button.patch
 bugfix/expanded-dark-theme.patch
+bugfix/no-quick-ack-sent-state.patch
