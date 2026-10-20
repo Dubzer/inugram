@@ -24,14 +24,15 @@ object ObfuscationDetector {
     private const val MINIFIED_MAX_CODE_LINE_LENGTH = 1000
 
     fun detect(source: String): SourceObfuscation? {
-        if (isObfuscated(source)) return SourceObfuscation.OBFUSCATED
-        if (isMinified(source)) return SourceObfuscation.MINIFIED
+        val code = stripStringsAndComments(source)
+        if (isObfuscated(source, code)) return SourceObfuscation.OBFUSCATED
+        if (isMinified(code)) return SourceObfuscation.MINIFIED
         return null
     }
 
-    private fun isObfuscated(source: String): Boolean {
+    private fun isObfuscated(source: String, code: String): Boolean {
         if (PACKER.containsMatchIn(source)) return true
-        if (HEX_IDENTIFIERS.findAll(source).take(10).count() >= 10) return true
+        if (HEX_IDENTIFIERS.findAll(code).take(10).count() >= 10) return true
         if (source.contains("while(!![])")) return true
         if (countOccurrences(source, "!![]") >= 5) return true
         if (JJENCODE.containsMatchIn(source) || source.contains(AAENCODE_MARKER)) return true
@@ -41,7 +42,7 @@ object ObfuscationDetector {
         // alone is legitimate (lookup tables; binary strings), together they aren't
         val asciiEscapes = ASCII_ESCAPES.findAll(source).count()
         if (asciiEscapes >= 20) return true
-        if (asciiEscapes >= 3 && HEX_LITERALS.findAll(source).take(15).count() >= 15) return true
+        if (asciiEscapes >= 3 && HEX_LITERALS.findAll(code).take(15).count() >= 15) return true
         return false
     }
 
@@ -60,8 +61,8 @@ object ObfuscationDetector {
      * Measures code after stripping strings and comments. Long embedded assets do not count
      * as minification; long code lines do, even inside otherwise readable files.
      */
-    private fun isMinified(source: String): Boolean {
-        val lines = stripStringsAndComments(source).lineSequence()
+    private fun isMinified(code: String): Boolean {
+        val lines = code.lineSequence()
             .map { it.trim() }
             .filter { it.isNotEmpty() }
             .toList()
