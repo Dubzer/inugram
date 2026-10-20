@@ -308,7 +308,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - dialogs shown over a story (or another attached sheet) no longer lose their dismiss callback (stock bug: the fragment handed the dialog to the sheet and dropped the listener)
 - custom emoji reaction burst respects litemode (stock only gated the "around" animation of regular emoji)
 - reaction counter shift during long-tap menu
-- reactions silently disappearing right after being sent (stale server read race)
+- reactions silently disappearing right after being sent (stale server read race); for a few seconds after a send, server answers that lose or undercount your own reaction are corrected from the local state
 - seen reactions coming back to the unread reactions counter (stock only told the server once the local counter hit 0, so every server count reload resurrected them); each read is now reported via `readMessageContents`
 - reactions vanishing for a moment after editing a message that got reacted to while the edit was open (the edit applied a stale copy of the message)
 - unread reactions counter drifting and wiping unseen reactions: stock never decremented the chat's counter per read, never told an open group chat about new unread reactions, and "fixed" both by marking everything read once its own local counter hit 0; reads now update the counter per message, and only an explicit "read all" or an empty server answer marks everything read
