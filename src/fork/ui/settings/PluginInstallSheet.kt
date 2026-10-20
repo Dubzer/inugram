@@ -180,16 +180,18 @@ class PluginInstallSheet(
         items.add(UItem.asSpace(SPACE_TOP, dp(10f)))
         // bound once, at creation: [fillItems] re-runs on every update, and re-binding the header
         // restarts the icon load, which flashes the placeholder. None of it depends on sheet state
+        val openUsername = { username: String ->
+            dismiss()
+            MessagesController.getInstance(currentAccount).openByUserName(username, content.fragment, 0)
+        }
         val headerView = header ?: PluginInfoHeaderView(context).also {
             header = it
-            it.onAuthorClick = { username ->
-                dismiss()
-                MessagesController.getInstance(currentAccount).openByUserName(username, content.fragment, 0)
-            }
+            it.onAuthorClick = openUsername
             it.bind(manifest, null, content.previous?.version)
         }
         items.add(UItem.asCustom(HEADER, headerView))
-        items.add(UItem.asShadow(manifest.description(LocaleController.getInstance().currentLocaleInfo?.langCode)))
+        val description = manifest.description(LocaleController.getInstance().currentLocaleInfo?.langCode)
+        items.add(UItem.asShadow(description?.let { formatPluginDescription(it, openUsername) }))
 
         content.obfuscation?.let { kind ->
             val banner = obfuscationBanner ?: WarningBanner(context).also { banner ->

@@ -36,9 +36,11 @@ import desu.inugram.helpers.plugins.ui.PluginUi
 import desu.inugram.helpers.theme.M3SectionsHelper
 import org.json.JSONObject
 import org.telegram.messenger.AndroidUtilities
+import org.telegram.messenger.MediaDataController
 import org.telegram.messenger.MessageObject
 import org.telegram.messenger.LocaleController
 import org.telegram.messenger.R
+import org.telegram.messenger.UserConfig
 import org.telegram.ui.ActionBar.Theme
 import org.telegram.ui.Cells.TextCheckCell
 import org.telegram.ui.Components.BackupImageView
@@ -49,6 +51,7 @@ import org.telegram.ui.Components.LayoutHelper
 import org.telegram.ui.Components.LinkSpanDrawable
 import org.telegram.ui.Components.UItem
 import org.telegram.ui.Components.UniversalAdapter
+import org.telegram.ui.Components.URLSpanReplacement
 import org.telegram.ui.SettingsActivity
 
 class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
@@ -121,7 +124,7 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
         headerView.bind(plugin.manifest, plugin.failure)
         items.add(UItem.asCustom(HEADER, headerView))
         val description = plugin.manifest.description(LocaleController.getInstance().currentLocaleInfo?.langCode)
-        items.add(UItem.asShadow(description))
+        items.add(UItem.asShadow(description?.let { formatPluginDescription(it) { username -> messagesController.openByUserName(username, this, 0) } }))
 
         items.add(
             UItem.asRippleCheck(TOGGLE_ENABLED, LocaleController.getString(R.string.InuPluginsEnabled))
@@ -586,14 +589,33 @@ class PluginInfoHeaderView(context: Context) : LinearLayout(context) {
     }
 }
 
-internal fun linkPluginUsernames(text: String, onClick: (String) -> Unit): CharSequence {
+private val MARKDOWN_LINK = Regex("""\[(.+?)]\((.+?)\)""")
+
+internal fun formatPluginDescription(text: String, onUsernameClick: (String) -> Unit): CharSequence {
+    val withLinks = SpannableStringBuilder(text)
+    for (match in MARKDOWN_LINK.findAll(text).toList().asReversed()) {
+        val (label, url) = match.destructured
+        val start = match.range.first
+        withLinks.replace(start, match.range.last + 1, label)
+        withLinks.setSpan(URLSpanReplacement(url), start, start + label.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+    val message = arrayOf<CharSequence>(withLinks)
+    val entities = MediaDataController.getInstance(UserConfig.selectedAccount).getEntities(message, true)
+    val styled = SpannableStringBuilder(message[0].toString())
+    MessageObject.addEntitiesToText(styled, entities, false, false, false, false)
+    return linkPluginUsernames(styled, onUsernameClick)
+}
+
+internal fun linkPluginUsernames(text: CharSequence, onClick: (String) -> Unit): CharSequence {
     val result = SpannableStringBuilder(text)
+    val links = result.getSpans(0, result.length, URLSpan::class.java)
     MessageObject.addUrlsByPattern(false, result, false, 0, 0, false)
     for (span in result.getSpans(0, result.length, URLSpan::class.java)) {
+        if (span in links) continue
         val start = result.getSpanStart(span)
         val end = result.getSpanEnd(span)
         result.removeSpan(span)
-        if (!span.url.startsWith("@")) continue
+        if (!span.url.startsWith("@") || links.any { result.getSpanStart(it) < end && start < result.getSpanEnd(it) }) continue
         result.setSpan(
             object : ClickableSpan() {
                 override fun onClick(widget: View) {

@@ -99,7 +99,13 @@ class PluginReposActivity : SettingsPageActivity(), NotificationCenter.Notificat
             for (update in updates) {
                 val row = rows.getOrPut(update.plugin.id) { PluginRepoRow(context) }
                 val meta = "${update.plugin.manifest.version ?: "?"} → ${update.manifest.version ?: "?"}"
-                row.bind(update.manifest, meta, LocaleController.getString(R.string.InuPluginRepoUpdate), active = true) {
+                row.bind(
+                    update.manifest,
+                    meta,
+                    LocaleController.getString(R.string.InuPluginRepoUpdate),
+                    active = true,
+                    onUsernameClick = { messagesController.openByUserName(it, this, 0) },
+                ) {
                     installRepoPost(this, update.post)
                 }
                 items.add(UItem.asCustom(row).apply { id = ITEM_BASE + (update.plugin.id.hashCode() and 0xffff) })

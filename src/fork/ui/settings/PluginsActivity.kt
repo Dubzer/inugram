@@ -533,9 +533,9 @@ class PluginRow(context: Context, val compact: Boolean) : LinearLayout(context) 
                 subtitle.text = failure.describe()
             } else {
                 subtitle.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText))
-                subtitle.text = linkUsernames(plugin.manifest.description
-                    ?: plugin.manifest.author?.let { LocaleController.formatString(R.string.InuPluginsByAuthor, it) }
-                    ?: "")
+                subtitle.text = plugin.manifest.description(LocaleController.getInstance().currentLocaleInfo?.langCode)?.let(::formatDescription)
+                    ?: plugin.manifest.author?.let { linkUsernames(LocaleController.formatString(R.string.InuPluginsByAuthor, it)) }
+                    ?: ""
             }
         } else {
             val meta = buildMetaLine(plugin)
@@ -545,7 +545,7 @@ class PluginRow(context: Context, val compact: Boolean) : LinearLayout(context) 
                 ?: plugin.manifest.description(LocaleController.getInstance().currentLocaleInfo?.langCode)
             description?.let {
                 it.setTextColor(Theme.getColor(if (failure != null) Theme.key_text_RedRegular else Theme.key_windowBackgroundWhiteGrayText))
-                it.text = if (failure == null) linkUsernames(text ?: "") else text ?: ""
+                it.text = if (failure == null) formatDescription(text ?: "") else text ?: ""
                 it.visibility = if (text.isNullOrEmpty()) GONE else VISIBLE
             }
         }
@@ -555,6 +555,9 @@ class PluginRow(context: Context, val compact: Boolean) : LinearLayout(context) 
 
     private fun linkUsernames(text: String): CharSequence =
         linkPluginUsernames(text) { username -> onUsernameClick?.invoke(username) }
+
+    private fun formatDescription(text: String): CharSequence =
+        formatPluginDescription(text) { username -> onUsernameClick?.invoke(username) }
 
     private fun buildMetaLine(plugin: Plugin): String {
         val parts = ArrayList<String>()

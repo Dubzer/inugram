@@ -24,6 +24,7 @@ import org.telegram.ui.ActionBar.Theme
 import org.telegram.ui.Components.BackupImageView
 import org.telegram.ui.Components.BulletinFactory
 import org.telegram.ui.Components.LayoutHelper
+import org.telegram.ui.Components.LinkSpanDrawable
 import org.telegram.ui.Components.UItem
 import org.telegram.ui.Components.UniversalAdapter
 
@@ -115,7 +116,13 @@ class PluginRepoActivity(private val repo: PluginRepo) : SettingsPageActivity() 
             manifest.version?.let { "v$it" },
             manifest.author?.let { LocaleController.formatString(R.string.InuPluginsByAuthor, it) },
         ).joinToString(" · ")
-        row.bind(manifest, meta, status?.let { LocaleController.getString(it) }, active = update) {
+        row.bind(
+            manifest,
+            meta,
+            status?.let { LocaleController.getString(it) },
+            active = update,
+            onUsernameClick = { messagesController.openByUserName(it, this, 0) },
+        ) {
             if (installed != null && !update) presentFragment(PluginInfoActivity(installed))
             else installRepoPost(this, post)
         }
@@ -167,7 +174,8 @@ class PluginRepoRow(context: Context) : LinearLayout(context) {
         setSingleLine(true)
         ellipsize = TextUtils.TruncateAt.END
     }
-    private val description = TextView(context).apply {
+    private val description = LinkSpanDrawable.LinksTextView(context).apply {
+        setLinkTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteLinkText))
         setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText))
         textSize = 14f
         maxLines = 2
@@ -197,13 +205,13 @@ class PluginRepoRow(context: Context) : LinearLayout(context) {
         for ((view, params) in if (rtl) views.asReversed() else views) addView(view, params)
     }
 
-    fun bind(manifest: PluginManifest, meta: String, statusText: String?, active: Boolean, onClick: () -> Unit) {
+    fun bind(manifest: PluginManifest, meta: String, statusText: String?, active: Boolean, onUsernameClick: (String) -> Unit, onClick: () -> Unit) {
         PluginManifestIcons.bindIcon(icon, manifest.icon, placeholder)
         title.text = manifest.name
         subtitle.text = meta
         subtitle.visibility = if (meta.isEmpty()) GONE else VISIBLE
         val text = manifest.description(LocaleController.getInstance().currentLocaleInfo?.langCode)
-        description.text = text
+        description.text = text?.let { formatPluginDescription(it, onUsernameClick) }
         description.visibility = if (text.isNullOrEmpty()) GONE else VISIBLE
         status.text = statusText
         status.visibility = if (statusText == null) GONE else VISIBLE
