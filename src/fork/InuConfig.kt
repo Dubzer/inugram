@@ -158,6 +158,10 @@ object InuConfig {
     @JvmField
     val PLUGINS_COMPACT_LIST = BoolItem("plugins_compact_list", false)
 
+    // json: [{channel, username, title}]
+    @JvmField
+    val PLUGIN_REPOS = StringItem("plugin_repos", "")
+
     // the "only install plugins you trust" warning was read and accepted: consent, not a
     // preference, so it is never carried over by an import
     @JvmField

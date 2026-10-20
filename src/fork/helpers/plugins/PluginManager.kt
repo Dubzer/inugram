@@ -10,6 +10,7 @@ import desu.inugram.core.plugins.PluginInstalls
 import desu.inugram.core.plugins.PluginManifest
 import desu.inugram.core.plugins.PluginManifestParser
 import desu.inugram.core.plugins.PluginPermissions
+import desu.inugram.core.plugins.PluginOrigin
 import desu.inugram.core.plugins.TlTables
 import desu.inugram.helpers.ShortcutHelper
 import desu.inugram.helpers.plugins.io.PluginBlobs
@@ -298,7 +299,7 @@ object PluginManager {
      * Reuses the install id of a same-id record that failed to load this boot, to keep its otherwise
      * unreachable storage. Plugins already in the installed list go through [update].
      */
-    fun import(source: String, enabled: Boolean = true, dev: Boolean = false): ImportResult {
+    fun import(source: String, enabled: Boolean = true, dev: Boolean = false, origin: PluginOrigin? = null): ImportResult {
         val manifest = PluginManifestParser.parseOrNull(source)
             ?: return ImportResult.Refused(getString(R.string.InuPluginsErrorNoManifest))
         badGrants(manifest)?.let { return ImportResult.Refused(it) }
@@ -314,6 +315,7 @@ object PluginManager {
                 this.enabled = enabled
                 this.dev = dev
                 this.grants = manifest.grants
+                this.origin = origin
             }
         val reversible = reclaimed == null
         plugins.add(plugin)
@@ -324,13 +326,14 @@ object PluginManager {
         return ImportResult.Installed(plugin, reversible)
     }
 
-    fun update(plugin: Plugin, source: String, dev: Boolean = false): String? {
+    fun update(plugin: Plugin, source: String, dev: Boolean = false, origin: PluginOrigin? = null): String? {
         val manifest = PluginManifestParser.parseOrNull(source)
             ?: return getString(R.string.InuPluginsErrorNoManifest)
         incompatibility(manifest)?.let { return it }
         if (!PluginStore.writeSource(plugin.file, source)) return getString(R.string.InuPluginsErrorWrite)
         plugin.dev = dev
         plugin.grants = manifest.grants
+        plugin.origin = origin
         if (dev && !plugin.enabled && plugin.failure?.disables == true) plugin.enabled = true
         reload(plugin)
         PluginStore.persist(plugins)
