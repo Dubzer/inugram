@@ -808,6 +808,7 @@
     <string name="InuPluginsNormalView">Normal view</string>
     <string name="InuPluginsReload">Reload</string>
     <string name="InuPluginsViewSource">View source code</string>
+    <string name="InuPluginsMemoryUsage">Memory usage</string>
     <string name="InuPluginSourceTitle">Source code</string>
     <string name="InuPluginsRemove">Remove</string>
     <string name="InuPluginsRemoveTitle">Remove %s</string>

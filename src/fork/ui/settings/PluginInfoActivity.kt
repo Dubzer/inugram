@@ -19,6 +19,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import desu.inugram.InuConfig
 import desu.inugram.core.plugins.GrantCatalog
 import desu.inugram.core.plugins.GrantTier
 import desu.inugram.core.plugins.ObfuscationDetector
@@ -26,12 +27,14 @@ import desu.inugram.core.plugins.PluginManifest
 import desu.inugram.core.plugins.PluginPermissions
 import desu.inugram.core.plugins.SourceObfuscation
 import desu.inugram.helpers.InuUtils
+import desu.inugram.helpers.plugins.EngineDispatch
 import desu.inugram.helpers.plugins.Plugin
 import desu.inugram.helpers.plugins.PluginFailure
 import desu.inugram.helpers.plugins.PluginManager
 import desu.inugram.helpers.plugins.ui.PluginManifestIcons
 import desu.inugram.helpers.plugins.ui.PluginUi
 import desu.inugram.helpers.theme.M3SectionsHelper
+import org.json.JSONObject
 import org.telegram.messenger.AndroidUtilities
 import org.telegram.messenger.MessageObject
 import org.telegram.messenger.LocaleController
@@ -54,6 +57,7 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
     private val grantRows = HashMap<Int, GrantRowView>()
     private var analyzedSource: String? = null
     private var obfuscation: SourceObfuscation? = null
+    private var memoryUsage: String? = null
 
     override fun getTitle(): CharSequence = plugin.manifest.name
 
@@ -62,14 +66,35 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
         listView?.adapter?.update(true)
     }
 
+    private val pollMemoryUsage = object : Runnable {
+        override fun run() {
+            val session = plugin.session
+            if (session != null && InuConfig.PLUGINS_DEV_MODE.value) {
+                EngineDispatch.onEngine(session) {
+                    val usage = session.engine.memoryUsage()?.let(::JSONObject) ?: return@onEngine
+                    val text = AndroidUtilities.formatFileSize(usage.getLong("heapBytes")) + " / " +
+                        AndroidUtilities.formatFileSize(usage.getLong("heapLimitBytes"))
+                    AndroidUtilities.runOnUIThread {
+                        if (memoryUsage == text) return@runOnUIThread
+                        memoryUsage = text
+                        listView?.adapter?.update(true)
+                    }
+                }
+            }
+            AndroidUtilities.runOnUIThread(this, MEMORY_POLL_MS)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         PluginManager.addOnChangedListener(onPluginChanged)
+        pollMemoryUsage.run()
     }
 
     override fun onPause() {
         super.onPause()
         PluginManager.removeOnChangedListener(onPluginChanged)
+        AndroidUtilities.cancelRunOnUIThread(pollMemoryUsage)
     }
 
     override fun createView(context: Context): View {
@@ -123,6 +148,11 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
             items.add(UItem.asShadow(null))
         }
 
+        if (InuConfig.PLUGINS_DEV_MODE.value && plugin.session != null) {
+            items.add(UItem.asButton(MEMORY_USAGE, LocaleController.getString(R.string.InuPluginsMemoryUsage), memoryUsage ?: "…"))
+            items.add(UItem.asShadow(null))
+        }
+
         if (plugin.settingsPageId != null) {
             items.add(UItem.asButton(BUTTON_SETTINGS, R.drawable.msg_settings, LocaleController.getString(R.string.Settings)))
         }
@@ -165,7 +195,9 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
         private val BUTTON_SHARE = InuUtils.generateId()
         private val BUTTON_RELOAD = InuUtils.generateId()
         private val BUTTON_REMOVE = InuUtils.generateId()
+        private val MEMORY_USAGE = InuUtils.generateId()
         private const val GRANT_BASE = 20000
+        private const val MEMORY_POLL_MS = 2000L
     }
 }
 

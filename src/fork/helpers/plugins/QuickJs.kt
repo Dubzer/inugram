@@ -77,6 +77,9 @@ open class QuickJs {
 
     fun evaluate(code: String, filename: String = "<plugin>"): String? = requireLive { nativeEvaluate(it, code, filename) }
 
+    /** json, see `describe_memory_usage`. Engine thread only */
+    fun memoryUsage(): String? = ifLiveOr(null) { nativeMemoryUsage(it) }
+
     /** native calls [onResult] by name, from the engine queue or from whatever closes the engine */
     fun interface EvalCallback {
         fun onResult(fulfilled: Boolean, text: String)
@@ -339,6 +342,7 @@ open class QuickJs {
     private external fun nativeDispatchUpdateIntercept(ptr: Long, callbackId: Int, dispatchId: Long, typeName: String, accountId: Int, updateWire: String)
     private external fun nativeAbandonUpdateDispatch(ptr: Long, dispatchId: Long, reasonWire: String)
     private external fun nativeAccountsChanged(ptr: Long)
+    private external fun nativeMemoryUsage(ptr: Long): String?
     private external fun nativeSettle(ptr: Long, api: Int, requestId: Long, wire: String)
     private external fun nativeSettleBytes(ptr: Long, api: Int, requestId: Long, bytes: ByteArray)
     private external fun nativeRunTimers(ptr: Long)

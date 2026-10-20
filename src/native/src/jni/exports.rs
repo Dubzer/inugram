@@ -54,7 +54,7 @@ use crate::runtime::Dispose;
 use crate::runtime::{enter_js, is_job_pending};
 use crate::sandbox::grants::{CachedGrantHost, GrantHost};
 use crate::sandbox::limits::{
-  arm, install_interrupt_handler, ExternalMemory, ENTRY_DEADLINE_MS, EVAL_DEADLINE_MS, HEAP_LIMIT_BYTES,
+  arm, describe_memory_usage, install_interrupt_handler, ExternalMemory, HeapAllocator, ENTRY_DEADLINE_MS, EVAL_DEADLINE_MS, HEAP_LIMIT_BYTES,
 };
 use crate::sandbox::registry::Lifecycle;
 
@@ -80,7 +80,7 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
       return 0;
     };
 
-    let Ok(rt) = Runtime::new() else { return 0 };
+    let Ok(rt) = Runtime::new_with_alloc(HeapAllocator::new(HEAP_LIMIT_BYTES)) else { return 0 };
     let Ok(ctx) = Context::full(&rt) else {
       return 0;
     };
@@ -96,7 +96,6 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
 
     let interrupt_log = make_log(bridge.console.clone());
     install_interrupt_handler(&rt, Arc::new(move |msg: &str| interrupt_log(msg)));
-    rt.set_memory_limit(HEAP_LIMIT_BYTES);
 
     let spill_dir = PathBuf::from(jstring_to_string(env, &spill_dir));
     let transfer_dir = PathBuf::from(jstring_to_string(env, &transfer_dir));
@@ -308,6 +307,7 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
         files,
         timers,
         notifications,
+        external,
         jvm,
         xposed,
       })
@@ -1105,6 +1105,17 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativePollUnloa
     Err(EntryError::Busy | EntryError::Reentrant) => return false,
   };
   engine.lifecycle_state.poll_unload(&engine.ctx)
+}
+
+#[no_mangle]
+pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeMemoryUsage(
+  mut env: EnvUnowned,
+  _this: JObject,
+  ptr: jlong,
+) -> jstring {
+  with_engine_env(&mut env, ptr, std::ptr::null_mut(), |env, engine| {
+    new_jstring_raw(env, describe_memory_usage(&engine.ctx, &engine.external))
+  })
 }
 
 #[no_mangle]
