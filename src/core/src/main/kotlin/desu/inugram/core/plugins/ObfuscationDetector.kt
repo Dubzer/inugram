@@ -24,7 +24,7 @@ object ObfuscationDetector {
     private const val MINIFIED_MAX_CODE_LINE_LENGTH = 1000
 
     fun detect(source: String): SourceObfuscation? {
-        val code = stripStringsAndComments(source)
+        val code = JsLiterals.stripStringsAndComments(source)
         if (isObfuscated(source, code)) return SourceObfuscation.OBFUSCATED
         if (isMinified(code)) return SourceObfuscation.MINIFIED
         return null
@@ -72,52 +72,6 @@ object ObfuscationDetector {
         if (lines.any { it.length > MINIFIED_MAX_CODE_LINE_LENGTH }) return true
         val median = lines.map { it.length }.sorted()[lines.size / 2]
         return median > MINIFIED_MEDIAN_LINE_LENGTH
-    }
-
-    /**
-     * Preserves quotes and newlines while stripping string contents. Regex literals are not
-     * parsed: a quote inside one can hide code until the next quote. This undercounts code
-     * rather than falsely flagging readable source.
-     */
-    private fun stripStringsAndComments(source: String): String {
-        val out = StringBuilder(source.length)
-        var i = 0
-        val n = source.length
-        while (i < n) {
-            val c = source[i]
-            val next = if (i + 1 < n) source[i + 1] else '\u0000'
-            when {
-                c == '/' && next == '/' -> {
-                    while (i < n && source[i] != '\n') i++
-                }
-                c == '/' && next == '*' -> {
-                    i += 2
-                    while (i < n && !(source[i] == '*' && i + 1 < n && source[i + 1] == '/')) {
-                        if (source[i] == '\n') out.append('\n')
-                        i++
-                    }
-                    i = minOf(i + 2, n)
-                }
-                c == '"' || c == '\'' || c == '`' -> {
-                    out.append(c)
-                    i++
-                    while (i < n && source[i] != c) {
-                        if (source[i] == '\\') i++
-                        else if (source[i] == '\n') out.append('\n')
-                        i++
-                    }
-                    if (i < n) {
-                        out.append(c)
-                        i++
-                    }
-                }
-                else -> {
-                    out.append(c)
-                    i++
-                }
-            }
-        }
-        return out.toString()
     }
 
     private fun countOccurrences(haystack: String, needle: String): Int {
