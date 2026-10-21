@@ -5,23 +5,25 @@ Subject: build support stuff for fork-specific code: - added kotlin - bumped min
 
 ---
  .gitmodules                                   |   3 +
- TMessagesProj/build.gradle                    | 176 ++++++++------
- TMessagesProj/google-services.json            |  76 ++-----
+ TMessagesProj/build.gradle                    | 179 ++++++++------
+ TMessagesProj/google-services.json            |  76 +-----
+ TMessagesProj/jni/CMakeLists.txt              |   3 +
+ TMessagesProj/jni/exports.map                 |   1 +
  TMessagesProj/proguard-rules.pro              |  15 ++
  TMessagesProj/src/main/AndroidManifest.xml    |   7 +
  .../org/telegram/messenger/BuildVars.java     |  12 +-
  .../telegram/tgnet/ConnectionsManager.java    |   2 +-
- .../org/telegram/ui/PaymentFormActivity.java  |  28 ++-
+ .../org/telegram/ui/PaymentFormActivity.java  |  28 +--
  .../org/telegram/ui/SettingsActivity.java     |  24 +-
- TMessagesProj_App/build.gradle                | 214 +++++++++++-------
- TMessagesProj_App/google-services.json        |  76 ++-----
+ TMessagesProj_App/build.gradle                | 225 +++++++++++-------
+ TMessagesProj_App/google-services.json        |  76 +-----
  TMessagesProj_App/jni/CMakeLists.txt          |  10 +
  TMessagesProj_App/jni/lsplant                 |   1 +
  TMessagesProj_AppTests/build.gradle           |   5 +-
  build.gradle                                  |  19 +-
  gradle.properties                             |   2 +-
  settings.gradle                               |  40 +++-
- 17 files changed, 379 insertions(+), 331 deletions(-)
+ 19 files changed, 397 insertions(+), 331 deletions(-)
  create mode 100644 TMessagesProj_App/jni/CMakeLists.txt
  create mode 160000 TMessagesProj_App/jni/lsplant
 
@@ -164,7 +166,7 @@ index 0000000..0000000 100644
          }
      }
  
-@@ -130,23 +207,31 @@ android {
+@@ -130,23 +207,34 @@ android {
      compileOptions {
          sourceCompatibility JavaVersion.VERSION_1_8
          targetCompatibility JavaVersion.VERSION_1_8
@@ -196,13 +198,16 @@ index 0000000..0000000 100644
 -                arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-21' //, '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
 +                arguments '-DANDROID_STL=c++_static', '-DANDROID_PLATFORM=android-26' //, '-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON'
                  targets 'tmessages.49'
++                if (!rootProject.ext.inuPluginless) {
++                    arguments += ['-DINU_EXPORT_SQLITE=ON']
++                }
 +                if (rootProject.ext.ccachePath) {
 +                    arguments += ["-DCMAKE_C_COMPILER_LAUNCHER=${rootProject.ext.ccachePath}", "-DCMAKE_CXX_COMPILER_LAUNCHER=${rootProject.ext.ccachePath}"]
 +                }
              }
          }
      }
-@@ -157,64 +242,13 @@ android {
+@@ -157,64 +245,13 @@ android {
              shrinkResources false
              multiDexEnabled true
              ndk.debugSymbolLevel = 'FULL'
@@ -271,7 +276,7 @@ index 0000000..0000000 100644
          }
  
          release {
-@@ -222,12 +256,13 @@ android {
+@@ -222,12 +259,13 @@ android {
              shrinkResources false
              multiDexEnabled true
              ndk.debugSymbolLevel = 'FULL'
@@ -288,7 +293,7 @@ index 0000000..0000000 100644
          }
      }
  
-@@ -245,7 +280,6 @@ def getProps(String propName) {
+@@ -245,7 +283,6 @@ def getProps(String propName) {
          return "";
      }
  }
@@ -296,7 +301,7 @@ index 0000000..0000000 100644
  
  task checkVisibility {
      doFirst {
-@@ -267,4 +301,10 @@ task checkVisibility {
+@@ -267,4 +304,10 @@ task checkVisibility {
      }
  }
  
@@ -421,6 +426,33 @@ index 0000000..0000000 100644
          }
        }
      }
+diff --git a/TMessagesProj/jni/CMakeLists.txt b/TMessagesProj/jni/CMakeLists.txt
+index 0000000..0000000 100644
+--- a/TMessagesProj/jni/CMakeLists.txt
++++ b/TMessagesProj/jni/CMakeLists.txt
+@@ -174,6 +174,9 @@ set_target_properties(sqlite PROPERTIES
+         ANDROID_ARM_MODE arm)
+ target_compile_definitions(sqlite PUBLIC
+         NULL=0 SOCKLEN_T=socklen_t LOCALE_NOT_USED ANDROID_NDK DISABLE_IMPORTGL AVOID_TABLES ANDROID_TILE_BASED_DECODE HAVE_STRCHRNUL=0 ANDROID_ARMV6_IDCT)
++if(INU_EXPORT_SQLITE)
++    target_compile_options(sqlite PRIVATE -fvisibility=default)
++endif()
+ 
+ #breakpad
+ add_library(breakpad STATIC
+diff --git a/TMessagesProj/jni/exports.map b/TMessagesProj/jni/exports.map
+index 0000000..0000000 100644
+--- a/TMessagesProj/jni/exports.map
++++ b/TMessagesProj/jni/exports.map
+@@ -3,6 +3,7 @@
+     Java_*;        # all JNI functions resolved by name
+     JNI_OnLoad;
+     JNI_OnUnload;
++    sqlite3_*;     # only when built with INU_EXPORT_SQLITE, hidden otherwise
+   local:
+     *;             # hide everything else (FFmpeg, libyuv, webrtc, ...)
+ };
+\ No newline at end of file
 diff --git a/TMessagesProj/proguard-rules.pro b/TMessagesProj/proguard-rules.pro
 index 0000000..0000000 100644
 --- a/TMessagesProj/proguard-rules.pro
@@ -746,9 +778,8 @@ index 0000000..0000000 100644
  
      sourceSets.release {
 -        manifest.srcFile '../TMessagesProj/config/release/AndroidManifest.xml'
-+        manifest.srcFile '../TMessagesProj/config/release/AndroidManifest_SDK23.xml'
-     }
- 
+-    }
+-
 -    flavorDimensions "minApi"
 -
 -    productFlavors {
@@ -779,8 +810,9 @@ index 0000000..0000000 100644
 -            }
 -            buildConfigField "boolean", "BUNDLE", "false"
 -        }
--    }
--
++        manifest.srcFile '../TMessagesProj/config/release/AndroidManifest_SDK23.xml'
+     }
+ 
 -    defaultConfig.versionCode = Integer.parseInt(APP_VERSION_CODE)
 +    defaultConfig.versionCode = rootProject.ext.verCode
  
@@ -805,11 +837,11 @@ index 0000000..0000000 100644
          targetSdkVersion 36
 -        versionName APP_VERSION_NAME
 -        ndkVersion "27.2.12479018"
+-
+-        multiDexEnabled true
 +        versionName rootProject.ext.verName
 +        ndkVersion "29.0.14206865"
  
--        multiDexEnabled true
--
 -        vectorDrawables.generatedDensities = ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi']
 +        ndk {
 +            abiFilters "arm64-v8a"
@@ -840,7 +872,7 @@ index 0000000..0000000 100644
      buildFeatures {
          buildConfig = true
      }
-@@ -192,6 +148,98 @@ android {
+@@ -192,6 +148,109 @@ android {
      lintOptions {
          checkReleaseBuilds false
      }
@@ -894,8 +926,19 @@ index 0000000..0000000 100644
 +inuNativeProfiles.each { buildType, cargoProfile ->
 +    def taskName = "buildInuNative${buildType.capitalize()}"
 +    def outputDir = new File(rustJniLibsDir, buildType)
++    def stockJniTask = "copy${buildType.capitalize()}JniLibsProjectOnly"
++    def stockLib = project(':TMessagesProj').file("build/intermediates/library_jni/$buildType/$stockJniTask/jni/arm64-v8a/libtmessages.49.so")
++    def sqliteLinkDir = file("$buildDir/inuSqliteLink/$buildType")
 +    tasks.register(taskName, Exec) {
++        dependsOn ":TMessagesProj:$stockJniTask"
 +        workingDir rustModuleDir
++        // libsqlite3-sys always links `-lsqlite3`, so a linker script by that name points it at the stock lib
++        environment 'SQLITE3_LIB_DIR', sqliteLinkDir.absolutePath
++        environment 'SQLITE3_INCLUDE_DIR', project(':TMessagesProj').file('jni/sqlite').absolutePath
++        doFirst {
++            sqliteLinkDir.mkdirs()
++            new File(sqliteLinkDir, 'libsqlite3.so').text = "INPUT(${stockLib.absolutePath})\n"
++        }
 +        environment 'ANDROID_NDK_HOME', android.ndkDirectory.absolutePath
 +        environment 'PATH', (cargoPathDirs + [System.getenv('PATH') ?: '']).join(File.pathSeparator)
 +        def prebuilt = file("${android.ndkDirectory}/toolchains/llvm/prebuilt")

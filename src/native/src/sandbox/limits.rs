@@ -65,6 +65,11 @@ impl Drop for Deadline {
   }
 }
 
+/// for native work that runs between two checks of the interrupt handler
+pub(crate) fn is_past_deadline() -> bool {
+  ARMED.with(|a| a.get()).is_some_and(|armed| Instant::now() >= armed.deadline)
+}
+
 pub const MAX_BUDGET_STRIKES: u32 = 3;
 
 pub fn install_interrupt_handler(rt: &Runtime, log: crate::Log) {

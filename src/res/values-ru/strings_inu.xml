@@ -835,6 +835,7 @@
     <string name="InuPluginsPermissions">Разрешения</string>
     <string name="InuPluginsPermissionsNone">Этот плагин не запрашивает разрешений</string>
     <string name="InuPluginGrantFs">Хранилище файлов</string>
+    <string name="InuPluginGrantSqlite">База данных</string>
     <string name="InuPluginGrantClipboardWrite">Запись в буфер обмена</string>
     <string name="InuPluginGrantOpenUrl">Открытие ссылок</string>
     <string name="InuPluginGrantAppVisibility">Отслеживание видимости приложения</string>

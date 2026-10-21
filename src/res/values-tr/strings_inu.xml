@@ -819,6 +819,7 @@
     <string name="InuPluginsPermissions">İzinler</string>
     <string name="InuPluginsPermissionsNone">Bu eklenti herhangi bir izin istemiyor</string>
     <string name="InuPluginGrantFs">Dosya depolama</string>
+    <string name="InuPluginGrantSqlite">Veritabanı</string>
     <string name="InuPluginGrantClipboardWrite">Panoya yazma</string>
     <string name="InuPluginGrantOpenUrl">Bağlantıları açma</string>
     <string name="InuPluginGrantAppVisibility">Uygulama görünürlüğünü izleme</string>

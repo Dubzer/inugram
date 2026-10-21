@@ -818,6 +818,7 @@
     <string name="InuPluginsPermissions">権限</string>
     <string name="InuPluginsPermissionsNone">このプラグインは権限を要求しません</string>
     <string name="InuPluginGrantFs">ファイルストレージ</string>
+    <string name="InuPluginGrantSqlite">データベース</string>
     <string name="InuPluginGrantClipboardWrite">クリップボードへの書き込み</string>
     <string name="InuPluginGrantOpenUrl">リンクを開く</string>
     <string name="InuPluginGrantAppVisibility">アプリの表示状態を監視</string>

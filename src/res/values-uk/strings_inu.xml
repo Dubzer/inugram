@@ -799,6 +799,7 @@
     <string name="InuPluginsPermissions">Дозволи</string>
     <string name="InuPluginsPermissionsNone">Цей плагін не запитує жодних дозволів</string>
     <string name="InuPluginGrantFs">Доступ до файлів</string>
+    <string name="InuPluginGrantSqlite">База даних</string>
     <string name="InuPluginGrantClipboardWrite">Запис у буфер обміну</string>
     <string name="InuPluginGrantOpenUrl">Відкриття посилань</string>
     <string name="InuPluginGrantAppVisibility">Відстеження видимості додатка</string>

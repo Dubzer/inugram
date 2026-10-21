@@ -304,6 +304,8 @@ fun attachBridge(
             installFs = false,
             androidDirs = "",
             localStoragePath = localStoragePath,
+            sqlitePath = "",
+            sqliteQuotaBytes = 0,
             installJvm = bridge.jvm != null,
             installXposed = bridge.xposed != null,
             grants = session.permissions,

@@ -107,6 +107,7 @@ declare namespace inu {
      * - `timed-out`: Your operation has timed out
      * - `aborted`: You operation was aborted
      * - `network`: Some network-related issue happened
+     * - `sqlite`: SQLite refused a statement, see {@link errcode}
      * - `internal`: An internal plugin engine error happened, please report this
      */
     code:
@@ -120,6 +121,7 @@ declare namespace inu {
       | 'timed-out'
       | 'aborted'
       | 'network'
+      | 'sqlite'
       | 'internal'
       | (string & {})
 
@@ -129,6 +131,10 @@ declare namespace inu {
     usage?: number
     /** If `code == `quota-exceeded'`, the current quota limit */
     quota?: number
+    /** If `code == 'sqlite'`, SQLite's extended result code, e.g. `2067` for `SQLITE_CONSTRAINT_UNIQUE` */
+    errcode?: number
+    /** If `code == 'sqlite'`, SQLite's description of {@link errcode} */
+    errstr?: string
   }
 
   /** Get information about the current environment */

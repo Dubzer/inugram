@@ -818,6 +818,7 @@
     <string name="InuPluginsPermissions">权限</string>
     <string name="InuPluginsPermissionsNone">此插件不请求任何权限</string>
     <string name="InuPluginGrantFs">文件存储</string>
+    <string name="InuPluginGrantSqlite">数据库</string>
     <string name="InuPluginGrantClipboardWrite">写入剪贴板</string>
     <string name="InuPluginGrantOpenUrl">打开链接</string>
     <string name="InuPluginGrantAppVisibility">监视应用可见性</string>

@@ -27,6 +27,7 @@ object = { version = "0.40.0", default-features = false, features = [
   "elf",
   "unaligned"
 ] }
+rusqlite = { version = "0.40", features = [ "hooks", "limits" ] }
 rquickjs = { version = "0.14", default-features = true, features = [
   "bindgen",
   "macro",
@@ -37,6 +38,10 @@ slotmap = "1.1.1"
 tgtext = { path = "crates/tgtext" }
 url = "2.5.8"
 yuv = { version = "0.8.18", default-features = false, features = [ "rdm" ] }
+
+# android links the app's own sqlite, see `buildInuNative*`
+[target.'cfg(not(target_os = "android"))'.dependencies]
+libsqlite3-sys = { version = "0.38", features = [ "bundled" ] }
 
 [build-dependencies]
 rquickjs = { version = "0.14", features = [ "loader" ] }

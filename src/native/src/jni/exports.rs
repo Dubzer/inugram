@@ -72,6 +72,8 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
   install_fs: jboolean,
   android_dirs: JString,
   local_storage_path: JString,
+  sqlite_path: JString,
+  sqlite_quota_bytes: jlong,
   install_jvm: jboolean,
   install_xposed: jboolean,
   grant_tokens: JObjectArray<JString>,
@@ -105,6 +107,7 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
     let fs_dir = PathBuf::from(jstring_to_string(env, &fs_dir));
     let android_dirs = jstring_to_string(env, &android_dirs);
     let local_storage_path = PathBuf::from(jstring_to_string(env, &local_storage_path));
+    let sqlite_path = PathBuf::from(jstring_to_string(env, &sqlite_path));
     let grants: Rc<dyn GrantHost> = CachedGrantHost::from_pairs(&read_string_array(env, &grant_tokens));
     let assets = parse_assets(&read_string_array(env, &asset_entries));
     let Some(engine) = (|| -> Option<Engine> {
@@ -263,6 +266,16 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
           globals.install_ungranted_namespace(&ctx, "fs", "fs")
         })?;
       }
+      install_part(&ctx, "inu.sqlite", log.as_ref(), |ctx, globals| {
+        if sqlite_path.as_os_str().is_empty() {
+          return globals.install_ungranted_namespace(&ctx, "sqlite", "sqlite");
+        }
+        let quota = match sqlite_quota_bytes {
+          ..=0 => crate::api::io::fs::DEFAULT_QUOTA_BYTES,
+          bytes => bytes as u64,
+        };
+        crate::api::io::sqlite::install_sqlite(&ctx, grants.clone(), sqlite_path.clone(), quota, &globals)
+      })?;
       install_part(&ctx, "inu.assets", log.as_ref(), |ctx, globals| install_assets(&ctx, assets, &globals))?;
       let rpc = install_part(&ctx, "inu.interceptRpc/onUpdate", log.as_ref(), |ctx, globals| {
         let host: Rc<dyn RpcHost> = bridge.clone();
