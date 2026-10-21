@@ -103,7 +103,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - double-tap message actions (separate for incoming/outgoing/editable channel posts), 🐶 customizable double-tap delay
 - hide keyboard on scroll
 - always show go-to-bottom button (don't hide on scroll-down)
-- web preview: replacements (e.g. twitter→fixupx)
+- web preview replacements (e.g. twitter→fixupx), optionally applied when pasting links
 - 🐶 strip tracking params (utm_*, fbclid, si, erid, …) from links before opening and/or when pasting — *rules from AdGuard URL Tracking filter*
 - 🐶 resolve trackable share redirects (TikTok, SoundCloud and more) when pasting/opening
 - 🐶 web preview refetch from menu

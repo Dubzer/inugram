@@ -458,6 +458,7 @@
     <string name="InuWebPreviewReplacements">Web preview replacements</string>
     <string name="InuWebPreviewEnabled">Enable replacements</string>
     <string name="InuWebPreviewReplacementsInfo">Regex replacements applied to URLs when fetching web previews. Long-press to delete.</string>
+    <string name="InuWebPreviewReplaceOnPaste">Replace when pasting</string>
     <string name="InuWebPreviewAdd">Add replacement</string>
     <string name="InuWebPreviewEdit">Edit replacement</string>
     <string name="InuWebPreviewReset">Reset to defaults</string>

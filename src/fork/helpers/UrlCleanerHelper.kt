@@ -16,6 +16,7 @@ import android.widget.EditText
 import androidx.core.net.toUri
 import desu.inugram.InuConfig
 import desu.inugram.core.urlcleaner.UrlCleaner
+import desu.inugram.helpers.chat.WebPreviewHelper
 import org.telegram.messenger.AndroidUtilities
 import org.telegram.messenger.ApplicationLoader
 import org.telegram.messenger.FileLog
@@ -160,19 +161,28 @@ object UrlCleanerHelper {
         return getCleaner()?.clean(url) ?: url
     }
 
+    private fun isPasteTransformEnabled(): Boolean =
+        InuConfig.STRIP_TRACKING_PARAMS_ON_PASTE.value ||
+            InuConfig.WEB_PREVIEW_REPLACE_ON_PASTE.value && InuConfig.WEB_PREVIEW_REPLACEMENTS_ENABLED.value
+
+    private fun transformPastedUrl(url: String): String {
+        val cleaned = if (InuConfig.STRIP_TRACKING_PARAMS_ON_PASTE.value) cleanUrl(url) else url
+        return if (InuConfig.WEB_PREVIEW_REPLACE_ON_PASTE.value) WebPreviewHelper.applyReplacements(cleaned) else cleaned
+    }
+
     @JvmStatic
     fun cleanUrlString(url: CharSequence): CharSequence {
-        if (!InuConfig.STRIP_TRACKING_PARAMS_ON_PASTE.value) return url
+        if (!isPasteTransformEnabled()) return url
         val s = url.toString()
-        val cleaned = cleanUrl(s)
+        val cleaned = transformPastedUrl(s)
         return if (cleaned === s) url else cleaned
     }
 
     /** Scans URLs in [text]; returns same ref if nothing matched/changed. */
     @JvmStatic
     fun cleanText(text: CharSequence?): CharSequence? {
-        if (text.isNullOrEmpty() || !InuConfig.STRIP_TRACKING_PARAMS_ON_PASTE.value) return text
-        return replaceUrls(text, ::cleanUrl)
+        if (text.isNullOrEmpty() || !isPasteTransformEnabled()) return text
+        return replaceUrls(text, ::transformPastedUrl)
     }
 
     private fun replaceUrls(text: CharSequence, transform: (String) -> String): CharSequence {
@@ -201,7 +211,7 @@ object UrlCleanerHelper {
     /** Returns true if the paste was consumed (text inserted). */
     @JvmStatic
     fun handleContextMenuPaste(editText: EditText): Boolean {
-        if (!InuConfig.STRIP_TRACKING_PARAMS_ON_PASTE.value && !InuConfig.RESOLVE_TRACKABLE_REDIRECTS.value) return false
+        if (!isPasteTransformEnabled() && !InuConfig.RESOLVE_TRACKABLE_REDIRECTS.value) return false
         val ctx = editText.context ?: return false
         val cb = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager ?: return false
         val clip = cb.primaryClip?.takeIf { it.itemCount >= 1 } ?: return false
@@ -235,9 +245,7 @@ object UrlCleanerHelper {
                     resolveAndInsert(editText, text, targets, position, position)
                     return committed
                 }
-                val cleaned = if (text != null && InuConfig.STRIP_TRACKING_PARAMS_ON_PASTE.value
-                    && text.toString().contains("https://")
-                ) cleanText(text) else text
+                val cleaned = if (text != null && text.toString().contains("https://")) cleanText(text) else text
                 return super.commitText(cleaned, newCursorPosition)
             }
         }
@@ -245,8 +253,8 @@ object UrlCleanerHelper {
 
     @JvmStatic
     fun cleanSpannedUrls(text: Spannable) {
-        if (!InuConfig.STRIP_TRACKING_PARAMS_ON_PASTE.value) return
-        replaceSpanUrls(text, ::cleanUrl)
+        if (!isPasteTransformEnabled()) return
+        replaceSpanUrls(text, ::transformPastedUrl)
     }
 
     private fun replaceSpanUrls(text: Spannable, transform: (String) -> String) {
@@ -349,10 +357,7 @@ object UrlCleanerHelper {
 
     private fun resolveAndInsert(editText: EditText, text: CharSequence, targets: List<String>, start: Int, end: Int) {
         val insert: (Map<String, String>) -> Unit = { resolved ->
-            val transform = { url: String ->
-                val target = resolved[url] ?: url
-                if (InuConfig.STRIP_TRACKING_PARAMS_ON_PASTE.value) cleanUrl(target) else target
-            }
+            val transform = { url: String -> transformPastedUrl(resolved[url] ?: url) }
             val result = SpannableStringBuilder(replaceUrls(text, transform))
             replaceSpanUrls(result, transform)
             editText.text?.let { editable ->

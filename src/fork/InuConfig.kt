@@ -617,6 +617,9 @@ object InuConfig {
     val WEB_PREVIEW_REPLACEMENTS = StringItem("web_preview_replacements", "")
 
     @JvmField
+    val WEB_PREVIEW_REPLACE_ON_PASTE = BoolItem("web_preview_replace_on_paste", false)
+
+    @JvmField
     val STRIP_TRACKING_PARAMS_ON_OPEN = BoolItem("strip_tracking_params", true)
 
     @JvmField
