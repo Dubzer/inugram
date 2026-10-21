@@ -25,6 +25,7 @@ use crate::api::canvas::{install_canvas, CanvasHost};
 use crate::api::error::{describe_js_error, install_plugin_error, install_rejection_tracker};
 use crate::api::globals::{install_globals, RandomHost};
 use crate::api::info::{install_inu, InuInfo};
+use crate::api::io::assets::{install_assets, parse_assets};
 use crate::api::io::fetch::{install_fetch, FetchHost};
 use crate::api::io::local_storage::install_local_storage;
 use crate::api::lifecycle::{install_lifecycle, AppMode};
@@ -74,6 +75,7 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
   install_jvm: jboolean,
   install_xposed: jboolean,
   grant_tokens: JObjectArray<JString>,
+  asset_entries: JObjectArray<JString>,
 ) -> jlong {
   in_env(&mut env, 0, |env| {
     let Some(bridge) = JniBridge::new(env, &listener) else {
@@ -104,6 +106,7 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
     let android_dirs = jstring_to_string(env, &android_dirs);
     let local_storage_path = PathBuf::from(jstring_to_string(env, &local_storage_path));
     let grants: Rc<dyn GrantHost> = CachedGrantHost::from_pairs(&read_string_array(env, &grant_tokens));
+    let assets = parse_assets(&read_string_array(env, &asset_entries));
     let Some(engine) = (|| -> Option<Engine> {
       let _deadline = arm(ENTRY_DEADLINE_MS);
       let lifecycle = Lifecycle::new();
@@ -260,6 +263,7 @@ pub extern "system" fn Java_desu_inugram_helpers_plugins_QuickJs_nativeCreate(
           globals.install_ungranted_namespace(&ctx, "fs", "fs")
         })?;
       }
+      install_part(&ctx, "inu.assets", log.as_ref(), |ctx, globals| install_assets(&ctx, assets, &globals))?;
       let rpc = install_part(&ctx, "inu.interceptRpc/onUpdate", log.as_ref(), |ctx, globals| {
         let host: Rc<dyn RpcHost> = bridge.clone();
         let shared = shared.clone().restore(&ctx)?;

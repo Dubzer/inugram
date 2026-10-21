@@ -1,6 +1,7 @@
 package desu.inugram.helpers.plugins
 
 import desu.inugram.core.plugins.ObfuscationDetector
+import desu.inugram.core.plugins.PluginAssetsParser
 import desu.inugram.core.plugins.PluginManifest
 import desu.inugram.core.plugins.PluginManifestParser
 import desu.inugram.core.plugins.PluginOrigin
@@ -42,12 +43,13 @@ object PluginImportHelper {
             failOnUi(fragment, getString(R.string.InuPluginsErrorNoManifest))
             return
         }
-        val incompatibility = PluginManager.incompatibility(manifest)
-        if (incompatibility != null) {
-            failOnUi(fragment, incompatibility)
+        val refusal = PluginManager.incompatibility(manifest) ?: PluginManager.badAssets(source)
+        if (refusal != null) {
+            failOnUi(fragment, refusal)
             return
         }
-        val obfuscation = ObfuscationDetector.detect(source)
+        val assets = PluginAssetsParser.parse(source)
+        val obfuscation = ObfuscationDetector.detect(source.substring(0, PluginAssetsParser.findFooter(source)))
         val installed = PluginManager.findUpdateTarget(manifest)
         // the file, not `installed.source`: something may have rewritten it behind the app
         if (installed != null && runCatching { installed.file.readText() }.getOrElse { installed.source } == source) {
@@ -65,14 +67,13 @@ object PluginImportHelper {
             val context = fragment.context ?: fragment.parentActivity ?: return@runOnUIThread
             // what any plugin could do is accepted once, before the first install
             PluginTrustSheet.requireConsent(context, fragment.resourceProvider) {
-                fragment.showDialog(
-                    PluginInstallSheet(context, fragment, manifest, source, obfuscation, installed?.manifest) { enable ->
-                        // re-resolved: the installed set is the ui thread's to answer for
-                        val target = PluginManager.findUpdateTarget(manifest)
-                        if (target != null) confirmUpdate(fragment, target, manifest, source, origin)
-                        else confirmInstall(fragment, manifest, source, enable, origin)
-                    }
-                )
+                // not `showDialog`: the fragment dismisses that on pause, and the sheet can open files in other apps
+                PluginInstallSheet(context, fragment, manifest, source, assets, obfuscation, installed?.manifest) { enable ->
+                    // re-resolved: the installed set is the ui thread's to answer for
+                    val target = PluginManager.findUpdateTarget(manifest)
+                    if (target != null) confirmUpdate(fragment, target, manifest, source, origin)
+                    else confirmInstall(fragment, manifest, source, enable, origin)
+                }.show()
             }
         }
     }

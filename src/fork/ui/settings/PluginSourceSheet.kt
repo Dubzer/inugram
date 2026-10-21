@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import desu.inugram.core.plugins.JsLiterals
+import desu.inugram.core.plugins.PluginAssetsParser
 import org.telegram.messenger.AndroidUtilities
 import org.telegram.messenger.LocaleController
 import org.telegram.messenger.R
@@ -84,8 +85,18 @@ class PluginSourceSheet(context: Context, private val name: String, private val 
         }
     }
 
-    private val displaySource = JsLiterals.collapseEncodedStrings(source, MAX_LINE_LENGTH) {
-        "[…${AndroidUtilities.formatFileSize(it.toLong())}…]"
+    private val displaySource = buildString {
+        fun placeholder(size: Long) = "[…${AndroidUtilities.formatFileSize(size)}…]"
+        val footer = PluginAssetsParser.findFooter(source)
+        append(JsLiterals.collapseEncodedStrings(source.substring(0, footer), MAX_LINE_LENGTH) { placeholder(it.toLong()) })
+        var last = footer
+        val assets = runCatching { PluginAssetsParser.parse(source) }.getOrDefault(emptyList())
+        for (asset in assets) {
+            if (asset.start == asset.end) continue
+            append(source, last, asset.start).append(placeholder(asset.size))
+            last = asset.end
+        }
+        append(source, last, source.length)
     }
 
     private val chunks: List<IntRange> = run {

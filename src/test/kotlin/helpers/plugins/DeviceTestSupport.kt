@@ -307,6 +307,7 @@ fun attachBridge(
             installJvm = bridge.jvm != null,
             installXposed = bridge.xposed != null,
             grants = session.permissions,
+            assets = emptyList(),
         ),
     )
 }

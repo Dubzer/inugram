@@ -1,5 +1,6 @@
 package desu.inugram.helpers.plugins
 
+import desu.inugram.core.plugins.PluginAsset
 import desu.inugram.core.plugins.PluginPermissions
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -23,6 +24,8 @@ open class QuickJs {
         val installJvm: Boolean,
         val installXposed: Boolean,
         val grants: PluginPermissions,
+        /** each asset with the path of its decoded file */
+        val assets: List<Pair<PluginAsset, String>>,
     )
 
     /** published as 0 before teardown. Native validates this generation-tagged handle under the registry lock */
@@ -68,6 +71,7 @@ open class QuickJs {
             config.installJvm,
             config.installXposed,
             config.grants.toPairs().toTypedArray(),
+            config.assets.flatMap { (asset, path) -> listOf(asset.name, asset.mime, path) }.toTypedArray(),
         )
         check(ptr != 0L) { "QuickJs initialization failed" }
     }
@@ -280,6 +284,7 @@ open class QuickJs {
         installJvm: Boolean,
         installXposed: Boolean,
         grants: Array<String>,
+        assets: Array<String>,
     ): Long
     private external fun nativeEvaluate(ptr: Long, code: String, filename: String): String?
 

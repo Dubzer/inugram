@@ -2122,4 +2122,96 @@ declare namespace inu {
     filter: SendMessageFilter,
     middleware: (context: SendMessageContext) => MaybePromise<'send' | 'drop'>,
   ): Disposer
+
+  /**
+   * Files bundled into the plugin. `@inugram/cli` bundles imported binary files
+   * (`import frame from './frame.png'`) and compiles the import to {@link assets.get}.
+   */
+  namespace assets {
+    /**
+     * A {@link File} over the asset, read from disk only when its content is read.
+     * Disposing it releases only this handle.
+     *
+     * @throws `not-found` {@link PluginError} when the plugin bundles no asset named `name`
+     */
+    function get(name: string): File
+  }
+}
+
+/** binary imports, bundled by `@inugram/cli` as {@link inu.assets} */
+declare module '*.png' {
+  const file: File
+  export default file
+}
+declare module '*.jpg' {
+  const file: File
+  export default file
+}
+declare module '*.jpeg' {
+  const file: File
+  export default file
+}
+declare module '*.gif' {
+  const file: File
+  export default file
+}
+declare module '*.webp' {
+  const file: File
+  export default file
+}
+declare module '*.tgs' {
+  const file: File
+  export default file
+}
+declare module '*.mp4' {
+  const file: File
+  export default file
+}
+declare module '*.webm' {
+  const file: File
+  export default file
+}
+declare module '*.mp3' {
+  const file: File
+  export default file
+}
+declare module '*.ogg' {
+  const file: File
+  export default file
+}
+declare module '*.opus' {
+  const file: File
+  export default file
+}
+declare module '*.wav' {
+  const file: File
+  export default file
+}
+declare module '*.m4a' {
+  const file: File
+  export default file
+}
+declare module '*.ttf' {
+  const file: File
+  export default file
+}
+declare module '*.otf' {
+  const file: File
+  export default file
+}
+declare module '*.woff' {
+  const file: File
+  export default file
+}
+declare module '*.woff2' {
+  const file: File
+  export default file
+}
+declare module '*.bin' {
+  const file: File
+  export default file
+}
+declare module '*.dex' {
+  const file: File
+  export default file
 }

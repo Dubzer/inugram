@@ -23,6 +23,8 @@ import desu.inugram.InuConfig
 import desu.inugram.core.plugins.GrantCatalog
 import desu.inugram.core.plugins.GrantTier
 import desu.inugram.core.plugins.ObfuscationDetector
+import desu.inugram.core.plugins.PluginAsset
+import desu.inugram.core.plugins.PluginAssetsParser
 import desu.inugram.core.plugins.PluginManifest
 import desu.inugram.core.plugins.PluginPermissions
 import desu.inugram.core.plugins.SourceObfuscation
@@ -60,6 +62,7 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
     private val grantRows = HashMap<Int, GrantRowView>()
     private var analyzedSource: String? = null
     private var obfuscation: SourceObfuscation? = null
+    private var assets: List<PluginAsset> = emptyList()
     private var memoryUsage: String? = null
 
     override fun getTitle(): CharSequence = plugin.manifest.name
@@ -107,13 +110,12 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
         return super.createView(context)
     }
 
-    private fun detectObfuscation(): SourceObfuscation? {
+    private fun analyzeSource() {
         val source = plugin.source
-        if (analyzedSource !== source) {
-            obfuscation = ObfuscationDetector.detect(source)
-            analyzedSource = source
-        }
-        return obfuscation
+        if (analyzedSource === source) return
+        obfuscation = ObfuscationDetector.detect(source.substring(0, PluginAssetsParser.findFooter(source)))
+        assets = runCatching { PluginAssetsParser.parse(source) }.getOrDefault(emptyList())
+        analyzedSource = source
     }
 
     override fun fillItems(items: ArrayList<UItem>, adapter: UniversalAdapter) {
@@ -132,7 +134,8 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
         )
         items.add(UItem.asShadow(null))
 
-        detectObfuscation()?.let { kind ->
+        analyzeSource()
+        obfuscation?.let { kind ->
             val banner = obfuscationBanner ?: WarningBanner(context).also { obfuscationBanner = it }
             banner.setObfuscation(kind)
             items.add(UItem.asCustomShadow(OBFUSCATION_BANNER, banner))
@@ -159,6 +162,9 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
         if (plugin.settingsPageId != null) {
             items.add(UItem.asButton(BUTTON_SETTINGS, R.drawable.msg_settings, LocaleController.getString(R.string.Settings)))
         }
+        if (assets.isNotEmpty()) {
+            items.add(UItem.asButton(BUTTON_ASSETS, R.drawable.msg_media, LocaleController.getString(R.string.InuPluginAssets), PluginAssetsSheet.describeAssets(assets)))
+        }
         items.add(UItem.asButton(BUTTON_SOURCE, R.drawable.inu_tabler_code, LocaleController.getString(R.string.InuPluginsViewSource)))
         items.add(UItem.asButton(BUTTON_SHARE, R.drawable.msg_share, LocaleController.getString(R.string.ShareFile)))
         // a reload only re-reads the file for a plugin that is going to run it
@@ -176,6 +182,7 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
                 (view as? TextCheckCell)?.isChecked = plugin.enabled
             }
             BUTTON_SETTINGS -> PluginUi.openRegisteredSettings(plugin)
+            BUTTON_ASSETS -> PluginAssetsSheet(context, plugin.source, assets).show()
             BUTTON_SOURCE -> showDialog(PluginSourceSheet(context, plugin.manifest.name, plugin.source))
             BUTTON_SHARE -> sharePlugin(this, plugin)
             BUTTON_RELOAD -> PluginManager.reload(plugin)
@@ -194,6 +201,7 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
         private val TOGGLE_ENABLED = InuUtils.generateId()
         private val OBFUSCATION_BANNER = InuUtils.generateId()
         private val BUTTON_SETTINGS = InuUtils.generateId()
+        private val BUTTON_ASSETS = InuUtils.generateId()
         private val BUTTON_SOURCE = InuUtils.generateId()
         private val BUTTON_SHARE = InuUtils.generateId()
         private val BUTTON_RELOAD = InuUtils.generateId()

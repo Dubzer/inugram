@@ -1,3 +1,4 @@
+pub(crate) mod assets;
 pub(crate) mod blob;
 pub(crate) mod fetch;
 pub(crate) mod fs;
