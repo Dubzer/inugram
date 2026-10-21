@@ -48,7 +48,12 @@ abstract class SettingsPageActivity : UniversalFragment() {
 
     private var highlightItemId: Int = -1
 
-    fun withHighlight(itemId: Int) = apply { highlightItemId = itemId }
+    protected open val expandableGroups: List<ExpandableBoolGroup> get() = emptyList()
+
+    fun withHighlight(itemId: Int) = apply {
+        highlightItemId = itemId
+        for (group in expandableGroups) group.expandIfContains(itemId)
+    }
 
     override fun createView(context: Context): View {
         return super.createView(context).also {

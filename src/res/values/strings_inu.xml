@@ -417,6 +417,7 @@
 
     <string name="InuProfilePhotoGradientFade">Disable profile photo blur</string>
     <string name="InuNonIslandUI">Classic UI</string>
+    <string name="InuInterfaceStyle">Interface style</string>
     <string name="InuTypographyAndIcons">Typography &amp; icons</string>
     <string name="InuMotion">Motion</string>
     <string name="InuFormatting">Formatting</string>
