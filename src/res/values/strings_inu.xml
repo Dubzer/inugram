@@ -443,6 +443,8 @@
     <string name="InuStripTrackingParams">Strip tracking parameters</string>
     <string name="InuStripTrackingParamsOnOpen">When opening links</string>
     <string name="InuStripTrackingParamsOnPaste">When pasting</string>
+    <string name="InuResolveTrackableRedirects">Resolve trackable redirects</string>
+    <string name="InuResolveTrackableRedirectsInfo">Expand some share links (like vt.tiktok.com/…) when pasting and/or opening.\nContacts the link\'s server</string>
     <string name="InuStripTrackingParamsSource">AdGuard URL Tracking filter, updated %1$s</string>
     <string name="InuStripTrackingParamsSourceRow">Filter source</string>
     <string name="InuStripTrackingParamsUpdate">Update rules from AdGuard</string>

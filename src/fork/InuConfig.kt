@@ -619,6 +619,9 @@ object InuConfig {
     val STRIP_TRACKING_PARAMS_ON_PASTE = BoolItem("strip_tracking_params_on_paste", true)
 
     @JvmField
+    val RESOLVE_TRACKABLE_REDIRECTS = BoolItem("resolve_trackable_redirects", false)
+
+    @JvmField
     val DISABLE_INTRO_STICKER = BoolItem("disable_intro_sticker", true)
 
     @JvmField
