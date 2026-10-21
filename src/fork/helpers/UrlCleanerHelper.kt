@@ -26,6 +26,7 @@ import org.telegram.ui.Components.URLSpanReplacement
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
+import java.time.OffsetDateTime
 
 object UrlCleanerHelper {
     private const val FILE = "adguard_url_tracking.txt"
@@ -64,12 +65,22 @@ object UrlCleanerHelper {
 
     private fun overrideFile() = File(ApplicationLoader.applicationContext.filesDir, FILE)
 
-    private fun readSource(): String =
-        overrideFile().takeIf { it.exists() }?.readText()
-            ?: ApplicationLoader.applicationContext.assets.open(FILE).bufferedReader().use { it.readText() }
+    private fun readSource(): String {
+        val bundled = ApplicationLoader.applicationContext.assets.open(FILE).bufferedReader().use { it.readText() }
+        val file = overrideFile()
+        val override = file.takeIf { it.exists() }?.readText() ?: return bundled
+        val bundledTime = parseTimestamp(bundled) ?: return override
+        val overrideTime = parseTimestamp(override)
+        if (overrideTime != null && !bundledTime.isAfter(overrideTime)) return override
+        file.delete()
+        return bundled
+    }
 
     private fun parseTimeUpdated(text: String): String? =
         TIME_UPDATED_RE.find(text)?.groupValues?.get(1)?.substringBefore('T')
+
+    private fun parseTimestamp(text: String): OffsetDateTime? =
+        TIME_UPDATED_RE.find(text)?.groupValues?.get(1)?.let { runCatching { OffsetDateTime.parse(it) }.getOrNull() }
 
     @Synchronized
     private fun getCleaner(): UrlCleaner? {
