@@ -463,6 +463,9 @@ object InuConfig {
     val DISABLE_PROFILE_MUSIC_AUTOPLAY = BoolItem("disable_profile_music_autoplay", true)
 
     @JvmField
+    val DISABLE_ANIMATED_AVATARS = BoolItem("disable_animated_avatars", false)
+
+    @JvmField
     val HIDE_REACTIONS_ENTRY = BoolItem("hide_reactions_entry", false)
 
     @JvmField
