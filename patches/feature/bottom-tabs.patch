@@ -216,7 +216,7 @@ index 0000000..0000000 100644
  import me.vkryl.android.animator.BoolAnimator;
  import me.vkryl.android.animator.FactorAnimator;
  import me.vkryl.android.util.ClickHelper;
-@@ -2868,7 +2870,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+@@ -2869,7 +2871,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
              allowBots = arguments.getBoolean("allowBots", true);
              closeFragment = arguments.getBoolean("closeFragment", true);
              allowGlobalSearch = arguments.getBoolean("allowGlobalSearch", true);
@@ -225,7 +225,7 @@ index 0000000..0000000 100644
  
              byte[] requestPeerTypeBytes = arguments.getByteArray("requestPeerType");
              if (requestPeerTypeBytes != null) {
-@@ -2978,8 +2980,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+@@ -2979,8 +2981,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
          }
  
          BirthdayController.getInstance(currentAccount).check();
@@ -236,7 +236,7 @@ index 0000000..0000000 100644
  
          return true;
      }
-@@ -13792,8 +13794,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+@@ -13839,8 +13841,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
              }
          }
  
@@ -247,7 +247,7 @@ index 0000000..0000000 100644
      }
  
      @Override
-@@ -14177,8 +14181,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+@@ -14224,8 +14228,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
          }
  
          final int additionalList = dp(48);
@@ -546,7 +546,7 @@ index 0000000..0000000 100644
          return super.onFragmentCreate();
      }
  
-@@ -2065,8 +2067,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
+@@ -2070,8 +2072,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
          }
  
          final int additionalList = dp(48);
