@@ -7,6 +7,7 @@ import desu.inugram.helpers.chat.DoubleTapActionHelper
 import desu.inugram.helpers.chat.PinnedReactionsHelper
 import desu.inugram.helpers.font.FontConfig
 import desu.inugram.helpers.menu.ChatMenuConfig
+import desu.inugram.helpers.menu.DrawerMenuConfig
 import desu.inugram.helpers.menu.MessageMenuConfig
 // #if PLUGINS
 import desu.inugram.helpers.plugins.ui.PluginActionSettingsConfig
@@ -807,6 +808,9 @@ object InuConfig {
 
     @JvmField
     val CHAT_MENU_ITEMS = ChatMenuConfig("chat_menu_items")
+
+    @JvmField
+    val DRAWER_MENU_ITEMS = DrawerMenuConfig("drawer_menu_items")
 
     // #if PLUGINS
     @JvmField

@@ -694,6 +694,11 @@
     <string name="InuChatMenuItems">Items</string>
     <string name="InuChatMenuOrderInfo">Reorder or hide items in the three-dots menu in chats. Drag the handle to rearrange, toggle the switch to hide.</string>
     <string name="InuChatMenuReset">Reset to default</string>
+    <string name="InuDrawerMenuOrder">Customize items</string>
+    <string name="InuDrawerMenuItems">Items</string>
+    <string name="InuDrawerMenuReset">Reset to default</string>
+    <string name="InuDrawerMenuMiniApps">Mini apps</string>
+    <string name="InuDrawerMenuDivider">Divider</string>
     <string name="InuGoToMessage">Go to message</string>
     <string name="InuGoToMessagePrompt">Message ID</string>
     <string name="InuPrivacySecurity">Privacy &amp; Security</string>

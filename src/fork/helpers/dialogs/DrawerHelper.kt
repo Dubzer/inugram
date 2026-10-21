@@ -17,6 +17,7 @@ import desu.inugram.helpers.plugins.ui.ActionRow
 import desu.inugram.helpers.plugins.ui.ActionSurface
 import desu.inugram.helpers.plugins.ui.PluginActions
 import desu.inugram.helpers.plugins.ui.PluginIcons
+import desu.inugram.ui.settings.PluginsActivity
 // #endif
 import desu.inugram.helpers.dialogs.DrawerHelper.setupMainFragment
 import desu.inugram.helpers.update.UpdateHelper
@@ -652,6 +653,13 @@ object DrawerHelper {
                 close()
             }
 
+            // #if PLUGINS
+            ITEM_PLUGINS -> {
+                nav.presentFragment(PluginsActivity())
+                close()
+            }
+            // #endif
+
             else -> close()
         }
     }
@@ -674,6 +682,7 @@ object DrawerHelper {
     private const val ITEM_SETTINGS = 8
     private const val ITEM_PROXY = DrawerLayoutAdapter.ITEM_PROXY
     private const val ITEM_ARCHIVE = DrawerLayoutAdapter.ITEM_ARCHIVE
+    private const val ITEM_PLUGINS = DrawerLayoutAdapter.ITEM_PLUGINS
 
     @JvmStatic
     fun notifyDataChanged() {

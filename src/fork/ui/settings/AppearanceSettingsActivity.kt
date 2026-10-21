@@ -87,15 +87,18 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 InuConfig.NAVIGATION_DRAWER.value,
             )
         )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && InuConfig.NAVIGATION_DRAWER.value) {
-            items.add(
-                mkTwoLineCheckItem(
-                    TOGGLE_DRAWER_BACK_GESTURE,
-                    R.string.InuDrawerBackGesture,
-                    R.string.InuDrawerBackGestureInfo,
-                    InuConfig.DRAWER_BACK_GESTURE.value,
+        if (InuConfig.NAVIGATION_DRAWER.value) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                items.add(
+                    mkTwoLineCheckItem(
+                        TOGGLE_DRAWER_BACK_GESTURE,
+                        R.string.InuDrawerBackGesture,
+                        R.string.InuDrawerBackGestureInfo,
+                        InuConfig.DRAWER_BACK_GESTURE.value,
+                    )
                 )
-            )
+            }
+            items.add(mkSubPageButton(BUTTON_DRAWER_MENU_ORDER, LocaleController.getString(R.string.InuDrawerMenuOrder)))
             items.add(UItem.asShadow(null))
         }
         items.add(
@@ -221,6 +224,8 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
 
             BUTTON_FONTS -> presentFragment(FontsSettingsActivity())
 
+            BUTTON_DRAWER_MENU_ORDER -> presentFragment(DrawerMenuOrderActivity())
+
             TOGGLE_DISABLE_SCRIM_BLUR -> {
                 val new = InuConfig.DISABLE_SCRIM_BLUR.toggle()
                 (view as? NotificationsCheckCell)?.isChecked = new
@@ -302,6 +307,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         private val TOGGLE_HIDE_FADE_VIEW = InuUtils.generateId()
         private val TOGGLE_NAVIGATION_DRAWER = InuUtils.generateId()
         private val TOGGLE_DRAWER_BACK_GESTURE = InuUtils.generateId()
+        private val BUTTON_DRAWER_MENU_ORDER = InuUtils.generateId()
         private val TOGGLE_BOTTOM_TABS = InuUtils.generateId()
         private val TOGGLE_HIDE_CONTACTS_TAB = InuUtils.generateId()
         private val TOGGLE_COMPACT_MODE = InuUtils.generateId()
@@ -378,6 +384,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("predictive-back-mode", R.string.InuPredictiveBack, BUTTON_PREDICTIVE_BACK_MODE),
                 SearchRegistry.Entry("navigation-drawer", R.string.InuNavigationDrawer, TOGGLE_NAVIGATION_DRAWER),
                 SearchRegistry.Entry("drawer-back-gesture", R.string.InuDrawerBackGesture, TOGGLE_DRAWER_BACK_GESTURE),
+                SearchRegistry.Entry("drawer-menu-order", R.string.InuDrawerMenuOrder, BUTTON_DRAWER_MENU_ORDER),
                 SearchRegistry.Entry("bottom-tabs-hide", R.string.InuBottomTabs, TOGGLE_BOTTOM_TABS),
                 SearchRegistry.Entry("hide-contacts-tab", R.string.InuHideContactsTab, TOGGLE_HIDE_CONTACTS_TAB),
                 SearchRegistry.Entry("compact-mode", R.string.InuCompactMode, TOGGLE_COMPACT_MODE),
