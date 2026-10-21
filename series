@@ -384,3 +384,4 @@ bugfix/expanded-dark-theme.patch
 bugfix/no-quick-ack-sent-state.patch
 bugfix/sent-message-server-order.patch
 bugfix/settings-camera-button-clip.patch
+bugfix/settings-header-avatar.patch
