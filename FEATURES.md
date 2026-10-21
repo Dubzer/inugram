@@ -166,6 +166,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
   - keep zoom on pinch release
   - gentler exponential zoom curve (like in normal camera apps)
   - toggle to disable dual-camera mode
+- stock experimental voice/round recorder settings visible in release builds
 
 ## photo viewer
 
