@@ -29,7 +29,8 @@ Subject: added some missing Emoji.replaceEmoji calls in various places
  .../java/org/telegram/ui/PhotoViewer.java     |  1 +
  .../org/telegram/ui/SettingsActivity.java     |  6 ++--
  .../recorder/CaptionContainerView.java        | 13 +++++++++
- 25 files changed, 120 insertions(+), 39 deletions(-)
+ .../java/org/telegram/ui/iv/RichEditText.java |  5 +++-
+ 26 files changed, 124 insertions(+), 40 deletions(-)
 
 diff --git a/TMessagesProj/src/main/java/org/telegram/ui/ActionBar/ActionBarMenuItem.java b/TMessagesProj/src/main/java/org/telegram/ui/ActionBar/ActionBarMenuItem.java
 index 0000000..0000000 100644
@@ -855,3 +856,37 @@ index 0000000..0000000 100644
                  codePointCount = Character.codePointCount(s, 0, s.length());
                  String limitText = null;
                  final int limit = getCaptionLimit();
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/iv/RichEditText.java b/TMessagesProj/src/main/java/org/telegram/ui/iv/RichEditText.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/iv/RichEditText.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/iv/RichEditText.java
+@@ -63,6 +63,7 @@ public class RichEditText extends EditTextCaption {
+     private boolean centerEmptyHint;
+     private boolean applyingEmptyHint;
+     private boolean autoBold;
++    private final org.telegram.messenger.NotificationCenter.NotificationCenterDelegate inu_emojiLoadedObserver = (id, account, args) -> invalidateForce();
+ 
+     private LinkPath markPath;
+     private Paint markPaint;
+@@ -298,10 +299,12 @@ public class RichEditText extends EditTextCaption {
+     protected void onAttachedToWindow() {
+         super.onAttachedToWindow();
+         bindInlineButtons();
++        org.telegram.messenger.NotificationCenter.getGlobalInstance().addObserver(inu_emojiLoadedObserver, org.telegram.messenger.NotificationCenter.emojiLoaded);
+     }
+ 
+     @Override
+     protected void onDetachedFromWindow() {
++        org.telegram.messenger.NotificationCenter.getGlobalInstance().removeObserver(inu_emojiLoadedObserver, org.telegram.messenger.NotificationCenter.emojiLoaded);
+         AndroidUtilities.cancelRunOnUIThread(inlineButtonLongPressRunnable);
+         pressedInlineButton = null;
+         inlineButtonLongPressed = false;
+@@ -595,7 +598,7 @@ public class RichEditText extends EditTextCaption {
+     }
+ 
+     @Override
+-    protected void notifySpansChanged() {
++    public void notifySpansChanged() {
+         super.notifySpansChanged();
+         markPathDirty = true;
+         invalidate();
