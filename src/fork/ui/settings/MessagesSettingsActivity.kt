@@ -97,8 +97,7 @@ class MessagesSettingsActivity : SettingsPageActivity() {
                 TOGGLE_REACTION_BAR_BELOW,
                 R.string.InuReactionBarBelow,
                 R.string.InuReactionBarBelowInfo,
-                InuConfig.REACTION_BAR_BELOW.value,
-                experimental = true
+                InuConfig.REACTION_BAR_BELOW.value
             )
         )
         items.add(
@@ -106,8 +105,7 @@ class MessagesSettingsActivity : SettingsPageActivity() {
                 TOGGLE_CHAT_VIEWS_BOTTOM,
                 R.string.InuChatViewsBottom,
                 R.string.InuChatViewsBottomInfo,
-                InuConfig.CHAT_VIEWS_BOTTOM.value,
-                experimental = true
+                InuConfig.CHAT_VIEWS_BOTTOM.value
             )
         )
         items.add(

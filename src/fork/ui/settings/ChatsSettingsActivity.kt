@@ -205,8 +205,7 @@ class ChatsSettingsActivity : SettingsPageActivity() {
                 BUTTON_FORMATTING_POPUP,
                 R.string.InuFormattingPopup,
                 R.string.InuFormattingPopupInfo,
-                InuConfig.FORMATTING_POPUP.value,
-                experimental = true
+                InuConfig.FORMATTING_POPUP.value
             )
         )
         if (chatInputMaxLinesSlider == null) chatInputMaxLinesSlider = SliderCell(

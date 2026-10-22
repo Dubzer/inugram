@@ -125,7 +125,7 @@ class AppearanceSettingsActivity : SettingsPageActivity() {
         }
         items.add(UItem.asShadow(null))
 
-        items.add(UItem.asHeader(addExperimentalSpan(LocaleController.getString(R.string.InuInterfaceStyle))))
+        items.add(UItem.asHeader(LocaleController.getString(R.string.InuInterfaceStyle)))
         material3Group.addTo(items, ::applyStyleChanges)
         classicUiGroup.addTo(items, ::applyStyleChanges)
         items.add(
