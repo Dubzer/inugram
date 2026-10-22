@@ -388,3 +388,4 @@ feature/animated-avatars.patch
 misc/experimental-settings-in-release.patch
 bugfix/suggest-photo-notification.patch
 bugfix/rich-message-auto-entities.patch
+bugfix/rich-message-hashtag-tap.patch
