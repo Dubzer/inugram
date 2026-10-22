@@ -82,6 +82,7 @@
     <string name="InuRoundRecorderExponentialZoomInfo">Smoother zoom curve, like Google Camera</string>
     <string name="InuRoundRecorderDualCamera">Dual camera</string>
     <string name="InuRoundRecorderDualCameraInfo">Open both front and rear cameras simultaneously for instant switching while recording. Uses more battery.</string>
+    <string name="InuRoundRecorderCamera2Settings">Camera2 settings</string>
     <string name="InuRoundRecorderCameraApi">Round recorder uses %1$s API. **Switch to %2$s >**</string>
     <string name="InuShowAllRecentStickers">Show all recent stickers</string>
     <string name="InuNoStickerExtraPadding">Remove extra bottom padding</string>

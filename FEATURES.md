@@ -166,6 +166,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
   - keep zoom on pinch release
   - gentler exponential zoom curve (like in normal camera apps)
   - toggle to disable dual-camera mode
+  - new experimental (stock) Camera2 recorder, enabled by default
 - stock experimental voice/round recorder settings visible in release builds
 
 ## photo viewer
@@ -366,7 +367,6 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - photo viewer crop showing a black screen, captions going missing and broken pip transitions after the viewer moves to another activity
 - chat preview no longer marks visible reactions/poll votes as read
 - dialogs list briefly flashing over the lockscreen after ending/declining a call
-- fix camera2api a/v sync issue in round messages
 - forward bar showing stale message count/senders after deselecting messages in the forward options sheet
 - forwarding with captions removed no longer blanks out text-only messages in the optimistic copy (stock only checked `media != null`, but locally-sent text messages carry `messageMediaEmpty` sometimes)
 - cross-peer reply: clear stale quote so a leftover quote-reply target doesn't override the new one at send

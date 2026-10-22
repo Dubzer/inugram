@@ -143,7 +143,6 @@ debloat/volume-keys-videos.patch
 bugfix/chat-preview-reactions-read.patch
 feature/better-spoilers.patch
 feature/old-layout-nav.patch
-bugfix/camera2-av-sync.patch
 feature/round-recorder.patch
 bugfix/cross-peer-reply-stale-quote.patch
 bugfix/phantom-photo-seekbar.patch
