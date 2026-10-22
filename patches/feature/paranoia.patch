@@ -4,6 +4,7 @@ Date: Wed, 20 May 2026 22:08:21 +0400
 Subject: paranoia mode (hide chats, accounts, disguise as stock app)
 
 ---
+ .../telegram/messenger/AppGlobalConfig.java   | 14 +++++++-
  .../messenger/ContactsController.java         |  3 ++
  .../messenger/MediaDataController.java        |  3 ++
  .../messenger/MessagesController.java         | 29 +++++++++++-----
@@ -17,12 +18,49 @@ Subject: paranoia mode (hide chats, accounts, disguise as stock app)
  .../ui/Components/SharedMediaLayout.java      | 12 +++----
  .../java/org/telegram/ui/DialogsActivity.java |  5 +--
  .../org/telegram/ui/GroupCreateActivity.java  |  4 ++-
+ .../java/org/telegram/ui/LogoutActivity.java  |  2 +-
  .../telegram/ui/PrivacyControlActivity.java   |  4 +++
  .../java/org/telegram/ui/ProfileActivity.java |  2 +-
  .../org/telegram/ui/SessionBottomSheet.java   |  3 ++
+ .../telegram/ui/Stars/BotStarsActivity.java   |  1 +
+ .../telegram/ui/Stars/BotStarsController.java |  4 +--
+ .../telegram/ui/Stars/StarsController.java    |  3 ++
  .../ui/Stories/StoriesController.java         | 33 +++++++++++++++++++
- 17 files changed, 108 insertions(+), 24 deletions(-)
+ .../org/telegram/ui/Wallet/GramWallet.java    |  2 +-
+ 23 files changed, 129 insertions(+), 29 deletions(-)
 
+diff --git a/TMessagesProj/src/main/java/org/telegram/messenger/AppGlobalConfig.java b/TMessagesProj/src/main/java/org/telegram/messenger/AppGlobalConfig.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/messenger/AppGlobalConfig.java
++++ b/TMessagesProj/src/main/java/org/telegram/messenger/AppGlobalConfig.java
+@@ -112,7 +112,15 @@ public class AppGlobalConfig {
+ 
+     public final ConfigStringSet botAllowedSuffixes = ofStringSet("bot_allowed_suffixes", Collections.singleton("bot"));
+ 
+-    public final ConfigBoolean walletAvailable = ofBoolean("wallet_available", BuildVars.DEBUG_VERSION);
++    public final ConfigBoolean walletAvailable = new ConfigBoolean("wallet_available", BuildVars.DEBUG_VERSION) {
++        @Override
++        public boolean get() {
++            return super.get() && !desu.inugram.helpers.security.ParanoiaHelper.shouldHideWallet();
++        }
++    };
++    {
++        map.put("wallet_available", walletAvailable.handler);
++    }
+     public final ConfigBoolean walletPaidMessageRecipientMessageAmountCheck = ofBoolean("wallet_paid_message_recipient_message_amount_check", true);
+     public final ConfigLong walletTransferMinNanos = ofLong("wallet_transfer_min_nanos", 100_000_000);
+     public final ConfigLong walletGaslessMinNanos = ofLong("wallet_gasless_min_nanos", 100_000_000);
+@@ -382,6 +390,10 @@ public class AppGlobalConfig {
+             return handler.value;
+         }
+ 
++        public boolean inu_getUnfiltered() {
++            return handler.value;
++        }
++
+         private static class Internal implements ConfigInternal {
+             private final String name;
+             private final boolean defaultValue;
 diff --git a/TMessagesProj/src/main/java/org/telegram/messenger/ContactsController.java b/TMessagesProj/src/main/java/org/telegram/messenger/ContactsController.java
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/messenger/ContactsController.java
@@ -527,6 +565,19 @@ index 0000000..0000000 100644
                              continue;
                          }
                          contacts.add(chat);
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/LogoutActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/LogoutActivity.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/LogoutActivity.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/LogoutActivity.java
+@@ -170,7 +170,7 @@ public class LogoutActivity extends BaseFragment {
+         GramWallet.ensureLocalWalletBalances(currentAccount, () -> {
+             progressDialog.dismiss();
+             long localGramBalance = 0L;
+-            if (MessagesController.getInstance(currentAccount).config.walletAvailable.get()) {
++            if (MessagesController.getInstance(currentAccount).config.walletAvailable.inu_getUnfiltered()) {
+                 final GramWallet wallet = GramWallet.getInstance(currentAccount);
+                 if (wallet.getBalance() > 0 && !wallet.isBackupEnabled() && !wallet.cantAccessWallet()) {
+                     localGramBalance += wallet.getBalance();
 diff --git a/TMessagesProj/src/main/java/org/telegram/ui/PrivacyControlActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/PrivacyControlActivity.java
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/PrivacyControlActivity.java
@@ -590,6 +641,68 @@ index 0000000..0000000 100644
          applicationItemView.valueText.setText(stringBuilder);
          Drawable drawable = ContextCompat.getDrawable(context, R.drawable.menu_devices).mutate();
          drawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_windowBackgroundWhiteGrayIcon), PorterDuff.Mode.SRC_IN));
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Stars/BotStarsActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/Stars/BotStarsActivity.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Stars/BotStarsActivity.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Stars/BotStarsActivity.java
+@@ -739,6 +739,7 @@ public class BotStarsActivity extends BaseFragment implements NotificationCenter
+     private int stats_dc = -1;
+     @Override
+     public boolean onFragmentCreate() {
++        if (desu.inugram.helpers.security.ParanoiaHelper.shouldHideRevenue(currentAccount, bot_id, type == TYPE_TON)) return false;
+         NotificationCenter.getInstance(currentAccount).addObserver(this, NotificationCenter.botStarsUpdated);
+         checkStats();
+         return super.onFragmentCreate();
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Stars/BotStarsController.java b/TMessagesProj/src/main/java/org/telegram/ui/Stars/BotStarsController.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Stars/BotStarsController.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Stars/BotStarsController.java
+@@ -122,7 +122,7 @@ public class BotStarsController {
+             req.dark = Theme.isCurrentThemeDark();
+             req.peer = MessagesController.getInstance(currentAccount).getInputPeer(did);
+             ConnectionsManager.getInstance(currentAccount).sendRequest(req, (res, err) -> AndroidUtilities.runOnUIThread(() -> {
+-                if (res instanceof TLRPC.TL_payments_starsRevenueStats) {
++                if (res instanceof TLRPC.TL_payments_starsRevenueStats && !desu.inugram.helpers.security.ParanoiaHelper.shouldHideRevenue(currentAccount, did, false)) {
+                     TLRPC.TL_payments_starsRevenueStats r = (TLRPC.TL_payments_starsRevenueStats) res;
+                     botStarsStats.put(did, r);
+                 } else {
+@@ -151,7 +151,7 @@ public class BotStarsController {
+                 stats_dc = ConnectionsManager.DEFAULT_DATACENTER_ID;
+             }
+             ConnectionsManager.getInstance(currentAccount).sendRequest(req, (res, err) -> AndroidUtilities.runOnUIThread(() -> {
+-                if (res instanceof TLRPC.TL_payments_starsRevenueStats) {
++                if (res instanceof TLRPC.TL_payments_starsRevenueStats && !desu.inugram.helpers.security.ParanoiaHelper.shouldHideRevenue(currentAccount, did, true)) {
+                     TLRPC.TL_payments_starsRevenueStats r = (TLRPC.TL_payments_starsRevenueStats) res;
+                     tonStats.put(did, r);
+                 } else {
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Stars/StarsController.java b/TMessagesProj/src/main/java/org/telegram/ui/Stars/StarsController.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Stars/StarsController.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Stars/StarsController.java
+@@ -182,6 +182,7 @@ public class StarsController {
+                 lastBalanceLoaded = System.currentTimeMillis();
+                 if (res instanceof TL_stars.StarsStatus) {
+                     TL_stars.StarsStatus r = (TL_stars.StarsStatus) res;
++                    desu.inugram.helpers.security.ParanoiaHelper.filterStarsStatus(ton, r);
+                     MessagesController.getInstance(currentAccount).putUsers(r.users, false);
+                     MessagesController.getInstance(currentAccount).putChats(r.chats, false);
+ 
+@@ -263,6 +264,7 @@ public class StarsController {
+     }
+ 
+     public void updateBalance(TL_stars.StarsAmount balance) {
++        balance = desu.inugram.helpers.security.ParanoiaHelper.filterStarsBalance(ton, balance);
+         if (!this.balance.equals(balance)) {
+             this.balance = balance;
+             this.minus = 0;
+@@ -599,6 +601,7 @@ public class StarsController {
+             loading[type] = false;
+             if (res instanceof TL_stars.StarsStatus) {
+                 TL_stars.StarsStatus r = (TL_stars.StarsStatus) res;
++                desu.inugram.helpers.security.ParanoiaHelper.filterStarsStatus(ton, r);
+                 MessagesController.getInstance(currentAccount).putUsers(r.users, false);
+                 MessagesController.getInstance(currentAccount).putChats(r.chats, false);
+ 
 diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Stories/StoriesController.java b/TMessagesProj/src/main/java/org/telegram/ui/Stories/StoriesController.java
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/Stories/StoriesController.java
@@ -704,3 +817,16 @@ index 0000000..0000000 100644
  
              loading = true;
  
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/Wallet/GramWallet.java b/TMessagesProj/src/main/java/org/telegram/ui/Wallet/GramWallet.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/Wallet/GramWallet.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/Wallet/GramWallet.java
+@@ -151,7 +151,7 @@ public class GramWallet implements GramWalletStreaming.IGramWalletStreamingSubsc
+     }
+ 
+     public static void ensureLocalWalletBalances(int currentAccount, Runnable whenDone) {
+-        if (!MessagesController.getInstance(currentAccount).config.walletAvailable.get()) {
++        if (!MessagesController.getInstance(currentAccount).config.walletAvailable.inu_getUnfiltered()) {
+             whenDone.run();
+             return;
+         }
