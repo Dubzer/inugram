@@ -798,7 +798,7 @@ index 0000000..0000000 100644
      private void playReactionAnimation(Integer messageId) {
          if (fragmentView == null) {
              return;
-@@ -16414,25 +16453,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -16417,25 +16456,7 @@ public class ChatActivity extends BaseFragment implements
                      updatePollVotesMentionButton(true);
                  }
                  if (messageObject != null && fragmentOpened && openAnimationEnded && !inPreviewMode && (chatListItemAnimator == null || !chatListItemAnimator.isRunning()) && messageCell.checkUnreadReactions(clipTop, chatListView.getMeasuredHeight() - blurredViewBottomOffset)) {
@@ -825,7 +825,7 @@ index 0000000..0000000 100644
                  }
                  desu.inugram.helpers.chat.ReactionDebugHelper.checkStaleUnread(messageCell, reactionsMentionCount);
                  getDownloadController().checkUnviewedDownloads(messageCell.getId(), dialog_id);
-@@ -16450,24 +16471,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -16453,24 +16474,7 @@ public class ChatActivity extends BaseFragment implements
                  }
                  hasTopicSeparator = cell.topicSeparator != null;
                  if (messageObject != null && fragmentOpened && openAnimationEnded && !inPreviewMode && (chatListItemAnimator == null || !chatListItemAnimator.isRunning()) && cell.checkUnreadReactions(clipTop, chatListView.getMeasuredHeight() - blurredViewBottomOffset)) {
@@ -851,7 +851,7 @@ index 0000000..0000000 100644
                  }
                  cell.setVisiblePart(visibleTop, visibleBackgroundHeight);
                  if (fragmentOpened && openAnimationEnded && !paused
-@@ -23579,6 +23583,10 @@ public class ChatActivity extends BaseFragment implements
+@@ -23582,6 +23586,10 @@ public class ChatActivity extends BaseFragment implements
                      messageObject.forceUpdate = true;
                      messageObject.reactionsChanged = true;
                      updateMessageAnimated(messageObject, true);
@@ -862,7 +862,7 @@ index 0000000..0000000 100644
                  }
              });
          } else if (id == NotificationCenter.savedReactionTagsUpdate) {
-@@ -24625,32 +24633,34 @@ public class ChatActivity extends BaseFragment implements
+@@ -24628,32 +24636,34 @@ public class ChatActivity extends BaseFragment implements
              long topicId = (long) args[1];
              if (dialogId == dialog_id && ((!isTopic && (!ChatObject.isMonoForum(currentChat) || getTopicId() == 0)) || topicId == getTopicId())) {
                  reactionsMentionCount = (int) args[2];
@@ -918,7 +918,7 @@ index 0000000..0000000 100644
                  }
                  updateReactionsMentionButton(true);
              }
-@@ -47355,18 +47365,33 @@ public class ChatActivity extends BaseFragment implements
+@@ -47358,18 +47368,33 @@ public class ChatActivity extends BaseFragment implements
              loadLastUnreadMention();
          } else if (buttonId == ChatActivitySideControlsButtonsLayout.BUTTON_REACTIONS) {
              if (desu.inugram.helpers.chat.ReactionDebugHelper.isEnabled()) {

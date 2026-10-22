@@ -22,7 +22,7 @@ index 0000000..0000000 100644
          if (getParentActivity() == null || getContext() == null) {
              return;
          }
-@@ -20609,6 +20609,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -20612,6 +20612,7 @@ public class ChatActivity extends BaseFragment implements
                  ((ChatAttachAlertRichLayout) chatAttachAlert.getCurrentAttachLayout()).onExternalDocumentPicked(data);
                  return;
              } else if (requestCode == 1) {

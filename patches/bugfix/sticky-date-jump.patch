@@ -53,7 +53,7 @@ index 0000000..0000000 100644
          }
          updateFloatingTopicView();
  
-@@ -16798,7 +16797,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -16801,7 +16800,7 @@ public class ChatActivity extends BaseFragment implements
          }
          if (floatingDateView != null) {
              floatingDateView.setTranslationX(getSideMenuWidth() / 2f);

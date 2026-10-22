@@ -57,7 +57,7 @@ diff --git a/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java b/TMe
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java
 +++ b/TMessagesProj/src/main/java/org/telegram/ui/ChatActivity.java
-@@ -20370,6 +20370,8 @@ public class ChatActivity extends BaseFragment implements
+@@ -20373,6 +20373,8 @@ public class ChatActivity extends BaseFragment implements
                          }
                      }
                  }
@@ -66,7 +66,7 @@ index 0000000..0000000 100644
              }
  
              if (imageReceiver != null) {
-@@ -20380,6 +20382,9 @@ public class ChatActivity extends BaseFragment implements
+@@ -20383,6 +20385,9 @@ public class ChatActivity extends BaseFragment implements
                  view.getLocationInWindow(coords);
                  PhotoViewer.PlaceProviderObject object = new PhotoViewer.PlaceProviderObject();
                  object.viewX = coords[0];
@@ -76,7 +76,7 @@ index 0000000..0000000 100644
                  object.viewY = coords[1] - 0 + view.getPaddingTop();
                  object.parentView = chatListView;
                  object.animatingImageView = null;
-@@ -37837,6 +37842,12 @@ public class ChatActivity extends BaseFragment implements
+@@ -37840,6 +37845,12 @@ public class ChatActivity extends BaseFragment implements
                          return ChatActivity.this.getSideMenuWidth();
                      }
                  };
