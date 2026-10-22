@@ -390,3 +390,5 @@ bugfix/suggest-photo-notification.patch
 bugfix/rich-message-auto-entities.patch
 bugfix/rich-message-hashtag-tap.patch
 bugfix/attach-sheet-ime-insets.patch
+bugfix/slowmode-blocks-media-edit.patch
+bugfix/slowmode-edit-record-button.patch
