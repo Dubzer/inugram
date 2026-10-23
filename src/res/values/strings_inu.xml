@@ -348,9 +348,22 @@
     <string name="InuAttachmentSheet">Attachment sheet</string>
     <string name="InuVoiceRecorder">Voice / round recorder</string>
     <string name="InuIconReplacement">Icon pack</string>
-    <string name="InuIconReplacementOff">Default</string>
-    <string name="InuIconReplacementSolar">Solar by @Design480</string>
-    <string name="InuIconReplacementVkui">VKUI by VK</string>
+    <string name="InuIconPackLoadFromFile">Load from file</string>
+    <string name="InuIconPacksInstalled">Installed packs</string>
+    <string name="InuIconPacksOrderInfo">Icons are resolved in the priority order above. Long-tap to delete</string>
+    <string name="InuIconPacksUnsavedAlert">You have unsaved icon pack changes. Apply them and restart the app?</string>
+    <string name="InuIconPacksApply">Apply and restart</string>
+    <string name="InuIconPacksTelegram">Telegram</string>
+    <string name="InuIconPacksTelegramInfo">Default icons</string>
+    <string name="InuIconPackBundled">bundled</string>
+    <string name="InuIconPackInvalid">This file is not a valid icon pack</string>
+    <string name="InuIconPackInstall">Install</string>
+    <string name="InuIconPackInstalled">Icon pack installed</string>
+    <string name="InuIconPackByAuthor">By %1$s · %2$s</string>
+    <string name="InuIconPackIcons_one">%1$d icon</string>
+    <string name="InuIconPackIcons_other">%1$d icons</string>
+    <string name="InuIconPackDelete">Delete icon pack</string>
+    <string name="InuIconPackDeleteConfirm">Delete %1$s?</string>
 
     <string name="InuMapsHeader">Maps</string>
     <string name="InuMapProvider">Map view provider</string>

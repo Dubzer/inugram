@@ -347,9 +347,6 @@
     <string name="InuAttachmentSheet">Панель вкладень</string>
     <string name="InuVoiceRecorder">Запис голосових / відеоповідомлень</string>
     <string name="InuIconReplacement">Пакет іконок</string>
-    <string name="InuIconReplacementOff">За замовчуванням</string>
-    <string name="InuIconReplacementSolar">Solar від @Design480</string>
-    <string name="InuIconReplacementVkui">VKUI від VK</string>
     <string name="InuMapsHeader">Карти</string>
     <string name="InuMapProvider">Провайдер карт</string>
     <string name="InuMapProviderGoogle">Карти Google</string>

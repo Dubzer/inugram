@@ -5,7 +5,7 @@ Subject: build support stuff for fork-specific code: - added kotlin - bumped min
 
 ---
  .gitmodules                                   |   3 +
- TMessagesProj/build.gradle                    | 179 ++++++++------
+ TMessagesProj/build.gradle                    | 180 ++++++++------
  TMessagesProj/google-services.json            |  76 +-----
  TMessagesProj/jni/CMakeLists.txt              |   3 +
  TMessagesProj/jni/exports.map                 |   1 +
@@ -23,7 +23,7 @@ Subject: build support stuff for fork-specific code: - added kotlin - bumped min
  build.gradle                                  |  19 +-
  gradle.properties                             |   2 +-
  settings.gradle                               |  40 +++-
- 19 files changed, 397 insertions(+), 331 deletions(-)
+ 19 files changed, 398 insertions(+), 331 deletions(-)
  create mode 100644 TMessagesProj_App/jni/CMakeLists.txt
  create mode 160000 TMessagesProj_App/jni/lsplant
 
@@ -67,12 +67,13 @@ index 0000000..0000000 100644
      implementation 'com.google.mlkit:language-id:17.0.6'
      implementation 'com.android.billingclient:billing:8.0.0'
      implementation 'com.google.code.gson:gson:2.11.0'
-@@ -102,11 +104,77 @@ dependencies {
+@@ -102,11 +104,78 @@ dependencies {
      api project(":TMessagesProj_Modules:media3:media-lib-session")
      api project(':jlatexmath')
  
 +    // inu
 +    implementation 'org.maplibre.gl:android-sdk:13.1.0'
++    implementation 'com.caverock:androidsvg-aar:1.4'
 +    androidTestImplementation 'androidx.test:runner:1.6.2'
 +    androidTestImplementation 'junit:junit:4.13.2'
 +    androidTestImplementation "org.jetbrains.kotlin:kotlin-test:2.1.20"
@@ -146,7 +147,7 @@ index 0000000..0000000 100644
  }
  
  android {
-@@ -114,10 +182,19 @@ android {
+@@ -114,10 +183,19 @@ android {
      buildToolsVersion '36.0.0'
      ndkVersion "27.2.12479018"
  
@@ -166,7 +167,7 @@ index 0000000..0000000 100644
          }
      }
  
-@@ -130,23 +207,34 @@ android {
+@@ -130,23 +208,34 @@ android {
      compileOptions {
          sourceCompatibility JavaVersion.VERSION_1_8
          targetCompatibility JavaVersion.VERSION_1_8
@@ -207,7 +208,7 @@ index 0000000..0000000 100644
              }
          }
      }
-@@ -157,64 +245,13 @@ android {
+@@ -157,64 +246,13 @@ android {
              shrinkResources false
              multiDexEnabled true
              ndk.debugSymbolLevel = 'FULL'
@@ -276,7 +277,7 @@ index 0000000..0000000 100644
          }
  
          release {
-@@ -222,12 +259,13 @@ android {
+@@ -222,12 +260,13 @@ android {
              shrinkResources false
              multiDexEnabled true
              ndk.debugSymbolLevel = 'FULL'
@@ -293,7 +294,7 @@ index 0000000..0000000 100644
          }
      }
  
-@@ -245,7 +283,6 @@ def getProps(String propName) {
+@@ -245,7 +284,6 @@ def getProps(String propName) {
          return "";
      }
  }
@@ -301,7 +302,7 @@ index 0000000..0000000 100644
  
  task checkVisibility {
      doFirst {
-@@ -267,4 +304,10 @@ task checkVisibility {
+@@ -267,4 +305,10 @@ task checkVisibility {
      }
  }
  

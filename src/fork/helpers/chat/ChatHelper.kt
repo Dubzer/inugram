@@ -44,6 +44,7 @@ import desu.inugram.helpers.StickerDownloadHelper
 import desu.inugram.helpers.WebAppHelper
 import desu.inugram.helpers.cloud.SettingsBackupHelper
 import desu.inugram.helpers.font.FontImportHelper
+import desu.inugram.helpers.icons.IconPackHelper
 import desu.inugram.helpers.media.MediaSendDebugHelper
 import desu.inugram.helpers.menu.MessageMenuConfig
 import desu.inugram.helpers.menu.reorderByMenu
@@ -1336,10 +1337,12 @@ object ChatHelper {
         val isSettings = name.endsWith(SettingsBackupHelper.FILENAME_SUFFIX)
         val isPlugin = !isSettings && name.endsWith(".inu.js", ignoreCase = true)
         val isFont = !isSettings && !isPlugin && FontImportHelper.isFontFileName(name)
-        if (!isSettings && !isPlugin && !isFont) return false
+        val isIconPack = !isSettings && !isPlugin && !isFont && IconPackHelper.isIconPackFileName(name)
+        if (!isSettings && !isPlugin && !isFont && !isIconPack) return false
         val file = resolveFile()?.takeIf { it.exists() } ?: return false
         when {
             isSettings -> SettingsBackupHelper.startImportFromFile(fragment, file)
+            isIconPack -> IconPackHelper.startImportFromFile(fragment, file)
             // #if PLUGINS
             isPlugin && PluginManager.isEngineEnabled() -> PluginImportHelper.startImportFromFile(fragment, file)
             isPlugin -> showPluginsUnavailableDialog(

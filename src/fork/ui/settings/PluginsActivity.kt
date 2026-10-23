@@ -554,7 +554,7 @@ class PluginRow(context: Context, val compact: Boolean) : LinearLayout(context) 
     }
 
     private fun linkUsernames(text: String): CharSequence =
-        linkPluginUsernames(text) { username -> onUsernameClick?.invoke(username) }
+        InuUtils.linkUsernames(text) { username -> onUsernameClick?.invoke(username) }
 
     private fun formatDescription(text: String): CharSequence =
         formatPluginDescription(text) { username -> onUsernameClick?.invoke(username) }
