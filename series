@@ -391,3 +391,6 @@ bugfix/rich-message-hashtag-tap.patch
 bugfix/attach-sheet-ime-insets.patch
 bugfix/slowmode-blocks-media-edit.patch
 bugfix/slowmode-edit-record-button.patch
+bugfix/chat-hint-runnable-leak.patch
+bugfix/detached-cell-emoji-leak.patch
+bugfix/article-sheet-observers-leak.patch

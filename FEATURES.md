@@ -387,7 +387,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - comments/topic thread restored as plain group chat after activity recreation
 - phantom message selection after back-gesture swipe over a reply header (leaked long-press timer)
 - fix deeplinking to a non-primary album member sometimes mis-anchoring
-- a bunch of stock memory/resource leaks (incl. `NativeByteBuffer` wrapper pool growing unbounded on write-heavy threads, reply-line sticker emoji never detaching and pinning closed chats via the global emoji cache, story viewer input/mention observers, `BotLocation` caching an activity context)
+- a bunch of stock memory/resource leaks (incl. `NativeByteBuffer` wrapper pool growing unbounded on write-heavy threads, reply-line sticker emoji never detaching and pinning closed chats via the global emoji cache, story viewer input/mention observers, `BotLocation` caching an activity context, saved messages tag hint timers re-posting forever after the chat is closed, detached/measuring message cells registering animated emoji in the global cache, instant view sheets never unregistering their observers)
 - correctly handle "Open in..." in ChatAttachAlert: open editor before sending + support multi-attach
 - avatar of a bubble right below a topic separator (forum "All" tab) only clickable in its lower part
 - opt out of android media resumption, so a phantom telegram player chip no longer reappears in quick settings after a reboot or once the app process is gone
