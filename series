@@ -395,3 +395,4 @@ bugfix/chat-hint-runnable-leak.patch
 bugfix/detached-cell-emoji-leak.patch
 bugfix/article-sheet-observers-leak.patch
 bugfix/profile-channel-stale-post.patch
+bugfix/hidden-members-self.patch
