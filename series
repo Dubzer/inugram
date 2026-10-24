@@ -394,3 +394,4 @@ bugfix/slowmode-edit-record-button.patch
 bugfix/chat-hint-runnable-leak.patch
 bugfix/detached-cell-emoji-leak.patch
 bugfix/article-sheet-observers-leak.patch
+bugfix/profile-channel-stale-post.patch
