@@ -396,3 +396,4 @@ bugfix/detached-cell-emoji-leak.patch
 bugfix/article-sheet-observers-leak.patch
 bugfix/profile-channel-stale-post.patch
 bugfix/hidden-members-self.patch
+bugfix/profile-member-tap-mismatch.patch
