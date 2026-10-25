@@ -804,15 +804,16 @@ object ChatActionsHelper {
         val canForward = messages.isNotEmpty() && allForwardable && !noForwards
         val canSave = canForward && menu.dialogId != UserConfig.getInstance(account).clientUserId
         val canTranslate = chat != null && hasText && InuConfig.IN_PLACE_TRANSLATION.value
+        val canSaveToGallery = hasMedia && canForward
         overflow.setSubItemShown(ACTION_SEL_SAVE, canSave)
         overflow.setSubItemShown(ACTION_SEL_FORWARD_NO_QUOTE, canForward)
-        overflow.setSubItemShown(ACTION_SEL_GALLERY, hasMedia)
+        overflow.setSubItemShown(ACTION_SEL_GALLERY, canSaveToGallery)
         if (chat != null) {
             overflow.setSubItemShown(ACTION_SEL_TRANSLATE, canTranslate)
             overflow.setSubItemShown(ACTION_SEL_PIN, canPin)
             overflow.setSubItemShown(ACTION_SEL_UNPIN, canUnpin)
         }
-        val anyShown = canSave || canForward || canTranslate || hasMedia || canPin || canUnpin
+        val anyShown = canSave || canForward || canTranslate || canSaveToGallery || canPin || canUnpin
         overflow.visibility = if (anyShown) View.VISIBLE else View.GONE
         // #if PLUGINS
         updateSelectionPluginItems(menu)
