@@ -404,3 +404,4 @@ bugfix/transcribe-icon-stuck.patch
 bugfix/file-load-resume-holes.patch
 bugfix/caption-clip-reactions-appear.patch
 bugfix/scheduled-self-delete.patch
+bugfix/link-preview-above-audio-height.patch
