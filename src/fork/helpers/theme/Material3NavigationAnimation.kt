@@ -78,6 +78,8 @@ object Material3NavigationAnimation {
     private const val OPENING_FADE_END = 133f / 450f
 
     private class ExtendedBackground(layers: List<Drawable>) : LayerDrawable(layers.toTypedArray()) {
+        val translatedChildren = HashSet<View>()
+
         fun release() {
             for (i in 0 until numberOfLayers) (getDrawable(i) as? ReleasableDrawable)?.release()
         }
@@ -98,10 +100,10 @@ object Material3NavigationAnimation {
         val spatial = Material3BackMotion.EMPHASIZED.getInterpolation(progress)
         val topTx = offset * (1f - spatial)
         top.translationX = 0f
-        top.eachChild { it.translationX = topTx }
+        translateChildren(top, topTx)
         top.alpha = ((progress - OPENING_FADE_START) / (OPENING_FADE_END - OPENING_FADE_START)).coerceIn(0f, 1f)
         val belowTx = -offset * spatial
-        below.eachChild { it.translationX = belowTx }
+        translateChildren(below, belowTx)
         return true
     }
 
@@ -116,10 +118,10 @@ object Material3NavigationAnimation {
         val offset = dpf2(Material3BackMotion.ENTER_OFFSET_DP)
         val spatial = Material3BackMotion.EMPHASIZED.getInterpolation(progress)
         val topTx = offset * spatial
-        top.eachChild { it.translationX = topTx }
+        translateChildren(top, topTx)
         top.alpha = 1f - ((progress - CLOSING_FADE_START) / (CLOSING_FADE_END - CLOSING_FADE_START)).coerceIn(0f, 1f)
         val belowTx = -offset * (1f - spatial)
-        below.eachChild { it.translationX = belowTx }
+        translateChildren(below, belowTx)
         return true
     }
 
@@ -133,8 +135,18 @@ object Material3NavigationAnimation {
         val below = layout.containerViewBack ?: return false
         prepareExtension(below, layout.backgroundFragment, leftEdge = false)
         val belowTx = -dpf2(Material3BackMotion.ENTER_OFFSET_DP) * (1f - progress.coerceIn(0f, 1f))
-        below.eachChild { it.translationX = belowTx }
+        translateChildren(below, belowTx)
         return true
+    }
+
+    // Tracked because a child can leave the container mid-animation (attached sheets get detached
+    // and reattached later) and would otherwise keep its offset.
+    private fun translateChildren(container: ViewGroup, tx: Float) {
+        val tracked = (container.background as? ExtendedBackground)?.translatedChildren
+        container.eachChild {
+            it.translationX = tx
+            tracked?.add(it)
+        }
     }
 
     // Children are translated instead of the container so the revealed strip (right of the below
@@ -166,7 +178,8 @@ object Material3NavigationAnimation {
         val background = container?.background as? ExtendedBackground ?: return
         background.release()
         container.background = null
-        container.eachChild { it.translationX = 0f }
+        background.translatedChildren.forEach { it.translationX = 0f }
+        background.translatedChildren.clear()
     }
 }
 
