@@ -39,7 +39,7 @@ index 0000000..0000000 100644
              nextIndex = currentPlaylistNum + 1;
              if (nextIndex >= currentPlayList.size()) {
                  nextIndex = 0;
-@@ -4486,6 +4486,10 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
+@@ -4490,6 +4490,10 @@ public class MediaController implements AudioManager.OnAudioFocusChangeListener,
          return playlist;
      }
  
