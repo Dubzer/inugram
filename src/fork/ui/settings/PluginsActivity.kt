@@ -63,6 +63,7 @@ class PluginsActivity : SettingsPageActivity() {
     override fun onResume() {
         super.onResume()
         PluginManager.addOnChangedListener(onPluginsChanged)
+        onPluginsChanged()
     }
 
     override fun onPause() {

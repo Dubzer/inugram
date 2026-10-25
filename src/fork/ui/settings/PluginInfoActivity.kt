@@ -94,6 +94,7 @@ class PluginInfoActivity(private val plugin: Plugin) : SettingsPageActivity() {
     override fun onResume() {
         super.onResume()
         PluginManager.addOnChangedListener(onPluginChanged)
+        onPluginChanged()
         pollMemoryUsage.run()
     }
 
