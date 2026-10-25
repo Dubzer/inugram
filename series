@@ -409,3 +409,4 @@ bugfix/saved-music-play-order.patch
 bugfix/saved-music-dont-restart.patch
 bugfix/audio-player-cover-source.patch
 bugfix/frozen-overlay-search.patch
+bugfix/rich-table-emoji-height.patch
