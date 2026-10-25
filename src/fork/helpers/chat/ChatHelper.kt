@@ -346,8 +346,16 @@ object ChatHelper {
             icons.add(R.drawable.msg_retry)
         }
 
-        val chatInfo = activity.currentChatInfo
-        if (chatInfo != null && chatInfo.can_view_stats && selectedObject.id > 0 && !selectedObject.isStory) {
+        val owner = selectedObject.messageOwner
+        val statsChat = when {
+            owner.fwd_from == null -> activity.currentChat
+            owner.fwd_from.saved_from_msg_id != 0 && selectedObject.fromChatId < 0 ->
+                activity.messagesController.getChat(-selectedObject.fromChatId)
+            else -> null
+        }
+        if ((owner.views > 0 || owner.forwards > 0) && ChatObject.hasAdminRights(statsChat) &&
+            selectedObject.id > 0 && !selectedObject.isStory
+        ) {
             items.add(LocaleController.getString(R.string.Statistics))
             options.add(ChatActivity.OPTION_STATISTICS)
             icons.add(R.drawable.msg_stats)
