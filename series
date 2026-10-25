@@ -402,3 +402,4 @@ misc/tgnet-msg-id-binary-search.patch
 bugfix/hashtag-search.patch
 bugfix/transcribe-icon-stuck.patch
 bugfix/file-load-resume-holes.patch
+bugfix/caption-clip-reactions-appear.patch
