@@ -397,3 +397,5 @@ bugfix/article-sheet-observers-leak.patch
 bugfix/profile-channel-stale-post.patch
 bugfix/hidden-members-self.patch
 bugfix/profile-member-tap-mismatch.patch
+bugfix/tgnet-msg-id-checks.patch
+misc/tgnet-msg-id-binary-search.patch
