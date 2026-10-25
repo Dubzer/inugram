@@ -399,3 +399,4 @@ bugfix/hidden-members-self.patch
 bugfix/profile-member-tap-mismatch.patch
 bugfix/tgnet-msg-id-checks.patch
 misc/tgnet-msg-id-binary-search.patch
+bugfix/hashtag-search.patch
