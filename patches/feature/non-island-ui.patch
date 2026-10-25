@@ -2587,8 +2587,8 @@ index 0000000..0000000 100644
  
 -            t += (int) (dp(36 + 14) * filterTabsVisibility);
 -            additionalPadding += (int) (dp(36 + 14) * filterTabsVisibility);
-+            t += (int) (dp(NonIslandHelper.foldersBar() ? NonIslandHelper.foldersBarVisibleHeightDp() : 36 + 14) * filterTabsVisibility);
-+            additionalPadding += (int) (dp(NonIslandHelper.foldersBar() ? NonIslandHelper.foldersBarVisibleHeightDp() : 36 + 14) * filterTabsVisibility);
++            t += (int) ((NonIslandHelper.foldersBar() ? NonIslandHelper.getFoldersBarVisibleHeight() : dp(36 + 14)) * filterTabsVisibility);
++            additionalPadding += (int) ((NonIslandHelper.foldersBar() ? NonIslandHelper.getFoldersBarVisibleHeight() : dp(36 + 14)) * filterTabsVisibility);
  
              if (topPanelLayout != null) {
 -                final int h = (int) topPanelLayout.getAnimatedHeightWithPadding(lerp((float) dp(14), dp(7), filterTabsVisibility));
@@ -2711,7 +2711,7 @@ index 0000000..0000000 100644
 -            if (fragmentSearchField != null) {
 -                fragmentSearchField.setTranslationY(-dp(FILTER_TABS_HEIGHT) + getSearchFieldAdditionOffset());
 +            if (fragmentSearchField != null && !NonIslandHelper.globalSearch()) {
-+                fragmentSearchField.setTranslationY(-dp(NonIslandHelper.foldersBar() ? NonIslandHelper.foldersBarVisibleHeightDp() : FILTER_TABS_HEIGHT) + getSearchFieldAdditionOffset());
++                fragmentSearchField.setTranslationY(-(NonIslandHelper.foldersBar() ? NonIslandHelper.getFoldersBarVisibleHeight() : dp(FILTER_TABS_HEIGHT)) + getSearchFieldAdditionOffset());
              }
          } else {
              showSearch(false, false, false);
@@ -2784,10 +2784,10 @@ index 0000000..0000000 100644
  
          if (filterTabsView != null) {
 -            filterTabsView.setTranslationY(totalOffset - searchOffset);
-+            filterTabsView.setTranslationY(totalOffset - (NonIslandHelper.globalSearch() ? 0 : searchOffset) - (NonIslandHelper.foldersBar() ? dp(NonIslandHelper.foldersBarOverlapDp()) * getFilterTabsVisibilityFactor(false) : 0));
++            filterTabsView.setTranslationY(totalOffset - (NonIslandHelper.globalSearch() ? 0 : searchOffset) - (NonIslandHelper.foldersBar() ? NonIslandHelper.getFoldersBarOverlap() * getFilterTabsVisibilityFactor(false) : 0));
              filtersTabVisibility = filterTabsView.getAlpha();
 -            filtersTabHeight = dp(36 + 7) * filtersTabVisibility;
-+            filtersTabHeight = dp(NonIslandHelper.foldersBar() ? NonIslandHelper.foldersBarVisibleHeightDp() : 36 + 7) * filtersTabVisibility;
++            filtersTabHeight = (NonIslandHelper.foldersBar() ? NonIslandHelper.getFoldersBarVisibleHeight() : dp(36 + 7)) * filtersTabVisibility;
              totalOffset += filtersTabHeight;
          }
  
@@ -2799,7 +2799,7 @@ index 0000000..0000000 100644
 +            if (NonIslandHelper.globalSearch()) {
 +                topPanelLayout.setTranslationY(
 +                    scrollYOffset + storiesHeight + tabsYOffset + storiesOverscroll
-+                    + (filterTabsView == null ? 0 : (dp(NonIslandHelper.foldersBar() ? NonIslandHelper.foldersBarVisibleHeightDp() : 36 + 7) * getFilterTabsVisibilityFactor(false)))
++                    + (filterTabsView == null ? 0 : ((NonIslandHelper.foldersBar() ? NonIslandHelper.getFoldersBarVisibleHeight() : dp(36 + 7)) * getFilterTabsVisibilityFactor(false)))
 +                );
 +            } else {
 +                topPanelLayout.setTranslationY(lerp(
@@ -2845,7 +2845,7 @@ index 0000000..0000000 100644
 -            if (fragmentSearchField != null) {
 -                fragmentSearchField.setTranslationY((show ? -dp(FILTER_TABS_HEIGHT) : 0) + getSearchFieldAdditionOffset());
 +            if (fragmentSearchField != null && !NonIslandHelper.globalSearch()) {
-+                fragmentSearchField.setTranslationY((show ? -dp(NonIslandHelper.foldersBar() ? NonIslandHelper.foldersBarVisibleHeightDp() : FILTER_TABS_HEIGHT) : 0) + getSearchFieldAdditionOffset());
++                fragmentSearchField.setTranslationY((show ? -(NonIslandHelper.foldersBar() ? NonIslandHelper.getFoldersBarVisibleHeight() : dp(FILTER_TABS_HEIGHT)) : 0) + getSearchFieldAdditionOffset());
              }
              if (dialogStoriesCell != null) {
                  if (dialogStoriesCellVisible && !isInPreviewMode() && !show) {
@@ -2938,7 +2938,7 @@ index 0000000..0000000 100644
                  + actionBar.getMeasuredHeight()
 -                + (searchTabsView != null ? dp(50) : 0)
 -                + (topPanelLayout != null ? (int) topPanelLayout.getAnimatedHeightWithPadding(dp(7)) : 0);
-+                + (searchTabsView != null ? dp(NonIslandHelper.globalSearch() ? NonIslandHelper.FOLDERS_BAR_VISIBLE_HEIGHT_DP : 50) : 0)
++                + (searchTabsView != null ? (NonIslandHelper.globalSearch() ? NonIslandHelper.getFoldersBarVisibleHeight() : dp(50)) : 0)
 +                + (topPanelLayout != null && !NonIslandHelper.globalSearch() ? (int) topPanelLayout.getAnimatedHeightWithPadding(dp(7)) : 0);
  
              searchViewPager.setPagesPadding(top, bottom, doNotRequestLayout);
