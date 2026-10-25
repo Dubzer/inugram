@@ -414,6 +414,7 @@ most things are toggleable in `Settings → Inugram`, with sensible opinionated 
 - avatar long-press preview stuck on blurred placeholder after the cached profile photo reference expired (stock used the often-null `UserFull.user` and a parent that cannot refresh profile photo references)
 - fix bottom progress bar on video bubbles now following inline playback (autoplay & play-with-sound)
 - correctly publish album name for streamed music
+- music player playlist covers matching the player cover (stock list used the uploaded thumb while the player used the file's embedded cover or an iTunes lookup)
 - permanently white/stale message bubbles on low-memory devices (stock bug: `MessageDrawable` committed its radius/color cache keys even when the bitmap allocation for the bubble nine-patch failed, so the stale drawable was never rebuilt; the shadow nine-patch also recycled its old bitmap before allocating the new one, leaving a recycled bitmap in use)
 - group call recording timer showing a nonsense duration (the whole unix epoch, e.g. `496691:48:15`) right after starting a recording: stock flips the local `recording` flag optimistically while `record_start_date` is still 0
 - message database stalls (up to minutes) on big chats: reading mentions, deleting replied-to messages and loading the user rating scanned the whole cached history because sqlite picked the wrong index; also reply previews of deleted messages are now actually cleared when several messages are deleted at once (stock bound the id list as one string, matching nothing)
