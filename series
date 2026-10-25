@@ -401,3 +401,4 @@ bugfix/tgnet-msg-id-checks.patch
 misc/tgnet-msg-id-binary-search.patch
 bugfix/hashtag-search.patch
 bugfix/transcribe-icon-stuck.patch
+bugfix/file-load-resume-holes.patch
