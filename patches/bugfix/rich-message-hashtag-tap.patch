@@ -11,7 +11,7 @@ diff --git a/TMessagesProj/src/main/java/org/telegram/messenger/RichMessageLayou
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/messenger/RichMessageLayout.java
 +++ b/TMessagesProj/src/main/java/org/telegram/messenger/RichMessageLayout.java
-@@ -3185,7 +3185,7 @@ public class RichMessageLayout {
+@@ -3241,7 +3241,7 @@ public class RichMessageLayout {
  
          private void dispatchLinkClick(CharacterStyle span, boolean longPress) {
              if (span == null) return;
