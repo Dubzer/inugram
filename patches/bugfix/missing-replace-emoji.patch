@@ -427,7 +427,7 @@ index 0000000..0000000 100644
                      }
                      chatActivityEnterView.setWebPage(webPage, true);
                  }
-@@ -22121,6 +22121,10 @@ public class ChatActivity extends BaseFragment implements
+@@ -22125,6 +22125,10 @@ public class ChatActivity extends BaseFragment implements
              if (chatListView != null) {
                  chatListView.invalidateViews();
              }
@@ -438,7 +438,7 @@ index 0000000..0000000 100644
              if (alertTextView != null) {
                  alertTextView.invalidate();
              }
-@@ -28891,6 +28895,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -28895,6 +28899,7 @@ public class ChatActivity extends BaseFragment implements
                  pinnedMessageObject.updateTranslation(false);
                  if (pinnedMessageObject.type == MessageObject.TYPE_MUSIC) {
                      pinnedText = String.format("%s - %s", pinnedMessageObject.getMusicAuthor(), pinnedMessageObject.getMusicTitle());
@@ -446,7 +446,7 @@ index 0000000..0000000 100644
                  } else if (pinnedMessageObject.type == MessageObject.TYPE_POLL) {
                      if (pinnedMessageObject.messageOwner.media instanceof TLRPC.TL_messageMediaPoll) {
                          TLRPC.TL_messageMediaPoll poll = (TLRPC.TL_messageMediaPoll) pinnedMessageObject.messageOwner.media;
-@@ -40697,15 +40702,16 @@ public class ChatActivity extends BaseFragment implements
+@@ -40701,15 +40706,16 @@ public class ChatActivity extends BaseFragment implements
                  userButton.addView(imageView, LayoutHelper.createFrame(34, 34, Gravity.LEFT | Gravity.CENTER_VERTICAL, 13, 0, 0, 0));
  
                  final TextView titleText = new TextView(getContext());

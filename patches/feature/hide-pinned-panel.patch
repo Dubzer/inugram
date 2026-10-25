@@ -52,7 +52,7 @@ index 0000000..0000000 100644
  
          updatePinnedListButton(false);
      }
-@@ -28478,7 +28480,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -28482,7 +28484,7 @@ public class ChatActivity extends BaseFragment implements
          return false;
      }
  
@@ -61,7 +61,7 @@ index 0000000..0000000 100644
          updatePinnedMessageView(animated, 0);
      }
  
-@@ -28597,6 +28599,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -28601,6 +28603,7 @@ public class ChatActivity extends BaseFragment implements
          if (currentEncryptedChat != null || chatMode != 0) {
              return;
          }

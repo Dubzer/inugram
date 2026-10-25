@@ -82,7 +82,7 @@ index 0000000..0000000 100644
  
                          float clipTop = 0, clipBottom = 0;
                          if (mentionContainer != null) {
-@@ -20286,6 +20294,9 @@ public class ChatActivity extends BaseFragment implements
+@@ -20290,6 +20298,9 @@ public class ChatActivity extends BaseFragment implements
                      + windowInsetsStateHolder.getAnimatedMaxBottomInset()
                      + getTopicTabsSideSize(TopicsTabsView.Position.BOTTOM)
                      + inputIslandHeightCurrent);
@@ -92,7 +92,7 @@ index 0000000..0000000 100644
                  return object;
              }
          }
-@@ -20490,10 +20501,9 @@ public class ChatActivity extends BaseFragment implements
+@@ -20494,10 +20505,9 @@ public class ChatActivity extends BaseFragment implements
                  object.radius = imageReceiver.getRoundRadius(true);
                  object.clipTopAddition = (int) (chatListViewPaddingTop - chatListViewPaddingVisibleOffset - AndroidUtilities.dp(4));
                  object.clipBottomAddition = (int) (blurredViewBottomOffset
@@ -105,7 +105,7 @@ index 0000000..0000000 100644
                  return object;
              }
              return null;
-@@ -22234,7 +22244,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -22238,7 +22248,7 @@ public class ChatActivity extends BaseFragment implements
                  updateTopPanel(true);
              }
              if (headerItem != null) {
@@ -114,7 +114,7 @@ index 0000000..0000000 100644
              }
          } else if (id == NotificationCenter.didReceiveNewMessages) {
              FileLog.d("ChatActivity didReceiveNewMessages start");
-@@ -27951,7 +27961,10 @@ public class ChatActivity extends BaseFragment implements
+@@ -27955,7 +27965,10 @@ public class ChatActivity extends BaseFragment implements
  
          boolean accentTextButton = false;
          boolean forceVisible = false;
@@ -126,7 +126,7 @@ index 0000000..0000000 100644
          boolean showGiftButton = false;
          boolean showSuggestButton = false;
          boolean showSearchButton = chatMode == MODE_DEFAULT && ChatObject.isChannelOrGiga(currentChat);
-@@ -28039,6 +28052,11 @@ public class ChatActivity extends BaseFragment implements
+@@ -28043,6 +28056,11 @@ public class ChatActivity extends BaseFragment implements
                  bottomOverlayChatText.setTag(null);
                  bottomOverlayChatText.setText(LocaleController.getString(R.string.HidePinnedMessagesNoCaps));
              }
@@ -138,7 +138,7 @@ index 0000000..0000000 100644
              showBottomOverlayProgress(false, false);
          } else if (currentUser != null && currentUser.id == UserObject.VERIFY) {
              if (!getMessagesController().isDialogMuted(dialog_id, getTopicId())) {
-@@ -46869,7 +46887,7 @@ public class ChatActivity extends BaseFragment implements
+@@ -46873,7 +46891,7 @@ public class ChatActivity extends BaseFragment implements
              pollAddVisibility = animatorPollAddAnswerVisibility.getFloatValue();
          }
  
