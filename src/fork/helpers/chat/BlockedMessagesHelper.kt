@@ -67,7 +67,7 @@ object BlockedMessagesHelper {
 
     @JvmStatic
     fun shouldSpoil(messageObject: MessageObject?): Boolean {
-        return InuConfig.BLOCKED_MESSAGES_MODE.value == InuConfig.BlockedMessagesModeItem.SPOILER && isBlockedMessage(messageObject)
+        return isEnabled() && isBlockedMessage(messageObject)
     }
 
     @JvmStatic
